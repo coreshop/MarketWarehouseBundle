@@ -1,0 +1,16 @@
+imports:
+    - { resource: admin.yml }
+
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopMarketWarehouseWarehouseDeliveryTimeRule: CoreShop\Bundle\MarketWarehouseBundle\CoreExtension\WarehouseDeliveryTimeRule
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-market-warehouse:
+                namespace_prefix: "CoreShop\\Bundle\\MarketWarehouseBundle"
+                path: "@CoreShopMarketWarehouseBundle/Resources/config/serializer"

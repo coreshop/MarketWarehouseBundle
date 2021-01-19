@@ -1,0 +1,25 @@
+CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeRule:
+    exclusion_policy: ALL
+    xml_root_name: market_warehouse_warehouse_delivery_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed, Version]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed, Version]
+        active:
+            expose: true
+            type: boolean
+            groups: [List, Detailed, Version]
+        conditions:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Rule\Model\Condition>
+            groups: [Detailed, Version]
+        actions:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Rule\Model\Action>
+            groups: [Detailed, Version]

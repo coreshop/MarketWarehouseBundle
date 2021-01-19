@@ -1,0 +1,17 @@
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\Package\CompositeOrderPackageProcessor: ~
+
+    CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Package\Packager'
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Packager:
+        arguments:
+            - '@coreshop.repository.supplier_sale_rule'
+            - '@coreshop.repository.product_warehouse_stock'
+            - '@coreshop.factory.order_package'
+            - '@coreshop.factory.order_package_item'
+
+    CoreShop\Bundle\MarketWarehouseBundle\Order\Processor\OrderPackageProcessor:
+        arguments:
+            - '@coreshop.repository.order_package'
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface'
+        tags:
+          - { name: coreshop.cart_processor }

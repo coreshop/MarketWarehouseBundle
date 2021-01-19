@@ -1,0 +1,11 @@
+core_shop_shipping:
+    pimcore_admin:
+        js:
+            resource: '/bundles/coreshopmarketwarehouse/pimcore/js/resource.js'
+            warehouse_delivery_time_rule_action: '/bundles/coreshopmarketwarehouse/pimcore/js/warehouse_delivery_time_rule/action.js'
+            warehouse_delivery_time_rule_condition: '/bundles/coreshopmarketwarehouse/pimcore/js/warehouse_delivery_time_rule/condition.js'
+            warehouse_delivery_time_rule_object_item: '/bundles/coreshopmarketwarehouse/pimcore/js/warehouse_delivery_time_rule/object/item.js'
+            warehouse_delivery_time_rule_conditions_postcodes: '/bundles/coreshopmarketwarehouse/pimcore/js/warehouse_delivery_time_rule/conditions/postcodes.js'
+            warehouse_delivery_time_rule_actions_days: '/bundles/coreshopmarketwarehouse/pimcore/js/warehouse_delivery_time_rule/actions/days.js'
+            warehouse_delivery_time_rule_core_extension_data: '/bundles/coreshopmarketwarehouse/pimcore/js/coreExtension/data/coreShopMarketWarehouseWarehouseDeliveryTimeRule.js'
+            warehouse_delivery_time_rule_core_extension_tag: '/bundles/coreshopmarketwarehouse/pimcore/js/coreExtension/tags/coreShopMarketWarehouseWarehouseDeliveryTimeRule.js'

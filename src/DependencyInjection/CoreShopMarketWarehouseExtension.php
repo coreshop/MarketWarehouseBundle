@@ -1,0 +1,49 @@
+<?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
+
+namespace CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection;
+
+use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\WarehouseDeliveryTimeRuleActionPass;
+use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\WarehouseDeliveryTimeRuleConditionPass;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\Action\WarehouseDeliveryTimeActionProcessorInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\Condition\WarehouseDeliveryTimeConditionCheckerInterface;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
+class CoreShopMarketWarehouseExtension extends AbstractModelExtension
+{
+    public function load(array $config, ContainerBuilder $container)
+    {
+        $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
+
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
+
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
+        $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
+
+        if (array_key_exists('pimcore_admin', $config)) {
+            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+        }
+
+        $container
+            ->registerForAutoconfiguration(WarehouseDeliveryTimeActionProcessorInterface::class)
+            ->addTag(WarehouseDeliveryTimeRuleActionPass::WAREHOUSE_DELIVERY_TIME_RULE_ACTION_TAG);
+
+        $container
+            ->registerForAutoconfiguration(WarehouseDeliveryTimeConditionCheckerInterface::class)
+            ->addTag(WarehouseDeliveryTimeRuleConditionPass::WAREHOUSE_DELIVERY_TIME_PRICE_RULE_CONDITION_TAG);
+    }
+}

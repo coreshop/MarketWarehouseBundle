@@ -1,0 +1,6 @@
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\Twig\Extension\OrderPackageExtension:
+        arguments:
+            - '@coreshop.repository.order_package'
+        tags:
+            - { name: twig.extension }
