@@ -19,7 +19,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\OrderPackageRepositoryInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use Pimcore\Model\DataObject\Service;
 
@@ -43,7 +43,7 @@ class OrderPackageProcessor implements CartProcessorInterface
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         if (!$cart->getId()) {
             return;

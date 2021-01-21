@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 
@@ -23,7 +23,7 @@ interface OrderPackageItemInterface extends PimcoreModelInterface, ShippableItem
     public function getOrderPackage();
 
     /**
-     * @return CartItemInterface
+     * @return OrderItemInterface
      */
     public function getOrderItem();
 

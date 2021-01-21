@@ -1,0 +1,7 @@
+imports:
+    - { resource: ../../config.yaml }
+
+payum:
+    gateways:
+        offline:
+            factory: concurrency

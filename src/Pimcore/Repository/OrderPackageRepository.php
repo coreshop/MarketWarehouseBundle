@@ -14,11 +14,11 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\OrderPackageRepositoryInterface;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 class OrderPackageRepository extends PimcoreRepository implements OrderPackageRepositoryInterface
 {
-    public function findForOrder(CartInterface $cart): array
+    public function findForOrder(OrderInterface $cart): array
     {
         $list = $this->getList();
         $list->setCondition('order__id = ?', [$cart->getId()]);

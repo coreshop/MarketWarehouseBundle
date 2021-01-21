@@ -20,8 +20,8 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\ProductWarehouseStockRepositoryInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\SupplierSaleRuleRepositoryInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
@@ -44,7 +44,7 @@ class Packager implements PackagerInterface
         $this->orderPackageItemFactory = $orderPackageItemFactory;
     }
 
-    public function createOrderPackages(CartInterface $cart): array
+    public function createOrderPackages(OrderInterface $cart): array
     {
         $store = $cart->getStore();
 
@@ -58,7 +58,7 @@ class Packager implements PackagerInterface
         $warehousePackages = [];
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
@@ -157,7 +157,7 @@ class Packager implements PackagerInterface
     }
 
     protected function createPackageItem(
-        CartItemInterface $item,
+        OrderItemInterface $item,
         OrderPackageInterface $package,
         float $quantity
     ) {
@@ -175,7 +175,7 @@ class Packager implements PackagerInterface
     }
 
     protected function createNewPackage(
-        CartInterface $cart,
+        OrderInterface $cart,
         ?WarehouseInterface $warehouse
     ): OrderPackageInterface {
         /**

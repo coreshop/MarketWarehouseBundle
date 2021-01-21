@@ -15,13 +15,10 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Package;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
-class CompositeOrderPackageProcessor implements OrderPackageProcessorInterface
+final class CompositeOrderPackageProcessor implements OrderPackageProcessorInterface
 {
-    /**
-     * @var PriorityQueue|OrderPackageProcessorInterface[]
-     */
     private $processors;
 
     public function __construct()
@@ -29,16 +26,12 @@ class CompositeOrderPackageProcessor implements OrderPackageProcessorInterface
         $this->processors = new PriorityQueue();
     }
 
-    /**
-     * @param OrderPackageProcessorInterface $processor
-     * @param int                            $priority
-     */
-    public function addProcessor(OrderPackageProcessorInterface $processor, $priority = 0)
+    public function addProcessor(OrderPackageProcessorInterface $processor, $priority = 0): void
     {
         $this->processors->insert($processor, $priority);
     }
 
-    public function process(OrderPackageInterface $package)
+    public function process(OrderPackageInterface $package): void
     {
         foreach ($this->processors as $processor) {
             $processor->process($package);

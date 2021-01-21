@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Twig\Extension;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\OrderPackageRepositoryInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -43,7 +43,7 @@ class OrderPackageExtension extends AbstractExtension
         ];
     }
 
-    public function orderPackages(CartInterface $cart)
+    public function orderPackages(OrderInterface $cart)
     {
         return $this->orderPackageRepository->findForOrder($cart);
     }

@@ -19,7 +19,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface
 
 class OrderPackagePriceProcessor implements OrderPackageProcessorInterface
 {
-    public function process(OrderPackageInterface $package)
+    public function process(OrderPackageInterface $package): void
     {
         $totalPriceNet = 0;
         $totalPriceGross = 0;

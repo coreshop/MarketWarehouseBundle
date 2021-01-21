@@ -18,5 +18,5 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 
 interface OrderPackageProcessorInterface
 {
-    public function process(OrderPackageInterface $package);
+    public function process(OrderPackageInterface $package): void;
 }

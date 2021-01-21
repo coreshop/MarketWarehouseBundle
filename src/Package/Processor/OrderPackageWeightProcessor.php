@@ -20,7 +20,7 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 class OrderPackageWeightProcessor implements OrderPackageProcessorInterface
 {
-    public function process(OrderPackageInterface $package)
+    public function process(OrderPackageInterface $package): void
     {
         $totalWeight = 0;
 

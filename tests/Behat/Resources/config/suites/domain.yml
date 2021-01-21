@@ -1,0 +1,3 @@
+imports:
+    - domain/product.yml
+    - domain/cart.yml

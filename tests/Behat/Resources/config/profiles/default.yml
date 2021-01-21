@@ -1,0 +1,18 @@
+default:
+    formatters:
+        pretty:
+            verbose: true
+            paths: false
+            snippets: false
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: behat-bootstrap.php
+            kernel:
+                path: src/BehatKernel.php
+                class: BehatKernel
+                environment: test
+
+    gherkin:
+        filters:
+            tags: '@domain && ~@wip'

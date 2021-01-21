@@ -1,0 +1,3 @@
+imports:
+    - ui/product.yml
+    - ui/cart.yml

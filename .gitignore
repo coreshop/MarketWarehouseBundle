@@ -42,7 +42,7 @@ Thumbs.db
 phpda.html
 parameters.yml
 var
-.env
+.env.local
 composer.lock
 app/config/local/
 app/config/pimcore/

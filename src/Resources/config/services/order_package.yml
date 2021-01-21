@@ -30,7 +30,7 @@ services:
         arguments:
             - '@coreshop.carrier.price_calculator.taxed'
             - '@coreshop.shipping.carrier.validator'
-            - '@coreshop.carrier.default_resolver'
+            - '@coreshop.carrier.resolver'
             - '@coreshop.provider.store_based_default_address_provider'
         tags:
             - { name: coreshop.order.package_processor, priority: 300 }

@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\MarketWarehouseBundle\Repository;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface OrderPackageRepositoryInterface
 {
@@ -22,5 +22,5 @@ interface OrderPackageRepositoryInterface
      *
      * @return OrderPackageInterface[]
      */
-    public function findForOrder(CartInterface $cart): array;
+    public function findForOrder(OrderInterface $cart): array;
 }

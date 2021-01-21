@@ -21,7 +21,7 @@ use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
-use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
+use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 class ShippingProcessor implements OrderPackageProcessorInterface
@@ -34,7 +34,7 @@ class ShippingProcessor implements OrderPackageProcessorInterface
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
         ShippableCarrierValidatorInterface $carrierValidator,
-        DefaultCarrierResolverInterface $defaultCarrierResolver,
+        CarriersResolverInterface $defaultCarrierResolver,
         AddressProviderInterface $defaultAddressProvider
     ) {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
@@ -43,7 +43,7 @@ class ShippingProcessor implements OrderPackageProcessorInterface
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
-    public function process(OrderPackageInterface $package)
+    public function process(OrderPackageInterface $package): void
     {
         $package->setShippingGross(0);
         $package->setShippingNet(0);

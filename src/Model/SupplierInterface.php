@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface SupplierInterface extends PimcoreModelInterface

@@ -28,7 +28,7 @@ class SupplierCarrierResolver implements CarriersResolverInterface
         $this->decorated = $decorated;
     }
 
-    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
         if (!$shippable instanceof OrderPackageInterface) {
             return $this->decorated->resolveCarriers($shippable, $address);
