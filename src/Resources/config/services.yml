@@ -1,5 +1,7 @@
 imports:
     - { resource: services/warehouse_delivery_time.yml }
     - { resource: services/warehouse_delivery_time_form.yml }
+    - { resource: services/supplier_shipping.yml }
+    - { resource: services/supplier_shipping_form.yml }
     - { resource: services/order_package.yml }
     - { resource: services/twig.yml }

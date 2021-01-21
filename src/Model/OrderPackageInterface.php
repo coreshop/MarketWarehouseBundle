@@ -16,8 +16,11 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-interface OrderPackageInterface extends PimcoreModelInterface
+interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterface, StoreAwareInterface
 {
     public function getOrder();
 
@@ -29,6 +32,13 @@ interface OrderPackageInterface extends PimcoreModelInterface
     public function getWarehouse();
 
     public function setWarehouse($warehouse);
+
+    /**
+     * @return CarrierInterface
+     */
+    public function getCarrier();
+
+    public function setCarrier($carrier);
 
     /**
      * @return OrderPackageItemInterface[]
@@ -61,4 +71,16 @@ interface OrderPackageInterface extends PimcoreModelInterface
     public function getShippingTime();
 
     public function setShippingTime($shippingTime);
+
+    public function setWeight($weight);
+
+    public function setSubtotal(int $subtotal, bool $withTax = true);
+
+    public function getSubtotalNet();
+
+    public function setSubtotalNet($subtotalNet);
+
+    public function getSubtotalGross();
+
+    public function setSubtotalGross($subtotalGross);
 }

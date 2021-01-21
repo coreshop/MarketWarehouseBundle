@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\Condition;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\ShippingPackageInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;

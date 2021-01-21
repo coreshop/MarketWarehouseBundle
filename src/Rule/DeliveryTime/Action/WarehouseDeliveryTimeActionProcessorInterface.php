@@ -12,19 +12,12 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\Action;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 
-class DaysActionProcessor implements WarehouseDeliveryTimeActionProcessorInterface
+interface WarehouseDeliveryTimeActionProcessorInterface
 {
-    public function calculateDeliveryTime(
-        WarehouseInterface $subject,
-        WarehouseDeliveryTimeInterface $deliveryTime,
-        array $context,
-        array $configuration
-    ): void {
-        $deliveryTime->addDays($configuration['days']);
-    }
+    public function calculateDeliveryTime(WarehouseInterface $subject, WarehouseDeliveryTimeInterface $deliveryTime, array $context, array $configuration): void;
 }

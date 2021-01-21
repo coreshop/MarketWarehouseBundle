@@ -14,8 +14,12 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection;
 
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\WarehouseDeliveryTimeRuleActionPass;
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\WarehouseDeliveryTimeRuleConditionPass;
-use CoreShop\Bundle\MarketWarehouseBundle\Rule\Action\WarehouseDeliveryTimeActionProcessorInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Rule\Condition\WarehouseDeliveryTimeConditionCheckerInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierShippingRuleActionPass;
+use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierShippingRuleConditionPass;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\WarehouseDeliveryTimeActionProcessorInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition\WarehouseDeliveryTimeConditionCheckerInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\Shipping\Action\SupplierShippingActionProcessorInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\Shipping\Condition\SupplierShippingConditionCheckerInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use Symfony\Component\Config\FileLocator;
@@ -45,5 +49,14 @@ class CoreShopMarketWarehouseExtension extends AbstractModelExtension
         $container
             ->registerForAutoconfiguration(WarehouseDeliveryTimeConditionCheckerInterface::class)
             ->addTag(WarehouseDeliveryTimeRuleConditionPass::WAREHOUSE_DELIVERY_TIME_PRICE_RULE_CONDITION_TAG);
+
+
+        $container
+            ->registerForAutoconfiguration(SupplierShippingActionProcessorInterface::class)
+            ->addTag(SupplierShippingRuleActionPass::SUPPLIER_SHIPPING_RULE_ACTION_TAG);
+
+        $container
+            ->registerForAutoconfiguration(SupplierShippingConditionCheckerInterface::class)
+            ->addTag(SupplierShippingRuleConditionPass::SUPPLIER_SHIPPING_RULE_CONDITION_TAG);
     }
 }

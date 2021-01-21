@@ -15,13 +15,17 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Doctrine\ORM\WarehouseDeliveryTimeRuleRepository;
+use CoreShop\Bundle\MarketWarehouseBundle\Doctrine\ORM\SupplierShippingRuleRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\WarehouseDeliveryTimeRuleType;
+use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleType;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItemInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierSaleRuleInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeRule;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeRuleInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierShippingRule;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierShippingRuleInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\OrderPackageRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\ProductWarehouseStockRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\SupplierSaleRuleRepository;
@@ -73,6 +77,24 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(WarehouseDeliveryTimeRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(WarehouseDeliveryTimeRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+
+                            ->end()
+                        ->end()
+                        ->arrayNode('supplier_shipping_rule')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(SupplierShippingRule::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(SupplierShippingRuleInterface::class)->cannotBeEmpty()->end()
+                                        //->scalarNode('admin_controller')->defaultValue(ProductSpecificPriceRuleController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(SupplierShippingRuleRepository::class)->end()
+                                        ->scalarNode('form')->defaultValue(SupplierShippingRuleType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
 

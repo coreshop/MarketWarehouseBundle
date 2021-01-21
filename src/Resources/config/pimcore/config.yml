@@ -7,6 +7,7 @@ pimcore:
             data:
                 map:
                     coreShopMarketWarehouseWarehouseDeliveryTimeRule: CoreShop\Bundle\MarketWarehouseBundle\CoreExtension\WarehouseDeliveryTimeRule
+                    coreShopMarketWarehouseSupplierShippingRule: CoreShop\Bundle\MarketWarehouseBundle\CoreExtension\SupplierShippingRule
 
 jms_serializer:
     metadata:

@@ -14,20 +14,33 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Order\Processor;
 
+use CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\OrderPackageRepositoryInterface;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use Pimcore\Model\DataObject\Service;
 
 class OrderPackageProcessor implements CartProcessorInterface
 {
     protected $orderPackageRepository;
     protected $packager;
+    protected $orderPackageProcessor;
+    protected $adjustmentFactory;
 
-    public function __construct(OrderPackageRepositoryInterface $orderPackageRepository, PackagerInterface $packager)
+    public function __construct(
+        OrderPackageRepositoryInterface $orderPackageRepository,
+        PackagerInterface $packager,
+        OrderPackageProcessorInterface $orderPackageProcessor,
+        AdjustmentFactoryInterface $adjustmentFactory
+    )
     {
         $this->orderPackageRepository = $orderPackageRepository;
         $this->packager = $packager;
+        $this->orderPackageProcessor = $orderPackageProcessor;
+        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     public function process(CartInterface $cart)
@@ -40,6 +53,46 @@ class OrderPackageProcessor implements CartProcessorInterface
             $package->delete();
         }
 
-        $this->packager->createOrderPackages($cart);
+        $packages = $this->packager->createOrderPackages($cart);
+
+        $shippingNet = 0;
+        $shippingGross = 0;
+
+        foreach ($packages as $index => $package) {
+            $this->orderPackageProcessor->process($package);
+
+            $items = $package->getItems();
+
+            $package->setItems([]);
+
+            $package->setParent(Service::createFolderByPath(sprintf('%s/packages', $cart->getFullPath())));
+            $package->setKey($index);
+            $package->setPublished(true);
+            $package->save();
+
+            foreach ($items as $packageIndex => $item) {
+                $item->setParent(Service::createFolderByPath(sprintf('%s/items', $package->getFullPath())));
+                $item->setKey($packageIndex);
+                $item->setPublished(true);
+                $item->save();
+            }
+
+            $package->setItems($items);
+            $package->save();
+
+            $shippingNet += $package->getShippingNet();
+            $shippingGross += $package->getShippingGross();
+        }
+
+        $cart->removeAdjustmentsRecursively(AdjustmentInterface::SHIPPING);
+        $cart->addAdjustment(
+            $this->adjustmentFactory->createWithData(
+                AdjustmentInterface::SHIPPING,
+                'Packages',
+                $shippingGross,
+                $shippingNet,
+                false
+            )
+        );
     }
 }

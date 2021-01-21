@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Package;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItemInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\ProductWarehouseStockRepositoryInterface;
@@ -23,7 +24,6 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Pimcore\Model\DataObject\Service;
 
 class Packager implements PackagerInterface
 {
@@ -56,9 +56,10 @@ class Packager implements PackagerInterface
 
         $packages = [];
         $warehousePackages = [];
-        $packageNumber = 1;
 
-        //Check for Priorities on Supplier and Warehouse
+        /**
+         * @var CartItemInterface $item
+         */
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();
 
@@ -81,30 +82,26 @@ class Packager implements PackagerInterface
                     ProductWarehouseStockInterface $productWarehouseStock,
                     ProductWarehouseStockInterface $productWarehouseStock2
                 ) use ($indices) {
-                    if (!array_key_exists($productWarehouseStock->getWarehouse()->getSupplier()->getId(), $indices)) {
+                    $supplier1 = $productWarehouseStock->getWarehouse()->getSupplier()->getId();
+                    $supplier2 = $productWarehouseStock2->getWarehouse()->getSupplier()->getId();
+
+                    if (!array_key_exists($supplier1, $indices)) {
                         return -1;
                     }
 
-                    if (!array_key_exists($productWarehouseStock2->getWarehouse()->getSupplier()->getId(), $indices)) {
+                    if (!array_key_exists($supplier2, $indices)) {
                         return -1;
                     }
 
-                    if ($productWarehouseStock->getWarehouse()->getSupplier()->getId() === $productWarehouseStock2->getWarehouse()->getSupplier()->getId()) {
+                    if ($supplier1 === $supplier2) {
                         return 0;
                     }
 
-                    return $indices[$productWarehouseStock->getWarehouse()->getSupplier()->getId()] >
-                    $indices[$productWarehouseStock2->getWarehouse()->getSupplier()->getId()] ? 1 : -1;
+                    return $indices[$supplier1] > $indices[$supplier2] ? 1 : -1;
                 });
             }
 
-            print_r(array_map(function(ProductWarehouseStockInterface $productWarehouseStock) {
-                return $productWarehouseStock->getWarehouse()->getSupplier()->getName();
-            }, $stocks));
-
             $left = $item->getQuantity();
-            $packageItemNumber = 1;
-            $stockUsed = 0;
 
             foreach ($stocks as $stock) {
                 $availableStock = $stock->getStock();
@@ -114,12 +111,10 @@ class Packager implements PackagerInterface
                 //Create new Package, since it cannot be shipped with another one
                 if ($stock->getPackageType()->getSingleDeliveryOnline()) {
                     for ($i = 0; $i < $stockUsed; $i++) {
-                        $package = $this->createNewPackage($cart, $stock->getWarehouse(), (string)$packageNumber);
+                        $package = $this->createNewPackage($cart, $stock->getWarehouse());
                         $packages[] = $package;
 
-                        $this->createPackageItem($item, $package, 1, (string)$packageItemNumber);
-
-                        $packageNumber++;
+                        $this->createPackageItem($item, $package, 1);
                     }
 
                     continue;
@@ -131,16 +126,13 @@ class Packager implements PackagerInterface
                      */
                     $package = $warehousePackages[$stock->getWarehouse()->getId()];
                 } else {
-                    $package = $this->createNewPackage($cart, $stock->getWarehouse(), (string)$packageNumber);
-                    $packageNumber++;
+                    $package = $this->createNewPackage($cart, $stock->getWarehouse());
 
                     $warehousePackages[$stock->getWarehouse()->getId()] = $package;
                     $packages[] = $package;
                 }
 
-                $this->createPackageItem($item, $package, $stockUsed, (string)$packageItemNumber);
-
-                $packageItemNumber++;
+                $this->createPackageItem($item, $package, $stockUsed);
 
                 if ($left <= 0) {
                     break;
@@ -152,18 +144,13 @@ class Packager implements PackagerInterface
                 if (array_key_exists('left', $warehousePackages)) {
                     $packageLeft = $warehousePackages['left'];
                 } else {
-                    $packageLeft = $this->createNewPackage($cart, null, 'left');
-                    $packageNumber++;
+                    $packageLeft = $this->createNewPackage($cart, null);
                 }
 
-                $this->createPackageItem($item, $packageLeft, $left, "1");
+                $this->createPackageItem($item, $packageLeft, $left);
 
                 $packages[] = $packageLeft;
             }
-        }
-
-        foreach ($packages as $package) {
-            $package->save();
         }
 
         return $packages;
@@ -172,16 +159,16 @@ class Packager implements PackagerInterface
     protected function createPackageItem(
         CartItemInterface $item,
         OrderPackageInterface $package,
-        float $quantity,
-        string $number
+        float $quantity
     ) {
+        /**
+         * @var OrderPackageItemInterface $packageItem
+         */
         $packageItem = $this->orderPackageItemFactory->createNew();
-        $packageItem->setParent(Service::createFolderByPath(sprintf('%s/items', $package->getFullPath())));
         $packageItem->setPublished(true);
-        $packageItem->setKey($number . ' - ' . uniqid());
         $packageItem->setQuantity($quantity);
         $packageItem->setOrderItem($item);
-        $packageItem->save();
+        $packageItem->setProduct($item->getProduct());
 
         $package->addItem($packageItem);
 
@@ -189,19 +176,15 @@ class Packager implements PackagerInterface
 
     protected function createNewPackage(
         CartInterface $cart,
-        ?WarehouseInterface $warehouse,
-        string $number
+        ?WarehouseInterface $warehouse
     ): OrderPackageInterface {
         /**
          * @var OrderPackageInterface $package
          */
         $package = $this->orderPackageFactory->createNew();
-        $package->setParent(Service::createFolderByPath(sprintf('%s/packages', $cart->getFullPath())));
-        $package->setKey($number . '-' . uniqid());
         $package->setPublished(true);
         $package->setOrder($cart);
         $package->setWarehouse($warehouse);
-        $package->save();
 
         return $package;
     }

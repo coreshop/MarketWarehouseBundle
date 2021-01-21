@@ -1,0 +1,55 @@
+parameters:
+    coreshop.form.type.supplier_shipping_rule.validation_groups: [coreshop]
+    coreshop.form.type.supplier_shipping_rule.rule_action.validation_groups: [coreshop]
+    coreshop.form.type.supplier_shipping_rule.rule_condition.validation_groups: [coreshop]
+    coreshop.form.type.supplier_shipping_rule.condition.postcode.validation_groups: [coreshop]
+    coreshop.form.type.supplier_shipping_rule.action.days.validation_groups: [coreshop]
+
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleType:
+        arguments:
+            - '%coreshop.model.supplier_shipping_rule.class%'
+            - '%coreshop.form.type.supplier_shipping_rule.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleActionType:
+        arguments:
+            - '%coreshop.model.rule_action.class%'
+            - '%coreshop.form.type.supplier_shipping_rule.rule_action.validation_groups%'
+            - '@coreshop.form_registry.market_warehouse.supplier_shipping.actions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleActionCollectionType:
+        arguments:
+            - '@coreshop.registry.market_warehouse.supplier_shipping.actions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleActionChoiceType:
+        arguments:
+            - '%coreshop.market_warehouse.supplier_shipping.actions%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleConditionType:
+        arguments:
+            - '%coreshop.model.rule_condition.class%'
+            - '%coreshop.form.type.supplier_shipping_rule.rule_condition.validation_groups%'
+            - '@coreshop.form_registry.market_warehouse.supplier_shipping.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleConditionCollectionType:
+        arguments:
+            - '@coreshop.registry.market_warehouse.supplier_shipping.conditions'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleConditionChoiceType:
+        arguments:
+            - '%coreshop.market_warehouse.supplier_shipping.conditions%'
+        tags:
+            - { name: form.type }
+

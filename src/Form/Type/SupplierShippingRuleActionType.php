@@ -12,17 +12,22 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\Action;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use CoreShop\Bundle\RuleBundle\Form\Type\RuleActionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class DaysConfigurationType extends AbstractType
+final class SupplierShippingRuleActionType extends RuleActionType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
+        parent::buildForm($builder, $options);
+
         $builder
-            ->add('days', NumberType::class);
+            ->add('type', SupplierShippingRuleActionChoiceType::class, [
+                'attr' => [
+                    'data-form-collection' => 'update',
+                ],
+            ]);
     }
 }

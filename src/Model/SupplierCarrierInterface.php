@@ -12,12 +12,11 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\Action;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
 
-interface WarehouseDeliveryTimeActionProcessorInterface
+interface SupplierCarrierInterface extends CarrierInterface
 {
-    public function calculateDeliveryTime(WarehouseInterface $subject, WarehouseDeliveryTimeInterface $deliveryTime, array $context, array $configuration): void;
+
 }

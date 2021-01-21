@@ -2,7 +2,7 @@ services:
     coreshop.registry.market_warehouse.warehouse_delivery_time.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Bundle\MarketWarehouseBundle\Rule\Action\WarehouseDeliveryTimeActionProcessorInterface
+            - CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\WarehouseDeliveryTimeActionProcessorInterface
             - warehouse-delivery-time-action
         tags:
             - { name: coreshop.registry, type_hint: warehouseDeliveryTimeActions }
@@ -13,7 +13,7 @@ services:
     coreshop.registry.market_warehouse.warehouse_delivery_time.conditions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Bundle\MarketWarehouseBundle\Rule\Condition\WarehouseDeliveryTimeConditionCheckerInterface
+            - CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition\WarehouseDeliveryTimeConditionCheckerInterface
             - warehouse-delivery-time-condition
         tags:
             - { name: coreshop.registry, type_hint: warehouseDeliveryTimeConditions }
@@ -35,10 +35,10 @@ services:
             - '@coreshop.warehouse_market.warehouse_delivery_time.conditions.processor'
 
 
-    CoreShop\Bundle\MarketWarehouseBundle\Rule\Condition\PostcodeConditionChecker:
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition\PostcodeConditionChecker:
         tags:
-            - { name: coreshop.market_warehouse.warehouse_delivery_time.condition, type: postcodes, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\Condition\PostcodeConfigurationType }
+            - { name: coreshop.market_warehouse.warehouse_delivery_time.condition, type: postcodes, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Condition\PostcodeConfigurationType }
 
-    CoreShop\Bundle\MarketWarehouseBundle\Rule\Action\DaysActionProcessor:
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\DaysActionProcessor:
         tags:
-            - { name: coreshop.market_warehouse.warehouse_delivery_time.action, type: days, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\Action\DaysConfigurationType }
+            - { name: coreshop.market_warehouse.warehouse_delivery_time.action, type: days, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Action\DaysConfigurationType }

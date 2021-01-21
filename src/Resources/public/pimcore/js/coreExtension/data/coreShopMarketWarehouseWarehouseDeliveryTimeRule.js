@@ -43,7 +43,7 @@ pimcore.object.classes.data.coreShopMarketWarehouseWarehouseDeliveryTimeRule = C
     },
 
     getGroup: function () {
-        return 'coreshop';
+        return 'coreshop_market_warehouse';
     },
 
     getIconClass: function () {

@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler;
 
+use CoreShop\Bundle\MarketWarehouseBundle\Package\CompositeOrderPackageProcessor;
 use CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface;
-use CoreShop\Component\Order\Processor\CompositeCartProcessor;
 use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class RegisterOrderPackageProcessorPass extends PrioritizedCompositeServicePass
@@ -26,7 +26,7 @@ final class RegisterOrderPackageProcessorPass extends PrioritizedCompositeServic
     {
         parent::__construct(
             OrderPackageProcessorInterface::class,
-            CompositeCartProcessor::class,
+            CompositeOrderPackageProcessor::class,
             self::ORDER_PACKAGE_PROCESSOR_TAG,
             'addProcessor'
         );

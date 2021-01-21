@@ -53,13 +53,13 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\Condition\PostcodeConfigurationType:
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Condition\PostcodeConfigurationType:
         arguments:
             - '%coreshop.form.type.warehouse_delivery_time_rule.condition.postcode.validation_groups%'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\Action\DaysConfigurationType:
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Action\DaysConfigurationType:
         arguments:
             - '%coreshop.form.type.warehouse_delivery_time_rule.action.days.validation_groups%'
         tags:

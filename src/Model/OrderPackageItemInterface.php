@@ -16,8 +16,9 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 
-interface OrderPackageItemInterface extends PimcoreModelInterface
+interface OrderPackageItemInterface extends PimcoreModelInterface, ShippableItemInterface
 {
     public function getOrderPackage();
 
@@ -34,4 +35,22 @@ interface OrderPackageItemInterface extends PimcoreModelInterface
     public function getQuantity();
 
     public function setQuantity($quantity);
+
+    public function setWidth($width);
+
+    public function setHeight($height);
+
+    public function setDepth($depth);
+
+    public function setWeight($weight);
+
+    public function setSubtotal(int $subtotal, bool $withTax = true);
+
+    public function getSubtotalNet();
+
+    public function setSubtotalNet($subtotalNet);
+
+    public function getSubtotalGross();
+
+    public function setSubtotalGross($subtotalGross);
 }

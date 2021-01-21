@@ -13,5 +13,28 @@ services:
         arguments:
             - '@coreshop.repository.order_package'
             - '@CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface'
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Package\CompositeOrderPackageProcessor'
+            - '@coreshop.factory.adjustment'
         tags:
           - { name: coreshop.cart_processor }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\OrderPackagePriceProcessor:
+        tags:
+            - { name: coreshop.order.package_processor, priority: 100 }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\OrderPackageWeightProcessor:
+        tags:
+            - { name: coreshop.order.package_processor, priority: 200 }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\ShippingProcessor:
+        arguments:
+            - '@coreshop.carrier.price_calculator.taxed'
+            - '@coreshop.shipping.carrier.validator'
+            - '@coreshop.carrier.default_resolver'
+            - '@coreshop.provider.store_based_default_address_provider'
+        tags:
+            - { name: coreshop.order.package_processor, priority: 300 }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\DeliveryTimeProcessor:
+        tags:
+            - { name: coreshop.order.package_processor, priority: 400 }

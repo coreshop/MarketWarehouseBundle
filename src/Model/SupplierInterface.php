@@ -19,5 +19,5 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface SupplierInterface extends PimcoreModelInterface
 {
-
+    public function getCarriers();
 }

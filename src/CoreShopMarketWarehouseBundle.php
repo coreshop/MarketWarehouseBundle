@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle;
 
+use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\RegisterOrderPackageProcessorPass;
+use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierShippingRuleActionPass;
+use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierShippingRuleConditionPass;
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\WarehouseDeliveryTimeRuleActionPass;
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\WarehouseDeliveryTimeRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
@@ -43,6 +46,8 @@ class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements Pi
 
         $container->addCompilerPass(new WarehouseDeliveryTimeRuleActionPass());
         $container->addCompilerPass(new WarehouseDeliveryTimeRuleConditionPass());
+        $container->addCompilerPass(new SupplierShippingRuleActionPass());
+        $container->addCompilerPass(new SupplierShippingRuleConditionPass());
 
         $container->addCompilerPass(new RegisterOrderPackageProcessorPass());
     }

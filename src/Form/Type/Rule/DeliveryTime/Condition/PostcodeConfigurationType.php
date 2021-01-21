@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\Condition;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Condition;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

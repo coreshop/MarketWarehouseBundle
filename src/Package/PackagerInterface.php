@@ -14,9 +14,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Package;
 
+use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 
 interface PackagerInterface
 {
+    /**
+     * @param CartInterface $cart
+     * @return OrderPackageInterface[]
+     */
     public function createOrderPackages(CartInterface $cart): array;
 }

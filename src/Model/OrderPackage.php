@@ -18,10 +18,22 @@ use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Webmozart\Assert\Assert;
 
 abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackageInterface
 {
+    public function getStore()
+    {
+        return $this->getOrder() ? $this->getOrder()->getStore() : null;
+    }
+
+    public function setStore($store)
+    {
+        throw new \Exception('Not implemented, store comes from the Order');
+    }
+
     public function hasItems(): bool
     {
         return is_array($this->getItems()) && count($this->getItems()) > 0;
@@ -75,5 +87,15 @@ abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackage
     public function setShipping(int $shipping, bool $withTax = false)
     {
         $withTax ? $this->setShippingGross($shipping) : $this->setShippingNet($shipping);
+    }
+
+    public function getSubtotal($withTax = true)
+    {
+        return $withTax ? $this->getSubtotalNet() : $this->getSubtotalGross();
+    }
+
+    public function setSubtotal(int $subtotal, bool $withTax = false)
+    {
+        $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
     }
 }
