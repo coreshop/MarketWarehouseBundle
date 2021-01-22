@@ -15,18 +15,19 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 interface SupplierSaleRuleInterface extends PimcoreModelInterface
 {
-    public function getIdentifier();
+    public function getIdentifier(): ?string;
 
-    public function setIdentifier($identifier);
+    public function setIdentifier(?string $identifier);
 
-    public function getStore();
+    public function getStore(): ?StoreInterface;
 
-    public function setStore($store);
+    public function setStore(?StoreInterface $store);
 
-    public function getSuppliers();
+    public function getSuppliers(): ?array;
 
-    public function setSuppliers($suppliers);
+    public function setSuppliers(array $suppliers);
 }

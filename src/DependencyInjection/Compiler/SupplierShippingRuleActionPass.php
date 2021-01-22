@@ -18,14 +18,14 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class SupplierShippingRuleActionPass extends RegisterRegistryTypePass
 {
-    public const SUPPLIER_SHIPPING_RULE_ACTION_TAG = 'coreshop.market_warehouse.supplier_shipping.action';
+    public const SUPPLIER_SHIPPING_RULE_ACTION_TAG = 'coreshop_market_warehouse.supplier_shipping.action';
 
     public function __construct()
     {
         parent::__construct(
-            'coreshop.registry.market_warehouse.supplier_shipping.actions',
-            'coreshop.form_registry.market_warehouse.supplier_shipping.actions',
-            'coreshop.market_warehouse.supplier_shipping.actions',
+            'coreshop_market_warehouse.registry.supplier_shipping.actions',
+            'coreshop_market_warehouse.form_registry.supplier_shipping.actions',
+            'coreshop_market_warehouse.supplier_shipping.actions',
             self::SUPPLIER_SHIPPING_RULE_ACTION_TAG
         );
     }

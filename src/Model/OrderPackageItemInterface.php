@@ -25,32 +25,32 @@ interface OrderPackageItemInterface extends PimcoreModelInterface, ShippableItem
     /**
      * @return OrderItemInterface
      */
-    public function getOrderItem();
+    public function getOrderItem(): ?OrderItemInterface;
 
-    public function setOrderItem($cartItem);
+    public function setOrderItem(?OrderItemInterface $cartItem);
 
     /**
-     * @return int
+     * @return float|null
      */
-    public function getQuantity();
+    public function getQuantity(): ?float;
 
-    public function setQuantity($quantity);
+    public function setQuantity(?float $quantity);
 
-    public function setWidth($width);
+    public function setWidth(?float $width);
 
-    public function setHeight($height);
+    public function setHeight(?float $height);
 
-    public function setDepth($depth);
+    public function setDepth(?float $depth);
 
-    public function setWeight($weight);
+    public function setWeight(?float $weight);
 
     public function setSubtotal(int $subtotal, bool $withTax = true);
 
-    public function getSubtotalNet();
+    public function getSubtotalNet(): int;
 
-    public function setSubtotalNet($subtotalNet);
+    public function setSubtotalNet(int $subtotalNet);
 
-    public function getSubtotalGross();
+    public function getSubtotalGross(): int;
 
-    public function setSubtotalGross($subtotalGross);
+    public function setSubtotalGross(int $subtotalGross);
 }

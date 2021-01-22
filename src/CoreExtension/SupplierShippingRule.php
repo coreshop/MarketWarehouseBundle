@@ -423,7 +423,7 @@ class SupplierShippingRule extends Data implements
      */
     private function getRepository()
     {
-        return $this->getContainer()->get('coreshop.repository.supplier_shipping_rule');
+        return $this->getContainer()->get('coreshop_market_warehouse.repository.supplier_shipping_rule');
     }
 
     /**
@@ -431,7 +431,7 @@ class SupplierShippingRule extends Data implements
      */
     private function getRepositoryFactory()
     {
-        return $this->getContainer()->get('coreshop.repository.factory.supplier_shipping_rule');
+        return $this->getContainer()->get('coreshop_market_warehouse.repository.factory.supplier_shipping_rule');
     }
 
     /**
@@ -463,7 +463,7 @@ class SupplierShippingRule extends Data implements
      */
     private function getConfigActions()
     {
-        return $this->getContainer()->getParameter('coreshop.market_warehouse.supplier_shipping.actions');
+        return $this->getContainer()->getParameter('coreshop_market_warehouse.market_warehouse.supplier_shipping.actions');
     }
 
     /**
@@ -471,6 +471,6 @@ class SupplierShippingRule extends Data implements
      */
     private function getConfigConditions()
     {
-        return $this->getContainer()->getParameter('coreshop.market_warehouse.supplier_shipping.conditions');
+        return $this->getContainer()->getParameter('coreshop_market_warehouse.market_warehouse.supplier_shipping.conditions');
     }
 }

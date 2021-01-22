@@ -18,14 +18,14 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class WarehouseDeliveryTimeRuleActionPass extends RegisterRegistryTypePass
 {
-    public const WAREHOUSE_DELIVERY_TIME_RULE_ACTION_TAG = 'coreshop.market_warehouse.warehouse_delivery_time.action';
+    public const WAREHOUSE_DELIVERY_TIME_RULE_ACTION_TAG = 'coreshop_market_warehouse.warehouse_delivery_time.action';
 
     public function __construct()
     {
         parent::__construct(
-            'coreshop.registry.market_warehouse.warehouse_delivery_time.actions',
-            'coreshop.form_registry.market_warehouse.warehouse_delivery_time.actions',
-            'coreshop.market_warehouse.warehouse_delivery_time.actions',
+            'coreshop_market_warehouse.registry.warehouse_delivery_time.actions',
+            'coreshop_market_warehouse.form_registry.warehouse_delivery_time.actions',
+            'coreshop_market_warehouse.warehouse_delivery_time.actions',
             self::WAREHOUSE_DELIVERY_TIME_RULE_ACTION_TAG
         );
     }

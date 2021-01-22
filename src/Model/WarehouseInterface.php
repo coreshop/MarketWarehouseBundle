@@ -21,14 +21,14 @@ interface WarehouseInterface extends PimcoreModelInterface
     /**
      * @return WarehouseDeliveryTimeRuleInterface[]
      */
-    public function getDeliveryTimeRules();
+    public function getDeliveryTimeRules(): array;
 
-    public function setDeliveryTimeRules($deliveryTimeRules);
+    public function setDeliveryTimeRules(array $deliveryTimeRules);
 
     /**
      * @return SupplierInterface
      */
-    public function getSupplier();
+    public function getSupplier(): ?SupplierInterface;
 
-    public function setSupplier($supplier);
+    public function setSupplier(?SupplierInterface $supplier);
 }

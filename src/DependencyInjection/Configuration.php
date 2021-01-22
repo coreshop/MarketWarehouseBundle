@@ -20,12 +20,16 @@ use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\WarehouseDeliveryTimeRuleTyp
 use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleType;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItemInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\PackageTypeInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierCarrierInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierSaleRuleInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeRule;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeRuleInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierShippingRule;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierShippingRuleInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\OrderPackageRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\ProductWarehouseStockRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\SupplierSaleRuleRepository;
@@ -48,9 +52,31 @@ final class Configuration implements ConfigurationInterface
 
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
-//        $this->addStack($rootNode);
+        $this->addStack($rootNode);
 
         return $treeBuilder;
+    }
+
+        /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addStack(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('stack')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('order_package')->defaultValue(OrderPackageInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_package_item')->defaultValue(OrderPackageItemInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('supplier')->defaultValue(SupplierInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('supplier_warehouse')->defaultValue(WarehouseInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('supplier_carrier')->defaultValue(SupplierCarrierInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('supplier_warehouse_package_type')->defaultValue(PackageTypeInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('supplier_sale_rule')->defaultValue(SupplierSaleRuleInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('product_warehouse_stock')->defaultValue(ProductWarehouseStockInterface::class)->cannotBeEmpty()->end()
+                ->end()
+            ->end()
+        ->end();
     }
 
     /**
@@ -116,7 +142,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(OrderPackageInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(OrderPackageRepository::class)->end()
-//                                        ->scalarNode('install_file')->defaultValue('@CoreShopAddressBundle/Resources/install/pimcore/classes/CoreShopAddress.json')->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopOrderPackage.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()
@@ -133,7 +159,75 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(OrderPackageItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
-//                                        ->scalarNode('install_file')->defaultValue('@CoreShopAddressBundle/Resources/install/pimcore/classes/CoreShopAddress.json')->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopOrderPackageItem.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('supplier')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopSupplier')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(SupplierInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplier.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('supplier_warehouse')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopSupplierWarehouse')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(WarehouseInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplierWarehouse.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('supplier_carrier')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopSupplierCarrier')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(SupplierCarrierInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplierCarrier.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('supplier_warehouse_package_type')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopSupplierWarehousePackageType')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(PackageTypeInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplierWarehousePackageType.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()
@@ -150,7 +244,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(SupplierSaleRuleInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(SupplierSaleRuleRepository::class)->end()
-//                                        ->scalarNode('install_file')->defaultValue('@CoreShopAddressBundle/Resources/install/pimcore/classes/CoreShopAddress.json')->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplierSaleRule.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()
@@ -167,7 +261,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(ProductWarehouseStockInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductWarehouseStockRepository::class)->end()
-//                                        ->scalarNode('install_file')->defaultValue('@CoreShopAddressBundle/Resources/install/pimcore/classes/CoreShopAddress.json')->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplierWarehouseProductStock.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()

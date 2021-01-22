@@ -1,9 +1,10 @@
 default:
     suites:
-        domain_product:
+        domain_mw_product:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
+                - coreshop_market_warehouse.behat.context.hook.bundle_setup
 
                 - coreshop.behat.context.hook.doctrine_orm
                 - coreshop.behat.context.hook.pimcore_dao
@@ -53,4 +54,4 @@ default:
                 - coreshop.behat.context.domain.cart
                 - coreshop.behat.context.domain.product_quantity_price_rule
             filters:
-                tags: "@domain && @product"
+                tags: "@mw_domain && @product"

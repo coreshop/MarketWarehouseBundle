@@ -4,14 +4,14 @@ services:
     CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Package\Packager'
     CoreShop\Bundle\MarketWarehouseBundle\Package\Packager:
         arguments:
-            - '@coreshop.repository.supplier_sale_rule'
-            - '@coreshop.repository.product_warehouse_stock'
-            - '@coreshop.factory.order_package'
-            - '@coreshop.factory.order_package_item'
+            - '@coreshop_market_warehouse.repository.supplier_sale_rule'
+            - '@coreshop_market_warehouse.repository.product_warehouse_stock'
+            - '@coreshop_market_warehouse.factory.order_package'
+            - '@coreshop_market_warehouse.factory.order_package_item'
 
     CoreShop\Bundle\MarketWarehouseBundle\Order\Processor\OrderPackageProcessor:
         arguments:
-            - '@coreshop.repository.order_package'
+            - '@coreshop_market_warehouse.repository.order_package'
             - '@CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface'
             - '@CoreShop\Bundle\MarketWarehouseBundle\Package\CompositeOrderPackageProcessor'
             - '@coreshop.factory.adjustment'
@@ -20,11 +20,11 @@ services:
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\OrderPackagePriceProcessor:
         tags:
-            - { name: coreshop.order.package_processor, priority: 100 }
+            - { name: coreshop_market_warehouse.order.package_processor, priority: 100 }
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\OrderPackageWeightProcessor:
         tags:
-            - { name: coreshop.order.package_processor, priority: 200 }
+            - { name: coreshop_market_warehouse.order.package_processor, priority: 200 }
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\ShippingProcessor:
         arguments:
@@ -33,8 +33,8 @@ services:
             - '@coreshop.carrier.resolver'
             - '@coreshop.provider.store_based_default_address_provider'
         tags:
-            - { name: coreshop.order.package_processor, priority: 300 }
+            - { name: coreshop_market_warehouse.order.package_processor, priority: 300 }
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\DeliveryTimeProcessor:
         tags:
-            - { name: coreshop.order.package_processor, priority: 400 }
+            - { name: coreshop_market_warehouse.order.package_processor, priority: 400 }

@@ -5,3 +5,4 @@ imports:
     - { resource: services/supplier_shipping_form.yml }
     - { resource: services/order_package.yml }
     - { resource: services/twig.yml }
+    - { resource: services/pimcore_installer.yml }

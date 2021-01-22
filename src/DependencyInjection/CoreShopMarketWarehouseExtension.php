@@ -18,10 +18,10 @@ use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierS
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierShippingRuleConditionPass;
 use CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\WarehouseDeliveryTimeActionProcessorInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition\WarehouseDeliveryTimeConditionCheckerInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Rule\Shipping\Action\SupplierShippingActionProcessorInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Rule\Shipping\Condition\SupplierShippingConditionCheckerInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Shipping\Rule\Condition\ShippingConditionCheckerInterface;
+use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -35,11 +35,15 @@ class CoreShopMarketWarehouseExtension extends AbstractModelExtension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
-        $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
+        $this->registerResources('coreshop_market_warehouse', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
+        $this->registerPimcoreModels('coreshop_market_warehouse', $config['pimcore'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
-            $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+            $this->registerPimcoreResources('coreshop_market_warehouse', $config['pimcore_admin'], $container);
+        }
+
+        if (array_key_exists('stack', $config)) {
+            $this->registerStack('coreshop_market_warehouse', $config['stack'], $container);
         }
 
         $container
@@ -50,13 +54,12 @@ class CoreShopMarketWarehouseExtension extends AbstractModelExtension
             ->registerForAutoconfiguration(WarehouseDeliveryTimeConditionCheckerInterface::class)
             ->addTag(WarehouseDeliveryTimeRuleConditionPass::WAREHOUSE_DELIVERY_TIME_PRICE_RULE_CONDITION_TAG);
 
-
-        $container
-            ->registerForAutoconfiguration(SupplierShippingActionProcessorInterface::class)
-            ->addTag(SupplierShippingRuleActionPass::SUPPLIER_SHIPPING_RULE_ACTION_TAG);
-
-        $container
-            ->registerForAutoconfiguration(SupplierShippingConditionCheckerInterface::class)
-            ->addTag(SupplierShippingRuleConditionPass::SUPPLIER_SHIPPING_RULE_CONDITION_TAG);
+//        $container
+//            ->registerForAutoconfiguration(ShippingRuleActionProcessorInterface::class)
+//            ->addTag(SupplierShippingRuleActionPass::SUPPLIER_SHIPPING_RULE_ACTION_TAG);
+//
+//        $container
+//            ->registerForAutoconfiguration(ShippingConditionCheckerInterface::class)
+//            ->addTag(SupplierShippingRuleConditionPass::SUPPLIER_SHIPPING_RULE_CONDITION_TAG);
     }
 }

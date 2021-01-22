@@ -24,12 +24,12 @@ use Webmozart\Assert\Assert;
 
 abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackageInterface
 {
-    public function getStore()
+    public function getStore(): ?StoreInterface
     {
         return $this->getOrder() ? $this->getOrder()->getStore() : null;
     }
 
-    public function setStore($store)
+    public function setStore(?StoreInterface $store)
     {
         throw new \Exception('Not implemented, store comes from the Order');
     }
@@ -89,7 +89,7 @@ abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackage
         $withTax ? $this->setShippingGross($shipping) : $this->setShippingNet($shipping);
     }
 
-    public function getSubtotal($withTax = true)
+    public function getSubtotal(bool $withTax = true): int
     {
         return $withTax ? $this->getSubtotalNet() : $this->getSubtotalGross();
     }

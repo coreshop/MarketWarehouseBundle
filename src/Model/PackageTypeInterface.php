@@ -14,55 +14,56 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
+use CoreShop\Component\Currency\Model\Money;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface PackageTypeInterface extends PimcoreModelInterface
 {
-    public function getIdentifier();
+    public function getIdentifier(): ?string;
 
-    public function setIdentifier($identifier);
+    public function setIdentifier(?string $identifier);
 
-    public function getName();
+    public function getName(): ?string;
 
-    public function setName($name);
+    public function setName(?string $name);
 
-    public function getDescription();
+    public function getDescription(): ?string;
 
-    public function setDescription($description);
+    public function setDescription(?string $description);
 
-    public function getPackagingCosts();
+    public function getPackagingCosts(): ?Money;
 
-    public function setPackagingCosts($packagingCosts);
+    public function setPackagingCosts(?Money $packagingCosts);
 
-    public function getCommissionTime();
+    public function getCommissionTime(): ?float;
 
-    public function setCommissionTime($commissionTime);
+    public function setCommissionTime(?float $commissionTime);
 
-    public function getPackingDays();
+    public function getPackingDays(): ?array;
 
-    public function setPackingDays($packingDays);
+    public function setPackingDays(?array $packingDays);
 
-    public function getPickUpDays();
+    public function getPickUpDays(): ?array;
 
-    public function setPickUpDays($pickupDays);
+    public function setPickUpDays(?array $pickupDays);
 
-    public function getSingleDeliveryOnline();
+    public function getSingleDeliveryOnline(): ?bool;
 
-    public function setSingleDeliveryOnline($singleDeliveryOnline);
+    public function setSingleDeliveryOnline(?bool $singleDeliveryOnline);
 
-    public function getPackStationEnabled();
+    public function getPackStationEnabled(): ?bool;
 
-    public function setPackStationEnabled($packStationEnabled);
+    public function setPackStationEnabled(?bool $packStationEnabled);
 
-    public function getCutOfTime();
+    public function getCutOfTime(): ?string;
 
-    public function setCutOfTime($cutOfTime);
+    public function setCutOfTime(?string $cutOfTime);
 
-    public function getCutOfTimeDays();
+    public function getCutOfTimeDays(): ?float;
 
-    public function setCutOfTimeDays($cutOfTimeDays);
+    public function setCutOfTimeDays(?float $cutOfTimeDays);
 
-    public function getCarriageTime();
+    public function getCarriageTime(): ?float;
 
-    public function setCarriageTime($carriageTime);
+    public function setCarriageTime(?float $carriageTime);
 }

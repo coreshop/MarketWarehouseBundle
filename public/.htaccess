@@ -30,6 +30,8 @@ AddDefaultCharset utf-8
 
 RewriteEngine On
 
+php_value xdebug.remote_connect_back 0
+
 <IfModule mod_headers.c>
     <FilesMatch "\.(jpe?g|png)$">
         Header always unset X-Content-Type-Options

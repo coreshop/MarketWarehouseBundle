@@ -18,14 +18,14 @@ use CoreShop\Component\Registry\RegisterRegistryTypePass;
 
 final class SupplierShippingRuleConditionPass extends RegisterRegistryTypePass
 {
-    public const SUPPLIER_SHIPPING_RULE_CONDITION_TAG = 'coreshop.market_warehouse.supplier_shipping.condition';
+    public const SUPPLIER_SHIPPING_RULE_CONDITION_TAG = 'coreshop_market_warehouse.supplier_shipping.condition';
 
     public function __construct()
     {
         parent::__construct(
-            'coreshop.registry.market_warehouse.supplier_shipping.conditions',
-            'coreshop.form_registry.market_warehouse.supplier_shipping.conditions',
-            'coreshop.market_warehouse.supplier_shipping.conditions',
+            'coreshop_market_warehouse.registry.supplier_shipping.conditions',
+            'coreshop_market_warehouse.form_registry.supplier_shipping.conditions',
+            'coreshop_market_warehouse.supplier_shipping.conditions',
             self::SUPPLIER_SHIPPING_RULE_CONDITION_TAG
         );
     }

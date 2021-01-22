@@ -1,4 +1,4 @@
-@domain @product
+@mw_domain @product
 Feature: Adding a new Product
   In order to extend my catalog
   I want to create a new product

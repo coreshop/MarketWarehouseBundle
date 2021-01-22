@@ -69,7 +69,7 @@ class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements Pi
 
     public function getInstaller()
     {
-        return null;
+        return $this->container->get(Installer::class);
     }
 
     public function getAdminIframePath()

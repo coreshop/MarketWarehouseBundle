@@ -1,5 +1,5 @@
 services:
-    coreshop.registry.market_warehouse.warehouse_delivery_time.actions:
+    coreshop_market_warehouse.registry.warehouse_delivery_time.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\WarehouseDeliveryTimeActionProcessorInterface
@@ -7,10 +7,10 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: warehouseDeliveryTimeActions }
 
-    coreshop.form_registry.market_warehouse.warehouse_delivery_time.actions:
+    coreshop_market_warehouse.form_registry.warehouse_delivery_time.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.registry.market_warehouse.warehouse_delivery_time.conditions:
+    coreshop_market_warehouse.registry.warehouse_delivery_time.conditions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition\WarehouseDeliveryTimeConditionCheckerInterface
@@ -18,27 +18,26 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: warehouseDeliveryTimeConditions }
 
-    coreshop.form_registry.market_warehouse.warehouse_delivery_time.conditions:
+    coreshop_market_warehouse.form_registry.warehouse_delivery_time.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.warehouse_market.warehouse_delivery_time.conditions.processor:
+    coreshop_market_warehouse.warehouse_delivery_time.conditions.processor:
         class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
         shared: false
         arguments:
-            - '@coreshop.registry.market_warehouse.warehouse_delivery_time.conditions'
+            - '@coreshop_market_warehouse.registry.warehouse_delivery_time.conditions'
             - 'Shipping Rules'
 
-    coreshop.warehouse_market.warehouse_delivery_time.processor:
+    coreshop_market_warehouse.warehouse_delivery_time.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
         shared: false
         arguments:
             - '@coreshop.warehouse_market.warehouse_delivery_time.conditions.processor'
 
-
     CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition\PostcodeConditionChecker:
         tags:
-            - { name: coreshop.market_warehouse.warehouse_delivery_time.condition, type: postcodes, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Condition\PostcodeConfigurationType }
+            - { name: coreshop_market_warehouse.warehouse_delivery_time.condition, type: postcodes, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Condition\PostcodeConfigurationType }
 
     CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\DaysActionProcessor:
         tags:
-            - { name: coreshop.market_warehouse.warehouse_delivery_time.action, type: days, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Action\DaysConfigurationType }
+            - { name: coreshop_market_warehouse.warehouse_delivery_time.action, type: days, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Action\DaysConfigurationType }

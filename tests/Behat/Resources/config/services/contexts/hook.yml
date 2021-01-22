@@ -1,3 +1,9 @@
 services:
     _defaults:
         public: true
+
+    coreshop_market_warehouse.behat.context.hook.bundle_setup:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Hook\MarketWarehouseSetupContext
+        tags:
+            - { name: fob.context_service }
+

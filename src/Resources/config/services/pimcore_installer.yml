@@ -1,0 +1,5 @@
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\Installer:
+        public: true
+        arguments:
+            $kernel: "@kernel"

@@ -14,36 +14,25 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface ProductWarehouseStockInterface extends PimcoreModelInterface
 {
-    /**
-     * @return ProductInterface
-     */
-    public function getProduct();
+    public function getProduct(): ?PurchasableInterface;
 
-    public function setProduct($product);
+    public function setProduct(?PurchasableInterface $product);
 
-    /**
-     * @return PackageTypeInterface
-     */
-    public function getPackageType();
+    public function getPackageType(): ?PackageTypeInterface;
 
-    public function setPackageType($packageType);
+    public function setPackageType(?PackageTypeInterface $packageType);
 
-    /**
-     * @return WarehouseInterface
-     */
-    public function getWarehouse();
+    public function getWarehouse(): ?WarehouseInterface;
 
-    public function setWarehouse($warehouse);
+    public function setWarehouse(?WarehouseInterface $warehouse);
 
-    /**
-     * @return int
-     */
-    public function getStock();
+    public function getStock(): ?float;
 
-    public function setStock($stock);
+    public function setStock(?float $stock);
 }

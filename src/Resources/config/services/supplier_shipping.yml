@@ -1,5 +1,5 @@
 services:
-    coreshop.registry.market_warehouse.supplier_shipping.actions:
+    coreshop_market_warehouse.registry.supplier_shipping.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface
@@ -7,10 +7,10 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: warehouseShippingActions }
 
-    coreshop.form_registry.market_warehouse.supplier_shipping.actions:
+    coreshop_market_warehouse.form_registry.supplier_shipping.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.registry.market_warehouse.supplier_shipping.conditions:
+    coreshop_market_warehouse.registry.supplier_shipping.conditions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
@@ -18,84 +18,84 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: warehouseShippingConditions }
 
-    coreshop.form_registry.market_warehouse.supplier_shipping.conditions:
+    coreshop_market_warehouse.form_registry.supplier_shipping.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.warehouse_market.supplier_shipping.conditions.processor:
+    coreshop_market_warehouse.supplier_shipping.conditions.processor:
         class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
         shared: false
         arguments:
-            - '@coreshop.registry.market_warehouse.supplier_shipping.conditions'
+            - '@coreshop_market_warehouse.registry.supplier_shipping.conditions'
             - 'Shipping Rules'
 
-    coreshop.warehouse_market.supplier_shipping.processor:
+    coreshop_market_warehouse.supplier_shipping.processor:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
         shared: false
         arguments:
-            - '@coreshop.warehouse_market.supplier_shipping.conditions.processor'
+            - '@coreshop_market_warehouse.supplier_shipping.conditions.processor'
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Shipping\SupplierCarrierResolver:
         decorates: 'coreshop.carrier.resolver'
         arguments:
             - '@CoreShop\Bundle\MarketWarehouseBundle\Package\Shipping\SupplierCarrierResolver.inner'
 
-    coreshop.warehouse_market.supplier_shipping.condition.amount:
+    coreshop_market_warehouse.supplier_shipping.condition.amount:
         class: CoreShop\Component\Shipping\Rule\Condition\AmountConditionChecker
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.condition.postcodes:
+    coreshop_market_warehouse.supplier_shipping.condition.postcodes:
         class: CoreShop\Component\Shipping\Rule\Condition\PostcodeConditionChecker
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.condition.weight:
+    coreshop_market_warehouse.supplier_shipping.condition.weight:
         class: CoreShop\Component\Shipping\Rule\Condition\WeightConditionChecker
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.condition, type: weight, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.condition, type: weight, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.condition.dimension:
+    coreshop_market_warehouse.supplier_shipping.condition.dimension:
         class: CoreShop\Component\Shipping\Rule\Condition\DimensionConditionChecker
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.condition, type: dimension, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.condition, type: dimension, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.condition.nested:
+    coreshop_market_warehouse.supplier_shipping.condition.nested:
         class: CoreShop\Component\Rule\Condition\NestedConditionChecker
         arguments:
-            - '@coreshop.warehouse_market.supplier_shipping.conditions.processor'
+            - '@coreshop_market_warehouse.supplier_shipping.conditions.processor'
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.condition, type: nested, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.condition, type: nested, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.action.addition_percent:
+    coreshop_market_warehouse.supplier_shipping.action.addition_percent:
         class: CoreShop\Component\Shipping\Rule\Action\AdditionPercentActionProcessor
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.action, type: additionPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.action, type: additionPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.action.discount_percent:
+    coreshop_market_warehouse.supplier_shipping.action.discount_percent:
         class: CoreShop\Component\Shipping\Rule\Action\DiscountPercentActionProcessor
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.action, type: discountPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.action, type: discountPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.action.addition_amount:
+    coreshop_market_warehouse.supplier_shipping.action.addition_amount:
         class: CoreShop\Component\Core\Shipping\Rule\Action\AdditionAmountActionProcessor
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.action, type: additionAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.action, type: additionAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.action.discount_amount:
+    coreshop_market_warehouse.supplier_shipping.action.discount_amount:
         class: CoreShop\Component\Core\Shipping\Rule\Action\DiscountAmountActionProcessor
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.action, type: discountAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.action, type: discountAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType }
 
-    coreshop.warehouse_market.supplier_shipping.action.price:
+    coreshop_market_warehouse.supplier_shipping.action.price:
         class: CoreShop\Component\Core\Shipping\Rule\Action\PriceActionProcessor
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
         tags:
-            - { name: coreshop.market_warehouse.supplier_shipping.action, type: price, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType }
+            - { name: coreshop_market_warehouse.supplier_shipping.action, type: price, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType }
