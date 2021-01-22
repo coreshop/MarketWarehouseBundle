@@ -16,10 +16,11 @@ namespace CoreShop\Behat\MarketWarehouseBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
-final class SupplierContext implements Context
+final class SupplierWarehouseContext implements Context
 {
     private $sharedStorage;
     private $repository;
@@ -34,26 +35,26 @@ final class SupplierContext implements Context
     }
 
     /**
-     * @Transform /^supplier(?:|s) "([^"]+)"$/
+     * @Transform /^(supplier) warehouse "([^"]+)"$/
      */
-    public function getSupplierByName($name)
+    public function getSupplierByName(SupplierInterface $supplier, $identifier)
     {
-        $suppliers = $this->repository->findBy(['name' => $name]);
+        $warehoue = $this->repository->findBy(['identifier' => $identifier, 'supplier__id' => $supplier->getId()]);
 
         Assert::eq(
-            count($suppliers),
+            count($warehoue),
             1,
-            sprintf('%d suppliers has been found with name "%s".', count($suppliers), $name)
+            sprintf('%d suppliers has been found with name "%s".', count($warehoue), $identifier)
         );
 
-        return reset($suppliers);
+        return reset($warehoue);
     }
 
     /**
-     * @Transform /^supplier/
+     * @Transform /^warehoue/
      */
-    public function supplier()
+    public function warehoue()
     {
-        return $this->sharedStorage->get('supplier');
+        return $this->sharedStorage->get('warehouse');
     }
 }

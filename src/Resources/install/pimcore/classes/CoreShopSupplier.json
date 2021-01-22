@@ -2,7 +2,7 @@
     "id": "cs_supplier",
     "description": "",
     "modificationDate": 1611235562,
-    "parentClass": "",
+    "parentClass": "CoreShop\\Bundle\\MarketWarehouseBundle\\Model\\Supplier",
     "implementsInterfaces": "",
     "listingParentClass": "",
     "useTraits": "",

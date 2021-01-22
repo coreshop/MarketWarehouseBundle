@@ -17,10 +17,11 @@ namespace CoreShop\Behat\MarketWarehouseBundle\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\Model\DataObject\Service;
 
-final class SupplierContext implements Context
+final class SupplierWarehouseContext implements Context
 {
     private $sharedStorage;
     private $factory;
@@ -35,21 +36,22 @@ final class SupplierContext implements Context
     }
 
     /**
-     * @Given /^the site has a supplier "([^"]+)"$/
+     * @Given /^the (supplier) has a warehouse "([^"]+)"$/
      */
-    public function thereIsASupplier($name)
+    public function theSupplierHasAWarehouse(SupplierInterface $supplier, $identifier)
     {
         /**
-         * @var SupplierInterface $supplier
+         * @var WarehouseInterface $warehouse
          */
-        $supplier = $this->factory->createNew();
+        $warehouse = $this->factory->createNew();
 
-        $supplier->setName($name);
-        $supplier->setParent(Service::createFolderByPath('/supplier'));
-        $supplier->setKey(Service::getValidKey($name, 'object'));
-        $supplier->save();
+        $warehouse->setSupplier($supplier);
+        $warehouse->setIdentifier($identifier);
+        $warehouse->setParent(Service::createFolderByPath(sprintf('%s/warehouse', $supplier->getFullPath())));
+        $warehouse->setKey(Service::getValidKey($identifier, 'object'));
+        $warehouse->save();
 
-        $this->sharedStorage->set('supplier', $supplier);
+        $this->sharedStorage->set('warehouse', $supplier);
     }
 
 }

@@ -1,3 +1,19 @@
 services:
     _defaults:
         public: true
+
+    coreshop_market_warehouse.behat.context.setup.supplier:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Setup\SupplierContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop_market_warehouse.factory.supplier'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop_market_warehouse.behat.context.setup.supplier_warehouse:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Setup\SupplierWarehouseContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop_market_warehouse.factory.supplier_warehouse'
+        tags:
+            - { name: fob.context_service }
