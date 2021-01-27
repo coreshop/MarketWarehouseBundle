@@ -463,7 +463,7 @@ class WarehouseDeliveryTimeRule extends Data implements
      */
     private function getConfigActions()
     {
-        return $this->getContainer()->getParameter('coreshop_market_warehouse.market_warehouse.warehouse_delivery_time.actions');
+        return $this->getContainer()->getParameter('coreshop_market_warehouse.warehouse_delivery_time.actions');
     }
 
     /**
@@ -471,6 +471,6 @@ class WarehouseDeliveryTimeRule extends Data implements
      */
     private function getConfigConditions()
     {
-        return $this->getContainer()->getParameter('coreshop_market_warehouse.market_warehouse.warehouse_delivery_time.conditions');
+        return $this->getContainer()->getParameter('coreshop_market_warehouse.warehouse_delivery_time.conditions');
     }
 }

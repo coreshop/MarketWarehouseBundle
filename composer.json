@@ -47,7 +47,8 @@
         },
         "classmap": [
             "src/Kernel.php",
-            "src/BehatKernel.php"
+            "src/BehatKernel.php",
+            "src/AppKernel.php"
         ]
     },
     "extra": {

@@ -18,6 +18,8 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface WarehouseInterface extends PimcoreModelInterface
 {
+    public function getIdentifier(): ?string;
+
     /**
      * @return WarehouseDeliveryTimeRuleInterface[]
      */

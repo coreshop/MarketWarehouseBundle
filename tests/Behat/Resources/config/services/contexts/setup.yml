@@ -17,3 +17,11 @@ services:
             - '@coreshop_market_warehouse.factory.supplier_warehouse'
         tags:
             - { name: fob.context_service }
+
+    coreshop_market_warehouse.behat.context.setup.product_warehouse_stock:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Setup\ProductWarehouseStockContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop_market_warehouse.factory.product_warehouse_stock'
+        tags:
+            - { name: fob.context_service }
