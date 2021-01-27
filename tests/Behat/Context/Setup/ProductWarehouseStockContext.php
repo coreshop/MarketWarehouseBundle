@@ -41,7 +41,8 @@ final class ProductWarehouseStockContext implements Context
      * @Given /^the (product  [^"]+") has stock of (\d+) in (warehouse) with (package-type)$/
      * @Given /^the (product "[^"]+") has stock of (\d+) in (warehouse "[^"]+") with (package-type)$/
      * @Given /^the (product "[^"]+") has stock of (\d+) in (warehouse "[^"]+") with (package-type "[^"]+")$/
-     * @Given /^the (product "[^"]+") has stock of (\d+) in (supplier warehouse "[^"]+") with (package-type "[^"]+")$/
+     * @Given /^the (product "[^"]+") has stock of (\d+) in (supplier-warehouse "[^"]+"->"[^"]+") with (package-type "[^"]+")$/
+     * @Given /^the (product) has stock of (\d+) in (supplier-warehouse "[^"]+"->"[^"]+") with (package-type "[^"]+")$/
      */
     public function thereIsASupplier(ProductInterface $product, int $stock, WarehouseInterface $warehouse, PackageTypeInterface $packageType)
     {

@@ -40,7 +40,7 @@ final class SupplierPackageTypeContext implements Context
     }
 
     /**
-     * @Given /^the (supplier) has a package-type with identifier "[^"]+"$/
+     * @Given /^the (supplier) has a package-type with identifier "([^"]+)"$/
      */
     public function thereIsAPackageType(SupplierInterface $supplier, string $identifier)
     {

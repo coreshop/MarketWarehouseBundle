@@ -15,5 +15,14 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop_market_warehouse.repository.supplier_warehouse'
+            - '@coreshop_market_warehouse.repository.supplier'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop_market_warehouse.behat.context.transform.supplier_package_type:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Transform\SupplierPackageTypeContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop_market_warehouse.repository.supplier_warehouse_package_type'
         tags:
             - { name: fob.context_service }

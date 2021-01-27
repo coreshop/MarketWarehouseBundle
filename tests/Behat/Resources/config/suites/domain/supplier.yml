@@ -10,10 +10,19 @@ default:
                 - coreshop.behat.context.hook.pimcore_dao
 
                 - coreshop.behat.context.transform.shared_storage
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.product
                 - coreshop_market_warehouse.behat.context.transform.supplier
                 - coreshop_market_warehouse.behat.context.transform.supplier_warehouse
+                - coreshop_market_warehouse.behat.context.transform.supplier_package_type
 
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.product
                 - coreshop_market_warehouse.behat.context.setup.supplier
                 - coreshop_market_warehouse.behat.context.setup.supplier_warehouse
+                - coreshop_market_warehouse.behat.context.setup.product_warehouse_stock
+                - coreshop_market_warehouse.behat.context.setup.product_package_type
+
+                - coreshop.behat.context.domain.product
             filters:
                 tags: "@mw_domain && @supplier"

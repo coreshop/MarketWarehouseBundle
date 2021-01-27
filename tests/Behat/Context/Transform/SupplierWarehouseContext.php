@@ -16,7 +16,6 @@ namespace CoreShop\Behat\MarketWarehouseBundle\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -24,30 +23,43 @@ final class SupplierWarehouseContext implements Context
 {
     private $sharedStorage;
     private $repository;
+    private $supplierRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        RepositoryInterface $repository
+        RepositoryInterface $repository,
+        RepositoryInterface $supplierRepository
     )
     {
         $this->sharedStorage = $sharedStorage;
         $this->repository = $repository;
+        $this->supplierRepository = $supplierRepository;
     }
 
     /**
-     * @Transform /^(supplier) warehouse "([^"]+)"$/
+     * @Transform /^supplier-warehouse "([^"]+)"->"([^"]+)"$/
      */
-    public function getSupplierByName(SupplierInterface $supplier, $identifier)
+    public function getWarehouseBySupplierAndIdentifier(string $supplierName, string $identifier)
     {
-        $warehoue = $this->repository->findBy(['identifier' => $identifier, 'supplier__id' => $supplier->getId()]);
+        $suppliers = $this->supplierRepository->findBy(['name' => $supplierName]);
 
         Assert::eq(
-            count($warehoue),
+            count($suppliers),
             1,
-            sprintf('%d suppliers has been found with name "%s".', count($warehoue), $identifier)
+            sprintf('%d suppliers has been found with name "%s".', count($suppliers), $supplierName)
         );
 
-        return reset($warehoue);
+        $supplier = reset($suppliers);
+
+        $warehouses = $this->repository->findBy(['identifier' => $identifier, 'supplier__id' => $supplier->getId()]);
+
+        Assert::eq(
+            count($warehouses),
+            1,
+            sprintf('%d suppliers has been found with name "%s".', count($warehouses), $identifier)
+        );
+
+        return reset($warehouses);
     }
 
     /**

@@ -50,7 +50,7 @@ final class SupplierContext implements Context
     }
 
     /**
-     * @Transform /^supplier/
+     * @Transform supplier
      */
     public function supplier()
     {
