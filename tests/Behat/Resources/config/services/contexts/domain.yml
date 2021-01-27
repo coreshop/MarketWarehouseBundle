@@ -1,3 +1,12 @@
 services:
     _defaults:
         public: true
+
+    coreshop_market_warehouse.behat.context.domain.order_package:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Domain\OrderPackageContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
+            - '@coreshop_market_warehouse.repository.order_package'
+        tags:
+            - { name: fob.context_service }

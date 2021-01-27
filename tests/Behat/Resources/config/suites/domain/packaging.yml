@@ -1,0 +1,41 @@
+default:
+    suites:
+        domain_mw_cart:
+            contexts:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+                - coreshop_market_warehouse.behat.context.hook.bundle_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+                - coreshop.behat.context.transform.tax_rate
+                - coreshop.behat.context.transform.tax_rule_group
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.country
+                - coreshop.behat.context.transform.currency
+                - coreshop.behat.context.transform.category
+                - coreshop.behat.context.transform.product
+                - coreshop.behat.context.transform.cart
+                - coreshop.behat.context.transform.customer
+                - coreshop_market_warehouse.behat.context.transform.supplier
+                - coreshop_market_warehouse.behat.context.transform.supplier_warehouse
+                - coreshop_market_warehouse.behat.context.transform.supplier_package_type
+
+                - coreshop.behat.context.setup.tax_rate
+                - coreshop.behat.context.setup.tax_rule_group
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.country
+                - coreshop.behat.context.setup.currency
+                - coreshop.behat.context.setup.cart
+                - coreshop.behat.context.setup.product
+                - coreshop_market_warehouse.behat.context.setup.supplier
+                - coreshop_market_warehouse.behat.context.setup.supplier_warehouse
+                - coreshop_market_warehouse.behat.context.setup.product_warehouse_stock
+                - coreshop_market_warehouse.behat.context.setup.product_package_type
+
+                - coreshop.behat.context.domain.cart
+                - coreshop_market_warehouse.behat.context.domain.order_package
+            filters:
+                tags: "@mw_domain && @packaging"
