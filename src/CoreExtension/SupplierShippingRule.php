@@ -463,7 +463,7 @@ class SupplierShippingRule extends Data implements
      */
     private function getConfigActions()
     {
-        return $this->getContainer()->getParameter('coreshop_market_warehouse.market_warehouse.supplier_shipping.actions');
+        return $this->getContainer()->getParameter('coreshop_market_warehouse.supplier_shipping.actions');
     }
 
     /**
@@ -471,6 +471,6 @@ class SupplierShippingRule extends Data implements
      */
     private function getConfigConditions()
     {
-        return $this->getContainer()->getParameter('coreshop_market_warehouse.market_warehouse.supplier_shipping.conditions');
+        return $this->getContainer()->getParameter('coreshop_market_warehouse.supplier_shipping.conditions');
     }
 }

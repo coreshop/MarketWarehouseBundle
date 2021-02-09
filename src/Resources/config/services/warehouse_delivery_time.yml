@@ -32,7 +32,24 @@ services:
         class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
         shared: false
         arguments:
-            - '@coreshop.warehouse_market.warehouse_delivery_time.conditions.processor'
+            - '@coreshop_market_warehouse.warehouse_delivery_time.conditions.processor'
+
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseDeliveryTimeProcessorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseDeliveryTimeProcessor'
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseDeliveryTimeProcessor:
+        arguments:
+            - '@coreshop_market_warehouse.registry.warehouse_delivery_time.actions'
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseRuleCheckerInterface'
+
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseValidationProcessorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseValidationProcessor'
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseValidationProcessor:
+        arguments:
+            - '@coreshop_market_warehouse.registry.warehouse_delivery_time.actions'
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseRuleCheckerInterface'
+
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseRuleCheckerInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseRuleChecker'
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseRuleChecker:
+        arguments:
+            - '@coreshop_market_warehouse.warehouse_delivery_time.processor'
 
     CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition\PostcodeConditionChecker:
         tags:
@@ -41,3 +58,7 @@ services:
     CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\DaysActionProcessor:
         tags:
             - { name: coreshop_market_warehouse.warehouse_delivery_time.action, type: days, form-type: CoreShop\Bundle\MarketWarehouseBundle\Form\Type\Rule\DeliveryTime\Action\DaysConfigurationType }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action\InvalidActionProcessor:
+        tags:
+            - { name: coreshop_market_warehouse.warehouse_delivery_time.action, type: invalid }

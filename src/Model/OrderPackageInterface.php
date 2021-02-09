@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
@@ -38,6 +39,13 @@ interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterfac
     public function getCarrier(): ?SupplierCarrierInterface;
 
     public function setCarrier(?SupplierCarrierInterface $carrier);
+
+    /**
+     * @return AddressInterface
+     */
+    public function getAddress(): ?AddressInterface;
+
+    public function setAddress(?AddressInterface $address);
 
     /**
      * @return OrderPackageItemInterface[]

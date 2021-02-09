@@ -20,7 +20,7 @@ use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class RegisterOrderPackageProcessorPass extends PrioritizedCompositeServicePass
 {
-    public const ORDER_PACKAGE_PROCESSOR_TAG = 'coreshop.order.package_processor';
+    public const ORDER_PACKAGE_PROCESSOR_TAG = 'coreshop_market_warehouse.order.package_processor';
 
     public function __construct()
     {

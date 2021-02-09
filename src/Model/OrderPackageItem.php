@@ -32,6 +32,16 @@ abstract class OrderPackageItem extends AbstractPimcoreModel implements OrderPac
         throw new \InvalidArgumentException('OrderPackage could not be found!');
     }
 
+    public function getTotal(bool $withTax = true)
+    {
+        return $this->getSubtotal($withTax);
+    }
+
+    public function setTotal(int $total, bool $withTax = true)
+    {
+        $this->setSubtotal($total, $withTax);
+    }
+
     public function getSubtotal($withTax = true)
     {
         return $withTax ? $this->getSubtotalNet() : $this->getSubtotalGross();

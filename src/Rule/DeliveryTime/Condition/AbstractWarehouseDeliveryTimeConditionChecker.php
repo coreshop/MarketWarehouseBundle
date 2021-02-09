@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition;
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\ShippingPackageInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
@@ -25,14 +25,14 @@ abstract class AbstractWarehouseDeliveryTimeConditionChecker implements Warehous
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = []): bool
     {
-        if (!$subject instanceof ShippingPackageInterface) {
-            throw new \InvalidArgumentException('Shipping Rule Condition $subject needs to be an array with values shippable, address and carrier');
+        if (!$subject instanceof WarehouseInterface) {
+            throw new \InvalidArgumentException('Rule Condition $subject needs to be a WarehouseInterface');
         }
 
         if (!array_key_exists('address', $params)) {
-            throw new \InvalidArgumentException('Shipping Rule Condition $subject needs to be an array with values shippable, address and carrier');
+            throw new \InvalidArgumentException('Rule Condition $subject needs to be an array with values order and address');
         }
 
-        return $this->isRuleValid($subject, $params['address'], $configuration);
+        return $this->isRuleValid($subject, $params['order'], $params['address'], $configuration, $params);
     }
 }

@@ -12,17 +12,18 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime;
 
-interface WarehouseDeliveryTimeInterface
+use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+
+interface WarehouseValidationProcessorInterface
 {
-    public function getDays(): int;
-
-    public function addDays(int $days): void;
-
-    public function removeDays(int $days): void;
-
-    public function invalid(): void;
-
-    public function isValid(): bool;
+    public function isWarehouseValid(
+        WarehouseInterface $warehouse,
+        OrderInterface $order,
+        AddressInterface $address,
+        array $context = []
+    ): bool;
 }

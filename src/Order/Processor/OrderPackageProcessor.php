@@ -21,6 +21,7 @@ use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessorInterface;
 use Pimcore\Model\DataObject\Service;
 
 class OrderPackageProcessor implements CartProcessorInterface

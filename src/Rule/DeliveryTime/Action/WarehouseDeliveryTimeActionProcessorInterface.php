@@ -16,8 +16,17 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Action;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface WarehouseDeliveryTimeActionProcessorInterface
 {
-    public function calculateDeliveryTime(WarehouseInterface $subject, WarehouseDeliveryTimeInterface $deliveryTime, array $context, array $configuration): void;
+    public function calculateDeliveryTime(
+        WarehouseInterface $subject,
+        WarehouseDeliveryTimeInterface $deliveryTime,
+        OrderInterface $order,
+        AddressInterface $address,
+        array $configuration,
+        array $context
+    ): void;
 }

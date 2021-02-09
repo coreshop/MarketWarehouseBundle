@@ -14,23 +14,24 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition;
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\ShippingPackageInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 final class PostcodeConditionChecker extends AbstractWarehouseDeliveryTimeConditionChecker
 {
     public function isRuleValid(
-        ShippingPackageInterface $package,
+        WarehouseInterface $subject,
+        OrderInterface $order,
         AddressInterface $address,
-        array $configuration
+        array $configuration,
+        array $context
     ): bool {
         $postcodes = explode(',', $configuration['postcodes']);
 
-        $deliveryAddress = $address;
-
-        if ($deliveryAddress->getPostcode()) {
+        if ($address->getPostcode()) {
             foreach ($postcodes as $postcode) {
-                if ($this->checkPostCode($postcode, $deliveryAddress->getPostcode())) {
+                if ($this->checkPostCode($postcode, $address->getPostcode())) {
                     return $configuration['exclusion'] ? false : true;
                 }
             }

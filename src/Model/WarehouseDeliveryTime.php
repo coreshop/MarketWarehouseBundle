@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 class WarehouseDeliveryTime implements WarehouseDeliveryTimeInterface
 {
     protected $days = 0;
+    protected $isValid = true;
 
     public function getDays(): int
     {
@@ -31,5 +32,15 @@ class WarehouseDeliveryTime implements WarehouseDeliveryTimeInterface
     public function removeDays(int $days): void
     {
         $this->days -= $days;
+    }
+
+    public function invalid(): void
+    {
+        $this->isValid = false;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->isValid;
     }
 }

@@ -2,8 +2,8 @@ services:
     coreshop_market_warehouse.registry.supplier_shipping.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface
-            - warehouse-delivery-time-action
+            - CoreShop\Component\Shipping\Rule\Action\CarrierActionProcessorInterface
+            - supplier-shipping-rule-action
         tags:
             - { name: coreshop.registry, type_hint: warehouseShippingActions }
 
@@ -14,7 +14,7 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
-            - warehouse-delivery-time-condition
+            - supplier-shipping-rule-condition
         tags:
             - { name: coreshop.registry, type_hint: warehouseShippingConditions }
 

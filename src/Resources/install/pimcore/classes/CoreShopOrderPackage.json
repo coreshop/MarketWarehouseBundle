@@ -295,6 +295,36 @@
                         "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false
+                    },
+                    {
+                        "fieldtype": "coreShopRelation",
+                        "width": "",
+                        "assetUploadPath": "",
+                        "relationType": true,
+                        "queryColumnType": {
+                            "id": "int(11)",
+                            "type": "enum('document','asset','object')"
+                        },
+                        "objectsAllowed": true,
+                        "assetsAllowed": false,
+                        "assetTypes": [],
+                        "documentsAllowed": false,
+                        "documentTypes": [],
+                        "stack": "coreshop.address",
+                        "pathFormatterClass": "",
+                        "name": "address",
+                        "title": "address",
+                        "tooltip": "",
+                        "mandatory": false,
+                        "noteditable": false,
+                        "index": false,
+                        "locked": false,
+                        "style": "",
+                        "permissions": null,
+                        "datatype": "data",
+                        "invisible": false,
+                        "visibleGridView": false,
+                        "visibleSearch": false
                     }
                 ],
                 "locked": false,

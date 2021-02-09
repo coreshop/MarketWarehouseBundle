@@ -19,6 +19,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
@@ -26,17 +27,20 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 class ShippingProcessor implements OrderPackageProcessorInterface
 {
+    private $cartContextResolver;
     private $carrierPriceCalculator;
     private $carrierValidator;
     private $defaultCarrierResolver;
     private $defaultAddressProvider;
 
     public function __construct(
+        CartContextResolverInterface $cartContextResolver,
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
         ShippableCarrierValidatorInterface $carrierValidator,
         CarriersResolverInterface $defaultCarrierResolver,
         AddressProviderInterface $defaultAddressProvider
     ) {
+        $this->cartContextResolver = $cartContextResolver;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->carrierValidator = $carrierValidator;
         $this->defaultCarrierResolver = $defaultCarrierResolver;
@@ -45,6 +49,8 @@ class ShippingProcessor implements OrderPackageProcessorInterface
 
     public function process(OrderPackageInterface $package): void
     {
+        $cartContext = $this->cartContextResolver->resolveCartContext($package->getOrder());
+
         $package->setShippingGross(0);
         $package->setShippingNet(0);
 
@@ -70,8 +76,8 @@ class ShippingProcessor implements OrderPackageProcessorInterface
             $package->setCarrier($carrier);
         }
 
-        $priceWithTax = $this->carrierPriceCalculator->getPrice($package->getCarrier(), $package, $address, true);
-        $priceWithoutTax = $this->carrierPriceCalculator->getPrice($package->getCarrier(), $package, $address, false);
+        $priceWithTax = $this->carrierPriceCalculator->getPrice($package->getCarrier(), $package, $address, true, $cartContext);
+        $priceWithoutTax = $this->carrierPriceCalculator->getPrice($package->getCarrier(), $package, $address, false, $cartContext);
 
         $package->setShippingGross($priceWithTax);
         $package->setShippingNet($priceWithoutTax);
@@ -80,7 +86,11 @@ class ShippingProcessor implements OrderPackageProcessorInterface
     private function resolveDefaultCarrier(OrderPackageInterface $package, AddressInterface $address)
     {
         try {
-            return $this->defaultCarrierResolver->getDefaultCarrier($package, $address);
+            $carriers = $this->defaultCarrierResolver->resolveCarriers($package, $address);
+
+            if (count($carriers) > 0) {
+                return $carriers[0];
+            }
         } catch (UnresolvedDefaultCarrierException $ex) {
         }
 

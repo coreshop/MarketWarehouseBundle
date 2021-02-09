@@ -19,7 +19,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 
-class DaysActionProcessor implements WarehouseDeliveryTimeActionProcessorInterface
+class InvalidActionProcessor implements WarehouseDeliveryTimeActionProcessorInterface
 {
     public function calculateDeliveryTime(
         WarehouseInterface $subject,
@@ -29,6 +29,6 @@ class DaysActionProcessor implements WarehouseDeliveryTimeActionProcessorInterfa
         array $configuration,
         array $context
     ): void {
-        $deliveryTime->addDays($configuration['days']);
+        $deliveryTime->invalid();
     }
 }

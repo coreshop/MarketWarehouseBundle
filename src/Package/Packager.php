@@ -20,6 +20,10 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\ProductWarehouseStockRepositoryInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\SupplierSaleRuleRepositoryInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseValidationProcessorInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -31,17 +35,26 @@ class Packager implements PackagerInterface
     protected $productStockRepository;
     protected $orderPackageFactory;
     protected $orderPackageItemFactory;
+    protected $warehouseValidationProcessor;
+    protected $cartContextResolver;
+    protected $defaultAddressProvider;
 
     public function __construct(
         SupplierSaleRuleRepositoryInterface $supplierSaleRuleRepository,
         ProductWarehouseStockRepositoryInterface $productStockRepository,
         FactoryInterface $orderPackageFactory,
-        FactoryInterface $orderPackageItemFactory
+        FactoryInterface $orderPackageItemFactory,
+        WarehouseValidationProcessorInterface $warehouseValidationProcessor,
+        CartContextResolverInterface $cartContextResolver,
+        AddressProviderInterface $defaultAddressProvider
     ) {
         $this->supplierSaleRuleRepository = $supplierSaleRuleRepository;
         $this->productStockRepository = $productStockRepository;
         $this->orderPackageFactory = $orderPackageFactory;
         $this->orderPackageItemFactory = $orderPackageItemFactory;
+        $this->warehouseValidationProcessor = $warehouseValidationProcessor;
+        $this->cartContextResolver = $cartContextResolver;
+        $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
     public function createOrderPackages(OrderInterface $cart): array
@@ -56,6 +69,12 @@ class Packager implements PackagerInterface
 
         $packages = [];
         $warehousePackages = [];
+
+        $address = $cart->getShippingAddress() ?? $this->defaultAddressProvider->getAddress($cart);
+
+        if (null === $address) {
+            return [];
+        }
 
         /**
          * @var OrderItemInterface $item
@@ -99,6 +118,15 @@ class Packager implements PackagerInterface
 
                     return $indices[$supplier1] > $indices[$supplier2] ? 1 : -1;
                 });
+
+                $stocks = array_filter($stocks, function (ProductWarehouseStockInterface $stock) use ($cart, $address) {
+                    return $this->warehouseValidationProcessor->isWarehouseValid(
+                        $stock->getWarehouse(),
+                        $cart,
+                        $address,
+                        $this->cartContextResolver->resolveCartContext($cart)
+                    );
+                });
             }
 
             $left = $item->getQuantity();
@@ -111,7 +139,7 @@ class Packager implements PackagerInterface
                 //Create new Package, since it cannot be shipped with another one
                 if ($stock->getPackageType()->getSingleDeliveryOnline()) {
                     for ($i = 0; $i < $stockUsed; $i++) {
-                        $package = $this->createNewPackage($cart, $stock->getWarehouse());
+                        $package = $this->createNewPackage($cart, $address, $stock->getWarehouse());
                         $packages[] = $package;
 
                         $this->createPackageItem($item, $package, 1);
@@ -126,7 +154,7 @@ class Packager implements PackagerInterface
                      */
                     $package = $warehousePackages[$stock->getWarehouse()->getId()];
                 } else {
-                    $package = $this->createNewPackage($cart, $stock->getWarehouse());
+                    $package = $this->createNewPackage($cart, $address, $stock->getWarehouse());
 
                     $warehousePackages[$stock->getWarehouse()->getId()] = $package;
                     $packages[] = $package;
@@ -144,7 +172,7 @@ class Packager implements PackagerInterface
                 if (array_key_exists('left', $warehousePackages)) {
                     $packageLeft = $warehousePackages['left'];
                 } else {
-                    $packageLeft = $this->createNewPackage($cart, null);
+                    $packageLeft = $this->createNewPackage($cart, $address, null);
                 }
 
                 $this->createPackageItem($item, $packageLeft, $left);
@@ -176,6 +204,7 @@ class Packager implements PackagerInterface
 
     protected function createNewPackage(
         OrderInterface $cart,
+        AddressInterface $address,
         ?WarehouseInterface $warehouse
     ): OrderPackageInterface {
         /**
@@ -185,6 +214,7 @@ class Packager implements PackagerInterface
         $package->setPublished(true);
         $package->setOrder($cart);
         $package->setWarehouse($warehouse);
+        //$package->setAddress($address);
 
         return $package;
     }

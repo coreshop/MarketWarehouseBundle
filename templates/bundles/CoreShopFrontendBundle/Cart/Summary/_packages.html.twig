@@ -20,6 +20,6 @@
 
     Items: <br/>
     {% for item in package.items %}
-        {{ item.orderItem.product.name }} - Qty: {{ item.quantity }} - Total: {{ currency.convertAndFormat(item.subtotal) }}<br/>
+        {{ item.orderItem.product.name }} - Qty: {{ item.quantity }} - Total: {{ currency.convertAndFormat(item.total) }}<br/>
     {% endfor %}
 {% endfor %}

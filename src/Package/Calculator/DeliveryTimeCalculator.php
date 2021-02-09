@@ -15,55 +15,35 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTime;
-use CoreShop\Bundle\MarketWarehouseBundle\Rule\Action\WarehouseDeliveryTimeActionProcessorInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
-use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseDeliveryTimeProcessorInterface;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
 
 class DeliveryTimeCalculator implements DeliveryTimeCalculatorInterface
 {
-    private $ruleValidationProcessor;
-    private $actionServiceRegistry;
+    private $warehouseDeliveryTimeProcessor;
+    private $defaultAddressProvider;
 
     public function __construct(
-        RuleValidationProcessorInterface $ruleValidationProcessor,
-        ServiceRegistryInterface $actionServiceRegistry
-    ) {
-        $this->ruleValidationProcessor = $ruleValidationProcessor;
-        $this->actionServiceRegistry = $actionServiceRegistry;
+        WarehouseDeliveryTimeProcessorInterface $warehouseDeliveryTimeProcessor,
+        AddressProviderInterface $defaultAddressProvider
+    )
+    {
+        $this->warehouseDeliveryTimeProcessor = $warehouseDeliveryTimeProcessor;
+        $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
     public function calculateDeliveryTime(OrderPackageInterface $package, array $context)
     {
-        $warehouse = $package->getWarehouse();
-        $rules = $warehouse->getDeliveryTimeRules();
-
-        $deliveryTime = new WarehouseDeliveryTime();
-
-        $packageContext = $context;
-        $packageContext['package'] = $package;
-
-        foreach ($rules as $rule) {
-            if (!$this->ruleValidationProcessor->isValid($warehouse, $rule, $context)) {
-                continue;
-            }
-
-            foreach ($rule->getActions() as $action) {
-                $processor = $this->actionServiceRegistry->get($action->getType());
-
-                if (!$processor instanceof WarehouseDeliveryTimeActionProcessorInterface) {
-                    continue;
-                }
-
-                $processor->calculateDeliveryTime(
-                    $warehouse,
-                    $deliveryTime,
-                    $packageContext,
-                    $action->getConfiguration()
-                );
-            }
+        if (!$package->getAddress()) {
+            return;
         }
 
+        $deliveryTime = $this->warehouseDeliveryTimeProcessor->calculateDeliveryTime(
+            $package->getWarehouse(),
+            $package->getOrder(),
+            $package->getAddress() ?? $this->defaultAddressProvider->getAddress($package->getOrder()),
+            $context
+        );
         $package->setShippingTime($deliveryTime->getDays());
     }
 }

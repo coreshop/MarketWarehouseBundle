@@ -15,11 +15,28 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Package\Processor;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\DeliveryTimeCalculatorInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 
 class DeliveryTimeProcessor implements OrderPackageProcessorInterface
 {
+    protected $deliveryTimeCalculator;
+    protected $cartContextResolver;
+
+    public function __construct(
+        DeliveryTimeCalculatorInterface $deliveryTimeCalculator,
+        CartContextResolverInterface $cartContextResolver
+    ) {
+        $this->deliveryTimeCalculator = $deliveryTimeCalculator;
+        $this->cartContextResolver = $cartContextResolver;
+    }
+
     public function process(OrderPackageInterface $package): void
     {
+        $this->deliveryTimeCalculator->calculateDeliveryTime(
+            $package,
+            $this->cartContextResolver->resolveCartContext($package->getOrder())
+        );
     }
 }

@@ -1,6 +1,12 @@
 services:
     CoreShop\Bundle\MarketWarehouseBundle\Package\CompositeOrderPackageProcessor: ~
 
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\DeliveryTimeCalculatorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\DeliveryTimeCalculator'
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\DeliveryTimeCalculator:
+        arguments:
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseDeliveryTimeProcessorInterface'
+            - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
+
     CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Package\Packager'
     CoreShop\Bundle\MarketWarehouseBundle\Package\Packager:
         arguments:
@@ -8,6 +14,9 @@ services:
             - '@coreshop_market_warehouse.repository.product_warehouse_stock'
             - '@coreshop_market_warehouse.factory.order_package'
             - '@coreshop_market_warehouse.factory.order_package_item'
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseValidationProcessorInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+            - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
 
     CoreShop\Bundle\MarketWarehouseBundle\Order\Processor\OrderPackageProcessor:
         arguments:
@@ -28,6 +37,7 @@ services:
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\ShippingProcessor:
         arguments:
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
             - '@coreshop.carrier.price_calculator.taxed'
             - '@coreshop.shipping.carrier.validator'
             - '@coreshop.carrier.resolver'
@@ -36,5 +46,8 @@ services:
             - { name: coreshop_market_warehouse.order.package_processor, priority: 300 }
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\DeliveryTimeProcessor:
+        arguments:
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\DeliveryTimeCalculatorInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: coreshop_market_warehouse.order.package_processor, priority: 400 }

@@ -4,3 +4,7 @@ imports:
     - { resource: migrations.yaml }
     - { resource: system.yml }
     - { resource: 'local/' }
+
+framework:
+    profiler:
+        enabled: false

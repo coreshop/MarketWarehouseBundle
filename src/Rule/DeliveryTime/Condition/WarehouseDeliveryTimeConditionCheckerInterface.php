@@ -14,15 +14,18 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\Condition;
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\ShippingPackageInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
 interface WarehouseDeliveryTimeConditionCheckerInterface extends ConditionCheckerInterface
 {
     public function isRuleValid(
-        ShippingPackageInterface $package,
+        WarehouseInterface $subject,
+        OrderInterface $order,
         AddressInterface $address,
-        array $configuration
+        array $configuration,
+        array $context
     ): bool;
 }
