@@ -57,7 +57,7 @@ class Packager implements PackagerInterface
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
-    public function createOrderPackages(OrderInterface $cart): array
+    public function createOrderPackages(OrderInterface $cart, array $existingPackages): array
     {
         $store = $cart->getStore();
 
@@ -139,7 +139,7 @@ class Packager implements PackagerInterface
                 //Create new Package, since it cannot be shipped with another one
                 if ($stock->getPackageType()->getSingleDeliveryOnline()) {
                     for ($i = 0; $i < $stockUsed; $i++) {
-                        $package = $this->createNewPackage($cart, $address, $stock->getWarehouse());
+                        $package = $this->createNewPackage($cart, $address, $stock->getWarehouse(), $existingPackages);
                         $packages[] = $package;
 
                         $this->createPackageItem($item, $package, 1);
@@ -154,7 +154,7 @@ class Packager implements PackagerInterface
                      */
                     $package = $warehousePackages[$stock->getWarehouse()->getId()];
                 } else {
-                    $package = $this->createNewPackage($cart, $address, $stock->getWarehouse());
+                    $package = $this->createNewPackage($cart, $address, $stock->getWarehouse(), $existingPackages);
 
                     $warehousePackages[$stock->getWarehouse()->getId()] = $package;
                     $packages[] = $package;
@@ -172,7 +172,7 @@ class Packager implements PackagerInterface
                 if (array_key_exists('left', $warehousePackages)) {
                     $packageLeft = $warehousePackages['left'];
                 } else {
-                    $packageLeft = $this->createNewPackage($cart, $address, null);
+                    $packageLeft = $this->createNewPackage($cart, $address, null, $existingPackages);
                 }
 
                 $this->createPackageItem($item, $packageLeft, $left);
@@ -189,24 +189,51 @@ class Packager implements PackagerInterface
         OrderPackageInterface $package,
         float $quantity
     ) {
-        /**
-         * @var OrderPackageItemInterface $packageItem
-         */
-        $packageItem = $this->orderPackageItemFactory->createNew();
-        $packageItem->setPublished(true);
+        $packageItem = null;
+
+        foreach ($package->getItems() as $existingPackageItem) {
+            if ($existingPackageItem->getOrderItem() && $existingPackageItem->getOrderItem()->getId() === $item->getId()) {
+                $packageItem = $existingPackageItem;
+            }
+        }
+
+        if (null === $packageItem) {
+            /**
+             * @var OrderPackageItemInterface $packageItem
+             */
+            $packageItem = $this->orderPackageItemFactory->createNew();
+            $packageItem->setPublished(true);
+            $packageItem->setOrderItem($item);
+            $packageItem->setProduct($item->getProduct());
+
+            $package->addItem($packageItem);
+        }
+
         $packageItem->setQuantity($quantity);
-        $packageItem->setOrderItem($item);
-        $packageItem->setProduct($item->getProduct());
-
-        $package->addItem($packageItem);
-
     }
 
     protected function createNewPackage(
         OrderInterface $cart,
         AddressInterface $address,
-        ?WarehouseInterface $warehouse
+        ?WarehouseInterface $warehouse,
+        array $existingPackages
     ): OrderPackageInterface {
+        foreach ($existingPackages as $existingPackage) {
+            $existingWarehouse = $existingPackage->getWarehouse();
+
+            if (null === $existingWarehouse && null === $warehouse) {
+                return $existingPackage;
+            }
+
+            if (null === $existingWarehouse && null !== $warehouse) {
+                continue;
+            }
+
+            if ($existingWarehouse->getId() === $warehouse->getId()) {
+                return $existingPackage;
+            }
+        }
+
         /**
          * @var OrderPackageInterface $package
          */
@@ -214,6 +241,7 @@ class Packager implements PackagerInterface
         $package->setPublished(true);
         $package->setOrder($cart);
         $package->setWarehouse($warehouse);
+
         //$package->setAddress($address);
 
         return $package;

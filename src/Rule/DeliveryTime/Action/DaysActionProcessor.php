@@ -29,6 +29,6 @@ class DaysActionProcessor implements WarehouseDeliveryTimeActionProcessorInterfa
         array $configuration,
         array $context
     ): void {
-        $deliveryTime->addDays($configuration['days']);
+        $deliveryTime->addDays((int)$configuration['days']);
     }
 }

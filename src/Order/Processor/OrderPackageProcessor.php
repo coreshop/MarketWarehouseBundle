@@ -50,11 +50,26 @@ class OrderPackageProcessor implements CartProcessorInterface
             return;
         }
 
-        foreach ($this->orderPackageRepository->findForOrder($cart) as $package) {
-            $package->delete();
-        }
+//        foreach ($this->orderPackageRepository->findForOrder($cart) as $package) {
+//            $package->delete();
+//        }
 
-        $packages = $this->packager->createOrderPackages($cart);
+        $existingPackages = $this->orderPackageRepository->findForOrder($cart);
+        $packages = $this->packager->createOrderPackages($cart, $existingPackages);
+
+        foreach ($existingPackages as $existingPackage) {
+            $found = false;
+            foreach ($packages as $package) {
+                if ($package->getId() === $existingPackage->getId()) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
+                $existingPackage->delete();
+            }
+        }
 
         $shippingNet = 0;
         $shippingGross = 0;

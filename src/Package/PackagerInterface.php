@@ -20,8 +20,9 @@ use CoreShop\Component\Order\Model\OrderInterface;
 interface PackagerInterface
 {
     /**
-     * @param OrderInterface $cart
+     * @param OrderInterface          $cart
+     * @param OrderPackageInterface[] $existingPackages
      * @return OrderPackageInterface[]
      */
-    public function createOrderPackages(OrderInterface $cart): array;
+    public function createOrderPackages(OrderInterface $cart, array $existingPackages): array;
 }

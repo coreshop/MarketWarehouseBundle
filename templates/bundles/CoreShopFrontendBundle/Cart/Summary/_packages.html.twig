@@ -3,7 +3,7 @@
 {% set packages = cart|coreshop_market_warehouse_order_packages %}
 
 {% for package in packages %}
-    <h1>{{ package.key }}</h1>
+    <h1>{{ package.key }} ({{ package.id }})</h1>
     <p>
         {% if package.warehouse %}
             Supplier: {{ package.warehouse.supplier.name }}<br/>
@@ -15,6 +15,7 @@
             Carrier: {{ package.carrier.title }}
             Subtotal (Package Price): {{ currency.convertAndFormat(package.subtotal) }}<br/>
             Shipping (Package): {{ currency.convertAndFormat(package.shipping(true)) }} (Net: {{ currency.convertAndFormat(package.shipping(false)) }})<br/>
+            Shipping Days: {{ package.shippingTime }}<br/>
         {% endif %}
     </p>
 

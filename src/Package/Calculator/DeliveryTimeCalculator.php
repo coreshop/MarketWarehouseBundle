@@ -34,16 +34,18 @@ class DeliveryTimeCalculator implements DeliveryTimeCalculatorInterface
 
     public function calculateDeliveryTime(OrderPackageInterface $package, array $context)
     {
-        if (!$package->getAddress()) {
+        $address = $package->getAddress() ?? $this->defaultAddressProvider->getAddress($package->getOrder());
+
+        if (!$address) {
             return;
         }
 
         $deliveryTime = $this->warehouseDeliveryTimeProcessor->calculateDeliveryTime(
             $package->getWarehouse(),
             $package->getOrder(),
-            $package->getAddress() ?? $this->defaultAddressProvider->getAddress($package->getOrder()),
+            $address,
             $context
         );
-        $package->setShippingTime($deliveryTime->getDays());
+        $package->setShippingTime((float)$deliveryTime->getDays());
     }
 }
