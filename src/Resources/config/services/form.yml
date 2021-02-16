@@ -1,0 +1,29 @@
+parameters:
+    coreshop_market_warehouse.form.type.order_package_carrier_choice.validation_groups: [coreshop]
+    coreshop_market_warehouse.form.type.order_packages.validation_groups: [coreshop]
+    coreshop_market_warehouse.form.type.order_package.validation_groups: [coreshop]
+
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\OrderPackageCarrierChoiceType:
+        arguments:
+            - '%coreshop_market_warehouse.model.order_package.class%'
+            - '%coreshop_market_warehouse.form.type.order_package_carrier_choice.validation_groups%'
+            - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
+            - '@CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\OrderPackagesType:
+        arguments:
+            - '%coreshop.model.order.class%'
+            - '%coreshop_market_warehouse.form.type.order_packages.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Type\OrderPackageType:
+        arguments:
+            - '%coreshop_market_warehouse.model.order_package.class%'
+            - '%coreshop_market_warehouse.form.type.order_package.validation_groups%'
+        tags:
+            - { name: form.type }

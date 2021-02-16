@@ -1,0 +1,41 @@
+{% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
+{% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block checkout_title %}
+    {{ 'coreshop.ui.shipping'|trans }}
+{% endblock %}
+
+{% block checkout %}
+    <div class="card">
+        <div class="card-header">
+            {{ 'coreshop.ui.shipping'|trans }}
+        </div>
+        <div class="card-body">
+            {{ form(form) }}
+            {{ dump(cart.packages) }}
+{#            #}
+{#            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}#}
+{#            {{ form_errors(form) }}#}
+
+
+{#            <div class="row">#}
+{#                {% set previousStep = coreshop_checkout_steps_get_previous() %}#}
+{#                {% if previousStep is not null %}#}
+{#                    <div class="col-12 col-sm-6">#}
+{#                        <a href="{{ coreshop_path(cart, 'coreshop_checkout', {'stepIdentifier': previousStep}) }}"#}
+{#                           class="btn btn-secondary">#}
+{#                            {{ 'coreshop.ui.back'|trans }}#}
+{#                        </a>#}
+{#                    </div>#}
+{#                {% endif %}#}
+{#                <div class="col-12 {{ previousStep is not null ? 'col-sm-6' : '' }}">#}
+{#                    <button type="submit" class="btn btn-success pull-right" {{ coreshop_test_html_attribute('submit-shipping-step') }}>#}
+{#                        {{ 'coreshop.ui.proceed'|trans }}#}
+{#                    </button>#}
+{#                </div>#}
+{#            </div>#}
+{#            {{ form_end(form) }}#}
+        </div>
+    </div>
+{% endblock %}

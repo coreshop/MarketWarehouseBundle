@@ -1,2 +1,11 @@
 doctrine:
-    dbal: { connections: { default: { host: db, port: 3306, user: pimcore, password: pimcore, dbname: pimcore } } }
+    dbal:
+        connections:
+            default:
+                host: db
+                port: 3306
+                user: pimcore
+                password: pimcore
+                dbname: pimcore
+                server_version: '10.5'
+

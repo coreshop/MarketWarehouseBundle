@@ -50,11 +50,7 @@ class OrderPackageProcessor implements CartProcessorInterface
             return;
         }
 
-//        foreach ($this->orderPackageRepository->findForOrder($cart) as $package) {
-//            $package->delete();
-//        }
-
-        $existingPackages = $this->orderPackageRepository->findForOrder($cart);
+        $existingPackages = $cart->getPackages();
         $packages = $this->packager->createOrderPackages($cart, $existingPackages);
 
         foreach ($existingPackages as $existingPackage) {
@@ -110,5 +106,7 @@ class OrderPackageProcessor implements CartProcessorInterface
                 false
             )
         );
+
+        $cart->setPackages($packages);
     }
 }

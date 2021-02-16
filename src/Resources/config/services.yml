@@ -6,3 +6,5 @@ imports:
     - { resource: services/order_package.yml }
     - { resource: services/twig.yml }
     - { resource: services/pimcore_installer.yml }
+    - { resource: services/checkout.yml }
+    - { resource: services/form.yml }

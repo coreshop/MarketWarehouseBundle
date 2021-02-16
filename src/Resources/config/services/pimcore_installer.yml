@@ -3,3 +3,10 @@ services:
         public: true
         arguments:
             $kernel: "@kernel"
+
+    CoreShop\Bundle\MarketWarehouseBundle\Command\InstallCommand:
+        arguments:
+            - '@kernel'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
+        tags:
+            - { name: console.command, command: coreshop-market-warehouse:install }

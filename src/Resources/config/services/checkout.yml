@@ -1,0 +1,6 @@
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\Checkout\OrderPackageShippingStep:
+        arguments:
+            - '@CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface'
+            - '@form.factory'
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'

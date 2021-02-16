@@ -1,8 +1,6 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 
-{% set packages = cart|coreshop_market_warehouse_order_packages %}
-
-{% for package in packages %}
+{% for package in cart.packages %}
     <h1>{{ package.key }} ({{ package.id }})</h1>
     <p>
         {% if package.warehouse %}

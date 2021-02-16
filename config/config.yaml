@@ -8,3 +8,24 @@ imports:
 framework:
     profiler:
         enabled: false
+
+core_shop_core:
+    checkout_manager_factory: packaging
+    checkout:
+        packaging:
+            steps:
+                customer:
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep
+                  priority: 10
+                address:
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep
+                  priority: 20
+                shipping:
+                  step: CoreShop\Bundle\MarketWarehouseBundle\Checkout\OrderPackageShippingStep
+                  priority: 30
+                payment:
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep
+                  priority: 40
+                summary:
+                  step: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep
+                  priority: 50

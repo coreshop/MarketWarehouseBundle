@@ -42,6 +42,11 @@ class Installer implements InstallerInterface
         $options = ['command' => 'coreshop:resources:create-tables'];
         $options = array_merge($options, ['--no-interaction' => true, 'application-name' => 'coreshop_market_warehouse', '--force' => true]);
         $application->run(new ArrayInput($options));
+
+        $options = ['command' => 'coreshop-market-warehouse:install'];
+        $options = array_merge($options, ['--no-interaction' => true]);
+        $application->run(new ArrayInput($options));
+
     }
 
     public function uninstall()
