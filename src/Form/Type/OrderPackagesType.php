@@ -27,8 +27,13 @@ final class OrderPackagesType extends AbstractResourceType
                 'entry_type' => OrderPackageType::class,
                 'allow_add' => false,
                 'allow_delete' => false,
-                'by_reference' => false,
+                'by_reference' => true,
                 'label' => 'coreshop.form.order.packages',
             ]);
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'coreshop_market_warehouse_order_packages';
     }
 }

@@ -40,6 +40,10 @@ class DeliveryTimeCalculator implements DeliveryTimeCalculatorInterface
             return;
         }
 
+        if (null === $package->getWarehouse()) {
+            return;
+        }
+
         $deliveryTime = $this->warehouseDeliveryTimeProcessor->calculateDeliveryTime(
             $package->getWarehouse(),
             $package->getOrder(),

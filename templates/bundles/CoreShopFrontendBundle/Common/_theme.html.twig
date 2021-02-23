@@ -1,0 +1,44 @@
+{% extends '@CoreShopFrontend/Form/theme.html.twig' %}
+
+{%- block coreshop_market_warehouse_order_package_row -%}
+    {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
+
+    {% if form.children|length > 0 %}
+        <div class="card mb-3">
+            <div class="card-header">
+                Package ({{ data.warehouse.supplier.name }} - {{ data.warehouse.identifier }})
+            </div>
+            <div class="card-body">
+                {% set show_carrier_price = form.carrier.vars.show_carrier_price %}
+
+                {% for key, carrier_form in form.carrier %}
+                    {% set carrier = form.carrier.vars.choices[key].data %}
+                    {% set price = form.carrier.vars.prices[carrier_form.vars.value] %}
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="clearfix">
+                                <div class="pull-left">
+                                    {{ form_widget(carrier_form, coreshop_test_form_attribute('carrier-select')|coreshop_merge_recursive({'label': false})) }}
+                                </div>
+                                <div class="pull-left">
+                                    <span {{ coreshop_test_html_attribute('carrier-label') }}>
+                                        {{ carrier.title }}
+                                    </span>
+                                    {% if show_carrier_price %}
+                                        <span {{ coreshop_test_html_attribute('carrier-price') }}>{{ currency.convertAndFormat(price) }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if carrier.description %}
+                            <div class="card-body">
+                                {{ carrier.description }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{%- endblock coreshop_market_warehouse_order_package_row -%}

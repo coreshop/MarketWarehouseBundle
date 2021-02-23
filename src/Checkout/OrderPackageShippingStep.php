@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Checkout;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\OrderPackagesType;
-use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\OrderPackageType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
@@ -91,6 +90,10 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
         $packageCarriers = true;
 
         foreach ($cart->getPackages() as $package) {
+            if (null === $package->getWarehouse()) {
+                continue;
+            }
+
             if (null === $package->getCarrier()) {
                 $packageCarriers = false;
                 break;

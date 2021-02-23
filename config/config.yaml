@@ -4,6 +4,9 @@ imports:
     - { resource: migrations.yaml }
     - { resource: system.yml }
     - { resource: 'local/' }
+    - { resource: '@PimcoreCoreBundle/Resources/config/pimcore/config.yml' }
+    - { resource: '@CoreShopCoreBundle/Resources/config/config.yml' }
+    - { resource: '@CoreShopMarketWarehouseBundle/Resources/config/pimcore/config.yml' }
 
 framework:
     profiler:

@@ -229,6 +229,10 @@ class Packager implements PackagerInterface
                 continue;
             }
 
+            if (null !== $existingWarehouse && null === $warehouse) {
+                continue;
+            }
+
             if ($existingWarehouse->getId() === $warehouse->getId()) {
                 return $existingPackage;
             }

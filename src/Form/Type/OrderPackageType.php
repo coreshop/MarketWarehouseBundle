@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Form\Type;
 
-use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierChoiceType;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,6 +33,10 @@ final class OrderPackageType extends AbstractResourceType
                 return;
             }
 
+            if (null === $data->getWarehouse()) {
+                return;
+            }
+
             $event->getForm()->add('carrier', OrderPackageCarrierChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => $this->validationGroups])],
                 'expanded' => true,
@@ -41,5 +44,10 @@ final class OrderPackageType extends AbstractResourceType
                 'package' => $data
             ]);
         });
+    }
+
+        public function getBlockPrefix()
+    {
+        return 'coreshop_market_warehouse_order_package';
     }
 }

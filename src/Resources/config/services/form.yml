@@ -8,7 +8,7 @@ services:
         arguments:
             - '%coreshop_market_warehouse.model.order_package.class%'
             - '%coreshop_market_warehouse.form.type.order_package_carrier_choice.validation_groups%'
-            - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
+            - '@coreshop.carrier.resolver'
             - '@CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
