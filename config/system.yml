@@ -11,15 +11,8 @@ pimcore:
             de: ''
         default_language: ''
         disable_usage_statistics: false
-        debug: true
-        debug_ip: ''
-        http_auth:
-            username: ''
-            password: ''
         debug_admin_translations: false
-        devmode: false
         instance_identifier: ''
-        show_cookie_notice: false
     documents:
         versions:
             days: null
@@ -47,13 +40,6 @@ pimcore:
             email: ''
             simple_api_key: ''
             browser_api_key: ''
-    cache:
-        enabled: false
-        lifetime: null
-        exclude_patterns: ''
-        exclude_cookie: ''
-    webservice:
-        enabled: true
     httpclient:
         adapter: Socket
         proxy_host: ''
@@ -67,7 +53,6 @@ pimcore:
         return:
             name: pimcore
             email: pimcore@example.com
-        method: sendmail
         debug:
             email_addresses: ''
     newsletter:
@@ -77,7 +62,6 @@ pimcore:
         return:
             name: ''
             email: ''
-        method: sendmail
         debug: null
         use_specific: true
     applicationlog:

@@ -20,9 +20,6 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 abstract class AbstractWarehouseDeliveryTimeConditionChecker implements WarehouseDeliveryTimeConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = []): bool
     {
         if (!$subject instanceof WarehouseInterface) {

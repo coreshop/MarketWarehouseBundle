@@ -25,13 +25,12 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
     use PackageVersionTrait;
-
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
 
     public function getSupportedDrivers()
     {

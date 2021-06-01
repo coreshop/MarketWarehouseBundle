@@ -10,15 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Repository;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository;
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Repository\BlockedDateRepositoryInterface;
+use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 
-interface ProductWarehouseStockRepositoryInterface
+class BlockedDateRepository extends PimcoreRepository implements BlockedDateRepositoryInterface
 {
-    /**
-     * @return ProductWarehouseStockInterface[]
-     */
-    public function findForProduct(ProductInterface $product): array;
+
 }

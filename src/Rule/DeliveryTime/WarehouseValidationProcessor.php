@@ -24,8 +24,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class WarehouseValidationProcessor implements WarehouseValidationProcessorInterface
 {
-    protected $actionServiceRegistry;
-    protected $warehouseRuleChecker;
+    protected ServiceRegistryInterface $actionServiceRegistry;
+    protected WarehouseRuleCheckerInterface $warehouseRuleChecker;
 
     public function __construct(
         ServiceRegistryInterface $actionServiceRegistry,

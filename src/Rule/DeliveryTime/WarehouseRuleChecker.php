@@ -22,7 +22,7 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 class WarehouseRuleChecker implements WarehouseRuleCheckerInterface
 {
-    protected $ruleValidationProcessor;
+    protected RuleValidationProcessorInterface $ruleValidationProcessor;
 
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
     {

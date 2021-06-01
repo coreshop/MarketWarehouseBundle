@@ -19,8 +19,6 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierShippingRuleInterface;
 interface SupplierShippingRuleRepositoryInterface
 {
     /**
-     * @param SupplierCarrierInterface $supplierCarrier
-     *
      * @return SupplierShippingRuleInterface[]
      */
     public function findForSupplierCarrier(SupplierCarrierInterface $supplierCarrier): array;

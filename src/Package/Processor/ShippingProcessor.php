@@ -27,11 +27,11 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 class ShippingProcessor implements OrderPackageProcessorInterface
 {
-    private $cartContextResolver;
-    private $carrierPriceCalculator;
-    private $carrierValidator;
-    private $defaultCarrierResolver;
-    private $defaultAddressProvider;
+    private CartContextResolverInterface $cartContextResolver;
+    private TaxedShippingCalculatorInterface $carrierPriceCalculator;
+    private ShippableCarrierValidatorInterface $carrierValidator;
+    private CarriersResolverInterface $defaultCarrierResolver;
+    private AddressProviderInterface $defaultAddressProvider;
 
     public function __construct(
         CartContextResolverInterface $cartContextResolver,

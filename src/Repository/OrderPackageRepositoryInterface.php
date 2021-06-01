@@ -18,8 +18,6 @@ use CoreShop\Component\Order\Model\OrderInterface;
 interface OrderPackageRepositoryInterface
 {
     /**
-     * @param CartInterface $cart
-     *
      * @return OrderPackageInterface[]
      */
     public function findForOrder(OrderInterface $cart): array;

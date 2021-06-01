@@ -22,9 +22,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InstallCommand extends AbstractInstallCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -32,9 +29,6 @@ final class InstallCommand extends AbstractInstallCommand
             ->setHidden(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new SymfonyStyle($input, $output);

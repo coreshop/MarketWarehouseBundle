@@ -22,7 +22,7 @@ use Twig\TwigFunction;
 
 class OrderPackageExtension extends AbstractExtension
 {
-    protected $orderPackageRepository;
+    protected OrderPackageRepositoryInterface $orderPackageRepository;
 
     public function __construct(OrderPackageRepositoryInterface $orderPackageRepository)
     {

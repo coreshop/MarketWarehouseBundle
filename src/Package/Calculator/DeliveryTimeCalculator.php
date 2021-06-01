@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseDeliveryTimeProcessorInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
@@ -32,16 +33,16 @@ class DeliveryTimeCalculator implements DeliveryTimeCalculatorInterface
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
-    public function calculateDeliveryTime(OrderPackageInterface $package, array $context)
+    public function calculateDeliveryTime(OrderPackageInterface $package, array $context): ?int
     {
         $address = $package->getAddress() ?? $this->defaultAddressProvider->getAddress($package->getOrder());
 
         if (!$address) {
-            return;
+            return null;
         }
 
         if (null === $package->getWarehouse()) {
-            return;
+            return null;
         }
 
         $deliveryTime = $this->warehouseDeliveryTimeProcessor->calculateDeliveryTime(
@@ -50,6 +51,7 @@ class DeliveryTimeCalculator implements DeliveryTimeCalculatorInterface
             $address,
             $context
         );
-        $package->setShippingTime((float)$deliveryTime->getDays());
+
+        return $deliveryTime->getDays();
     }
 }

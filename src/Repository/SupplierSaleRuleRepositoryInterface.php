@@ -17,15 +17,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 interface SupplierSaleRuleRepositoryInterface
 {
-    /**
-     * @param StoreInterface $store
-     *
-     * @return SupplierSaleRuleInterface
-     */
     public function findForStore(StoreInterface $store): ?SupplierSaleRuleInterface;
 
-    /**
-     * @return SupplierSaleRuleInterface
-     */
     public function findFallback(): ?SupplierSaleRuleInterface;
 }

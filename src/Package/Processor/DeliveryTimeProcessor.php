@@ -16,27 +16,42 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Package\Processor;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\DeliveryTimeCalculatorInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\NextShippingDateCalculatorInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 
 class DeliveryTimeProcessor implements OrderPackageProcessorInterface
 {
-    protected $deliveryTimeCalculator;
-    protected $cartContextResolver;
+    protected DeliveryTimeCalculatorInterface $deliveryTimeCalculator;
+    protected CartContextResolverInterface $cartContextResolver;
+    protected NextShippingDateCalculatorInterface $nextShippingDateCalculator;
 
-    public function __construct(
+    function __construct(
         DeliveryTimeCalculatorInterface $deliveryTimeCalculator,
-        CartContextResolverInterface $cartContextResolver
+        CartContextResolverInterface $cartContextResolver,
+        NextShippingDateCalculatorInterface $nextShippingDateCalculator
     ) {
         $this->deliveryTimeCalculator = $deliveryTimeCalculator;
         $this->cartContextResolver = $cartContextResolver;
+        $this->nextShippingDateCalculator = $nextShippingDateCalculator;
     }
 
     public function process(OrderPackageInterface $package): void
     {
-        $this->deliveryTimeCalculator->calculateDeliveryTime(
+        $deliveryTime = $this->deliveryTimeCalculator->calculateDeliveryTime(
             $package,
             $this->cartContextResolver->resolveCartContext($package->getOrder())
         );
+
+        $package->setShippingTime($deliveryTime);
+
+        if (null !== $deliveryTime) {
+            $package->setShippingDate(
+                $this->nextShippingDateCalculator->calculateNextAvailableShippingDate(
+                    $package,
+                    $deliveryTime
+                 )
+            );
+        }
     }
 }

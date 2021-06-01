@@ -30,9 +30,9 @@ use Webmozart\Assert\Assert;
 
 final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $shippableCarrierValidator;
-    private $formFactory;
-    private $cartManager;
+    private ShippableCarrierValidatorInterface $shippableCarrierValidator;
+    private FormFactoryInterface $formFactory;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
@@ -44,17 +44,11 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'shipping';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRequired(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -62,9 +56,6 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
         return $cart->hasShippableItems();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -72,9 +63,6 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
         return $cart->hasShippableItems() === false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -108,9 +96,6 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
         return $packageCarriers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
@@ -130,9 +115,6 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [

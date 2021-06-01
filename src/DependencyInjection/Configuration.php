@@ -18,6 +18,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Doctrine\ORM\WarehouseDeliveryTimeRule
 use CoreShop\Bundle\MarketWarehouseBundle\Doctrine\ORM\SupplierShippingRuleRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\WarehouseDeliveryTimeRuleType;
 use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\SupplierShippingRuleType;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\BlockedDateInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItemInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\PackageTypeInterface;
@@ -30,6 +31,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseDeliveryTimeRuleInterfa
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierShippingRule;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierShippingRuleInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\BlockedDateRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\OrderPackageRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\ProductWarehouseStockRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\SupplierSaleRuleRepository;
@@ -74,6 +76,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('supplier_warehouse_package_type')->defaultValue(PackageTypeInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('supplier_sale_rule')->defaultValue(SupplierSaleRuleInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('product_warehouse_stock')->defaultValue(ProductWarehouseStockInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('supplier_blocked_date')->defaultValue(BlockedDateInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end();
@@ -245,6 +248,23 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(SupplierSaleRuleRepository::class)->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplierSaleRule.json')->end()
+                                        ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('supplier_blocked_date')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopSupplierBlockedDate')->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(BlockedDateInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(BlockedDateRepository::class)->end()
+                                        ->scalarNode('install_file')->defaultValue('@CoreShopMarketWarehouseBundle/Resources/install/pimcore/classes/CoreShopSupplierBlockedDate.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()
                                 ->end()

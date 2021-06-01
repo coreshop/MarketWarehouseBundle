@@ -10,15 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\MarketWarehouseBundle\Repository;
+declare(strict_types=1);
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
+namespace CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator;
 
-interface ProductWarehouseStockRepositoryInterface
+use Carbon\Carbon;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
+
+interface NextShippingDateCalculatorInterface
 {
-    /**
-     * @return ProductWarehouseStockInterface[]
-     */
-    public function findForProduct(ProductInterface $product): array;
+    public function calculateNextAvailableShippingDate(OrderPackageInterface $package, int $days): ?Carbon;
 }

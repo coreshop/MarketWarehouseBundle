@@ -30,7 +30,7 @@ coreshop.market_warehouse.warehouse_delivery_time_rule.actions.days = Class.crea
             value: daysValue
         });
 
-        this.form = Ext.create('Ext.form.FieldSet', {
+        this.form = new Ext.form.Panel({
             items: [
                 days
             ]

@@ -18,8 +18,6 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 interface WarehouseDeliveryTimeRuleRepositoryInterface
 {
     /**
-     * @param WarehouseInterface $warehouse
-     *
      * @return WarehouseDeliveryTimeRuleInterface[]
      */
     public function findForWarehouse(WarehouseInterface $warehouse): array;

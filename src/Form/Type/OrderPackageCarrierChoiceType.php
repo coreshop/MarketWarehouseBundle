@@ -28,9 +28,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class OrderPackageCarrierChoiceType extends AbstractResourceType
 {
-    private $carriersResolver;
-    private $taxedShippingCalculator;
-    private $cartContextResolver;
+    private CarriersResolverInterface $carriersResolver;
+    private TaxedShippingCalculatorInterface $taxedShippingCalculator;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         $dataClass,

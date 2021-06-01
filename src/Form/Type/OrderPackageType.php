@@ -46,7 +46,7 @@ final class OrderPackageType extends AbstractResourceType
         });
     }
 
-        public function getBlockPrefix()
+    public function getBlockPrefix()
     {
         return 'coreshop_market_warehouse_order_package';
     }

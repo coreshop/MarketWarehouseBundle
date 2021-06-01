@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
+use Carbon\Carbon;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
@@ -74,9 +75,13 @@ interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterfac
 
     public function setShippingGross(int $shippingGross);
 
-    public function getShippingTime(): ?float;
+    public function getShippingTime(): ?int;
 
-    public function setShippingTime(?float $shippingTime);
+    public function setShippingTime(?int $shippingTime);
+
+    public function getShippingDate(): ?Carbon;
+
+    public function setShippingDate(?Carbon $shippingDate);
 
     public function setWeight(?float $weight);
 

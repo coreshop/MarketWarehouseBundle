@@ -25,8 +25,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class WarehouseDeliveryTimeProcessor implements WarehouseDeliveryTimeProcessorInterface
 {
-    protected $actionServiceRegistry;
-    protected $warehouseRuleChecker;
+    protected ServiceRegistryInterface $actionServiceRegistry;
+    protected WarehouseRuleCheckerInterface $warehouseRuleChecker;
 
     public function __construct(
         ServiceRegistryInterface $actionServiceRegistry,

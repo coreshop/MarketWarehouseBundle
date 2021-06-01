@@ -19,7 +19,7 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeOrderPackageProcessor implements OrderPackageProcessorInterface
 {
-    private $processors;
+    private PriorityQueue $processors;
 
     public function __construct()
     {

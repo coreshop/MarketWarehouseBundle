@@ -33,4 +33,19 @@ interface WarehouseInterface extends PimcoreModelInterface
     public function getSupplier(): ?SupplierInterface;
 
     public function setSupplier(?SupplierInterface $supplier);
+
+    public function getSaturdayEnabled(): ?bool;
+
+    public function setSaturdayEnabled(?bool $saturdayEnabled);
+
+    public function getSundayEnabled(): ?bool;
+
+    public function setSundayEnabled(?bool $sundayEnabled);
+
+    /**
+     * @return BlockedDateInterface[]
+     */
+    public function getBlockedDays(): array;
+
+    public function setBlockedDays(array $blockedDays);
 }

@@ -31,13 +31,13 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class Packager implements PackagerInterface
 {
-    protected $supplierSaleRuleRepository;
-    protected $productStockRepository;
-    protected $orderPackageFactory;
-    protected $orderPackageItemFactory;
-    protected $warehouseValidationProcessor;
-    protected $cartContextResolver;
-    protected $defaultAddressProvider;
+    protected SupplierSaleRuleRepositoryInterface $supplierSaleRuleRepository;
+    protected ProductWarehouseStockRepositoryInterface $productStockRepository;
+    protected FactoryInterface $orderPackageFactory;
+    protected FactoryInterface $orderPackageItemFactory;
+    protected WarehouseValidationProcessorInterface $warehouseValidationProcessor;
+    protected CartContextResolverInterface $cartContextResolver;
+    protected AddressProviderInterface $defaultAddressProvider;
 
     public function __construct(
         SupplierSaleRuleRepositoryInterface $supplierSaleRuleRepository,

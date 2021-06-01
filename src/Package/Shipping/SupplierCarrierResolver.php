@@ -21,7 +21,7 @@ use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 
 class SupplierCarrierResolver implements CarriersResolverInterface
 {
-    protected $decorated;
+    protected CarriersResolverInterface $decorated;
 
     public function __construct(CarriersResolverInterface $decorated)
     {

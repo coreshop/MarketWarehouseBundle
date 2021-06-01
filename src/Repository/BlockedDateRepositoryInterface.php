@@ -12,13 +12,7 @@
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Repository;
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
-
-interface ProductWarehouseStockRepositoryInterface
+interface BlockedDateRepositoryInterface
 {
-    /**
-     * @return ProductWarehouseStockInterface[]
-     */
-    public function findForProduct(ProductInterface $product): array;
+
 }

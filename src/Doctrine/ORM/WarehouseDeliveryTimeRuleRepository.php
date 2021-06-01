@@ -18,9 +18,6 @@ use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 
 class WarehouseDeliveryTimeRuleRepository extends RuleRepository implements WarehouseDeliveryTimeRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForWarehouse(WarehouseInterface $warehouse): array
     {
         return $this->createQueryBuilder('o')
