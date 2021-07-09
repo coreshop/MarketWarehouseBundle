@@ -178,6 +178,10 @@ class WarehouseDeliveryTimeRule extends Data implements
 
             $data = $this->getSerializer()->fromArray($storeData, $this->getRepository()->getClassName(), $context);
 
+            if ($data instanceof WarehouseDeliveryTimeRuleInterface && $object instanceof WarehouseInterface) {
+                $data->setWarehouse($object->getId());
+            }
+
             $entities[] = $data;
         }
 
@@ -231,13 +235,11 @@ class WarehouseDeliveryTimeRule extends Data implements
         ];
 
         if ($object instanceof WarehouseInterface) {
-            $prices = $this->load($object, ['force' => true]);
-
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
 
-            $serializedData = $this->getSerializer()->toArray($prices, $context);
+            $serializedData = $this->getSerializer()->toArray($data, $context);
 
             $result['rules'] = $serializedData;
         }

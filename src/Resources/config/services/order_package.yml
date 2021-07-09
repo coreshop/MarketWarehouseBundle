@@ -7,8 +7,13 @@ services:
             - '@CoreShop\Bundle\MarketWarehouseBundle\Rule\DeliveryTime\WarehouseDeliveryTimeProcessorInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
 
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\ShippingDateValidatorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\ShippingDateValidator'
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\ShippingDateValidator: ~
+
     CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\NextShippingDateCalculatorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\NextShippingDateCalculator'
-    CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\NextShippingDateCalculator: ~
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\NextShippingDateCalculator:
+        arguments:
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\ShippingDateValidatorInterface'
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface: '@CoreShop\Bundle\MarketWarehouseBundle\Package\Packager'
     CoreShop\Bundle\MarketWarehouseBundle\Package\Packager:

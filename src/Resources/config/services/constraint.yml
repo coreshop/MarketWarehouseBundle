@@ -1,0 +1,6 @@
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\Validator\Constraints\OrderPackageShippingDateValidator:
+        arguments:
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator\ShippingDateValidatorInterface'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_market_warehouse_order_package_shipping_date }

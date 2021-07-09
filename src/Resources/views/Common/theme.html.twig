@@ -1,4 +1,4 @@
-{% extends '@CoreShopFrontend/Form/theme.html.twig' %}
+{% extends '@CoreShopFrontend/Common/theme.html.twig' %}
 
 {%- block coreshop_market_warehouse_order_package_row -%}
     {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
@@ -38,6 +38,10 @@
                         {% endif %}
                     </div>
                 {% endfor %}
+
+                {% if form.wishedShippingDate is defined %}
+                    {{ form_row(form.wishedShippingDate) }}
+                {% endif %}
             </div>
         </div>
     {% endif %}

@@ -26,7 +26,7 @@ class DeliveryTimeProcessor implements OrderPackageProcessorInterface
     protected CartContextResolverInterface $cartContextResolver;
     protected NextShippingDateCalculatorInterface $nextShippingDateCalculator;
 
-    function __construct(
+    public function __construct(
         DeliveryTimeCalculatorInterface $deliveryTimeCalculator,
         CartContextResolverInterface $cartContextResolver,
         NextShippingDateCalculatorInterface $nextShippingDateCalculator
@@ -52,6 +52,13 @@ class DeliveryTimeProcessor implements OrderPackageProcessorInterface
                     $deliveryTime
                  )
             );
+
+            if (null === $package->getWishedShippingDate()) {
+                $package->setWishedShippingDate($package->getShippingDate());
+            }
+            elseif ($package->getWishedShippingDate()->isBefore($package->getShippingDate())) {
+                $package->setWishedShippingDate($package->getShippingDate());
+            }
         }
     }
 }

@@ -1,27 +1,71 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 
 {% for package in cart.packages %}
-    <h1>{{ package.key }} ({{ package.id }})</h1>
-    <p>
-        {% if package.warehouse %}
-            Supplier: {{ package.warehouse.supplier.name }}<br/>
-            Supplier Warehouse {{ package.warehouse.identifier }}<br/>
-        {% endif %}
 
-        {% if package.carrier %}
-            <br/>
-            Carrier: {{ package.carrier.title }}
-            Subtotal (Package Price): {{ currency.convertAndFormat(package.subtotal) }}<br/>
-            Shipping (Package): {{ currency.convertAndFormat(package.shipping(true)) }} (Net: {{ currency.convertAndFormat(package.shipping(false)) }})<br/>
-            Shipping Days: {{ package.shippingTime }}<br/>
-        {% endif %}
-
-        {{ package.shippingTime }}
-        {{ package.shippingDate }}
-    </p>
-
-    Items: <br/>
-    {% for item in package.items %}
-        {{ item.orderItem.product.name }} - Qty: {{ item.quantity }} - Total: {{ currency.convertAndFormat(item.total) }}<br/>
-    {% endfor %}
+    <div class="card mb-4">
+        <div class="card-header">
+            {% if package.warehouse %}
+                Package von {{ package.warehouse.supplier.name }} - {{ package.shippingDate|date('d.m.Y') }}
+            {% else %}
+                Package without Supplier
+            {% endif %}
+        </div>
+        <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td class="text-center">
+                        {{ 'coreshop.ui.image'|trans }}
+                    </td>
+                    <td class="text-center">
+                        {{ 'coreshop.ui.product_details'|trans }}
+                    </td>
+                    <td class="text-center">
+                        {{ 'coreshop.ui.quantity'|trans }}
+                    </td>
+                    <td class="text-center">
+                        {{ 'coreshop.ui.price'|trans }}
+                    </td>
+                    <td class="text-center">
+                        {{ 'coreshop.ui.total'|trans }}
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for item in package.items %}
+                        {% include '@CoreShopFrontend/Checkout/steps/summary/_package_item.html.twig' with {'item': item} %}
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-right" colspan="3">
+                            <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
+                        </td>
+                        <td colspan="2" class="text-right cart-sub-total">
+                            {{ currency.convertAndFormat(package.subtotal(true)) }}
+                        </td>
+                    </tr>
+                    {% if package.warehouse %}
+                        <tr>
+                            <td class="text-right" colspan="3">
+                                <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
+                            </td>
+                            <td colspan="2" class="text-right cart-sub-total">
+                                {{ currency.convertAndFormat(package.shipping(true)) }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td class="text-right" colspan="3">
+                                <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
+                            </td>
+                            <td colspan="2" class="text-right cart-sub-total">
+                                {{ currency.convertAndFormat(cart.adjustmentsTotal('shipping_original')) }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tfoot>
+            </table>
+        </div>
+    </div>
 {% endfor %}

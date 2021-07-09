@@ -1,0 +1,4 @@
+CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackage:
+    constraints:
+        - \CoreShop\Bundle\MarketWarehouseBundle\Validator\Constraints\OrderPackageShippingDate: { message: 'coreshop.market_warehouse.order_package.shipping_date.invalid', groups: ['coreshop'] }
+

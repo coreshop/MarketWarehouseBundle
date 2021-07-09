@@ -14,13 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use Webmozart\Assert\Assert;
 
 abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackageInterface
 {
@@ -91,7 +86,7 @@ abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackage
 
     public function getSubtotal(bool $withTax = true): int
     {
-        return $withTax ? $this->getSubtotalNet() : $this->getSubtotalGross();
+        return $withTax ? $this->getSubtotalGross() : $this->getSubtotalNet();
     }
 
     public function setSubtotal(int $subtotal, bool $withTax = false)

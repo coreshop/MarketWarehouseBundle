@@ -38,6 +38,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\SupplierSaleRuleRep
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -72,7 +73,7 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('order_package_item')->defaultValue(OrderPackageItemInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('supplier')->defaultValue(SupplierInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('supplier_warehouse')->defaultValue(WarehouseInterface::class)->cannotBeEmpty()->end()
-                    ->scalarNode('supplier_carrier')->defaultValue(SupplierCarrierInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('supplier_carrier')->defaultValue(CarrierInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('supplier_warehouse_package_type')->defaultValue(PackageTypeInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('supplier_sale_rule')->defaultValue(SupplierSaleRuleInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('product_warehouse_stock')->defaultValue(ProductWarehouseStockInterface::class)->cannotBeEmpty()->end()

@@ -16,9 +16,11 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Form\Type;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Valid;
 
@@ -38,10 +40,16 @@ final class OrderPackageType extends AbstractResourceType
             }
 
             $event->getForm()->add('carrier', OrderPackageCarrierChoiceType::class, [
-                'constraints' => [new Valid(), new NotBlank(['groups' => $this->validationGroups])],
+                'constraints' => [new Valid(['groups' => $this->validationGroups]), new NotBlank(['groups' => $this->validationGroups])],
                 'expanded' => true,
                 'label' => 'coreshop.ui.package.carrier',
                 'package' => $data
+            ]);
+
+            $event->getForm()->add('wishedShippingDate', DateType::class, [
+                'constraints' => [],
+                'label' => 'coreshop.ui.package.shipping_date',
+                'use_carbon' => true
             ]);
         });
     }

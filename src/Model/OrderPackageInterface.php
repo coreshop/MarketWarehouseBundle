@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
@@ -35,11 +36,11 @@ interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterfac
     public function setWarehouse(?WarehouseInterface $warehouse);
 
     /**
-     * @return SupplierCarrierInterface
+     * @return CarrierInterface
      */
-    public function getCarrier(): ?SupplierCarrierInterface;
+    public function getCarrier(): ?CarrierInterface;
 
-    public function setCarrier(?SupplierCarrierInterface $carrier);
+    public function setCarrier(?CarrierInterface $carrier);
 
     /**
      * @return AddressInterface
@@ -82,6 +83,10 @@ interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterfac
     public function getShippingDate(): ?Carbon;
 
     public function setShippingDate(?Carbon $shippingDate);
+
+    public function getWishedShippingDate(): ?Carbon;
+
+    public function setWishedShippingDate(?Carbon $shippingDate);
 
     public function setWeight(?float $weight);
 

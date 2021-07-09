@@ -23,6 +23,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\Warehouse
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -42,6 +43,8 @@ class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements Pi
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
+
+        AnnotationReader::addGlobalIgnoredName('alias');
 
         $container->addCompilerPass(new WarehouseDeliveryTimeRuleActionPass());
         $container->addCompilerPass(new WarehouseDeliveryTimeRuleConditionPass());

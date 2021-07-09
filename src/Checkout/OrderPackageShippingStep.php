@@ -124,7 +124,19 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
 
     private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
-        $form = $this->formFactory->createNamed('', OrderPackagesType::class, $cart);
+        $hasNonSupplierPackage = false;
+
+        foreach ($cart->getPackages() as $package) {
+            if (null === $package->getWarehouse()) {
+                $hasNonSupplierPackage = true;
+                break;
+            }
+        }
+
+        $form = $this->formFactory->createNamed('coreshop', OrderPackagesType::class, $cart, [
+            'cart' => $cart,
+            'show_default_carrier_selection' => $hasNonSupplierPackage
+        ]);
 
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);

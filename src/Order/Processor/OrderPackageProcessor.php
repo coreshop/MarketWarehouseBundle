@@ -69,9 +69,14 @@ class OrderPackageProcessor implements CartProcessorInterface
 
         $shippingNet = 0;
         $shippingGross = 0;
+        $keepOriginalShipping = false;
 
         foreach ($packages as $index => $package) {
             $this->orderPackageProcessor->process($package);
+
+            if ($package->getWarehouse() === null) {
+                $keepOriginalShipping = true;
+            }
 
             $items = $package->getItems();
 
@@ -96,7 +101,25 @@ class OrderPackageProcessor implements CartProcessorInterface
             $shippingGross += $package->getShippingGross();
         }
 
-        $cart->removeAdjustmentsRecursively(AdjustmentInterface::SHIPPING);
+        $cart->removeAdjustmentsRecursively('shipping_original');
+
+        if ($keepOriginalShipping) {
+            foreach ($cart->getAdjustments(AdjustmentInterface::SHIPPING) as $adjustment) {
+                $cart->addAdjustment(
+                    $this->adjustmentFactory->createWithData(
+                        'shipping_original',
+                        'Shipping Rest of the Cart',
+                        $adjustment->getAmount(true),
+                        $adjustment->getAmount(false),
+                        true
+                    )
+                );
+            }
+        }
+        else {
+            $cart->removeAdjustmentsRecursively(AdjustmentInterface::SHIPPING);
+        }
+
         $cart->addAdjustment(
             $this->adjustmentFactory->createWithData(
                 AdjustmentInterface::SHIPPING,

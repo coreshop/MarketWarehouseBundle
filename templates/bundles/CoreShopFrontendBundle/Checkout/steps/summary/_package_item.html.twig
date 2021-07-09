@@ -1,0 +1,44 @@
+{% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
+
+{% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
+
+<tr class="shopping-cart-item">
+    <td class="text-center">
+        {% if item.product and item.product.image is pimcore_asset_image %}
+            <a href="{{ productUrl }}">
+                {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCart', {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
+            </a>
+        {% endif %}
+    </td>
+    <td class="text-center">
+        <a href="{{ productUrl }}">
+            {{ item.product.name }}
+        </a>
+    </td>
+    <td class="text-center">
+        <span>{{ item.quantity }}</span>
+        {% if item.orderItem.hasUnitDefinition %}
+            <span class="unit-definition unit-name">{{ item.orderItem.unitDefinition.unit.name }}</span>
+        {% endif %}
+    </td>
+    <td class="text-right cart-item-price">
+        {% set price = item.orderItem.itemPrice %}
+        {% set discount = item.orderItem.itemDiscount %}
+        {% set discountPrice = item.orderItem.itemDiscountPrice %}
+        {% set retailPrice = item.orderItem.itemRetailPrice %}
+
+        {% if price < retailPrice %}
+            {% if discountPrice > 0 %}
+                <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+            {% endif %}
+            {% if discount > 0 %}
+                <span class="price-discount">(-{{ currency.convertAndFormat(discount) }})</span>
+            {% endif %}
+        {% endif %}
+
+        {{ currency.convertAndFormat(price) }}
+    </td>
+    <td class="text-right cart-item-total-price">
+        {{ currency.convertAndFormat(item.total) }}
+    </td>
+</tr>

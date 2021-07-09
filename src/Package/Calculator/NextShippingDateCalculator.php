@@ -15,11 +15,17 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Package\Calculator;
 
 use Carbon\Carbon;
-use CoreShop\Bundle\MarketWarehouseBundle\Model\BlockedDateInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 
 class NextShippingDateCalculator implements NextShippingDateCalculatorInterface
 {
+    protected ShippingDateValidatorInterface $shippingDateValidator;
+
+    public function __construct(ShippingDateValidatorInterface $shippingDateValidator)
+    {
+        $this->shippingDateValidator = $shippingDateValidator;
+    }
+
     public function calculateNextAvailableShippingDate(OrderPackageInterface $package, int $days): ?Carbon
     {
         $warehouse = $package->getWarehouse();
@@ -29,37 +35,11 @@ class NextShippingDateCalculator implements NextShippingDateCalculatorInterface
         }
 
         $today = new Carbon();
+        $today->setTime(0, 0);
         $day = $today->addDays($days);
 
-        if ($day->isSaturday() && !$warehouse->getSaturdayEnabled()) {
+        while (!$this->shippingDateValidator->isShippingDateValid($package, $day)) {
             $day->addDay();
-        }
-
-        if ($day->isSunday() && !$warehouse->getSundayEnabled()) {
-            $day->addDay();
-        }
-
-        $blockedDates = $warehouse->getBlockedDays();
-
-        usort($blockedDates, static function (BlockedDateInterface $a, BlockedDateInterface $b) {
-            $date1 = Carbon::createFromDate($a->getYear(), $a->getMonth(), $a->getDay());
-            $date2 = Carbon::createFromDate($b->getYear(), $b->getMonth(), $b->getDay());
-
-            return $date1 < $date2 ? -1 : 1;
-        });
-
-        foreach ($blockedDates as $blockedDate) {
-            if ($blockedDate->getDay() === $day->day && $blockedDate->getMonth() === $day->month && ($blockedDate->getYear() === null || $blockedDate->getYear() === $day->year)) {
-                $day->addDay();
-
-                if ($day->isSaturday() && !$warehouse->getSaturdayEnabled()) {
-                    $day->addDay();
-                }
-
-                if ($day->isSunday() && !$warehouse->getSundayEnabled()) {
-                    $day->addDay();
-                }
-            }
         }
 
         return $day;

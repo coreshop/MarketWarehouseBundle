@@ -1,6 +1,6 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
-{% form_theme form '@CoreShopFrontend/Common/_theme.html.twig' %}
+{% form_theme form '@CoreShopMarketWarehouse/Common/theme.html.twig' %}
 
 {% block checkout_title %}
     {{ 'coreshop.ui.shipping'|trans }}
@@ -16,6 +16,47 @@
             {{ form_errors(form) }}
 
             {{ form_row(form.packages) }}
+
+            {% if form.carrier is defined and form.carrier.children|length > 0 %}
+                <div class="card">
+                    <div class="card-header">
+                        Non Package
+                    </div>
+                    <div class="card-body">
+                        {% set show_carrier_price = form.carrier.vars.show_carrier_price %}
+
+                        {% for key, carrier_form in form.carrier %}
+                            {% set carrier = form.carrier.vars.choices[key].data %}
+                            {% set price = form.carrier.vars.prices[carrier_form.vars.value] %}
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="clearfix">
+                                        <div class="pull-left">
+                                            {{ form_widget(carrier_form, coreshop_test_form_attribute('carrier-select')|coreshop_merge_recursive({'label': false})) }}
+                                        </div>
+                                        <div class="pull-left">
+                                            <span {{ coreshop_test_html_attribute('carrier-label') }}>
+                                                {{ carrier.title }}
+                                            </span>
+                                            {% if show_carrier_price %}
+                                                <span {{ coreshop_test_html_attribute('carrier-price') }}>{{ currency.convertAndFormat(price) }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if carrier.description %}
+                                    <div class="card-body">
+                                        {{ carrier.description }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {{ form_row(form.comment, coreshop_test_form_attribute('shipping-comment')) }}
 
             <div class="row">
                 {% set previousStep = coreshop_checkout_steps_get_previous() %}
@@ -33,6 +74,8 @@
                     </button>
                 </div>
             </div>
+
+
             {{ form_end(form) }}
         </div>
     </div>

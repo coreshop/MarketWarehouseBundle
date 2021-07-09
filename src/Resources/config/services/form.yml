@@ -27,3 +27,7 @@ services:
             - '%coreshop_market_warehouse.form.type.order_package.validation_groups%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Form\Extension\CarbonDateExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\DateType }
