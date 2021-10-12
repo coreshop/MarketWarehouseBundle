@@ -5,7 +5,7 @@
     <div class="card mb-4">
         <div class="card-header">
             {% if package.warehouse %}
-                Package von {{ package.warehouse.supplier.name }} - {{ package.shippingDate|date('d.m.Y') }}
+                Package von {{ package.warehouse.supplier.name }} {{ package.warehouse.identifier }} - {{ package.shippingDate|date('d.m.Y') }}
             {% else %}
                 Package without Supplier
             {% endif %}

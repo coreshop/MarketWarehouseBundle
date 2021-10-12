@@ -1,14 +1,14 @@
 {
     "id": "cs_supplier_carrier",
     "description": "",
-    "modificationDate": 1611235924,
+    "modificationDate": 1620732984,
     "parentClass": "CoreShop\\Bundle\\MarketWarehouseBundle\\Model\\SupplierCarrier",
     "implementsInterfaces": "",
     "listingParentClass": "",
     "useTraits": "",
     "listingUseTraits": "",
     "allowInherit": false,
-    "allowVariants": null,
+    "allowVariants": false,
     "showVariants": false,
     "layoutDefinitions": {
         "fieldtype": "panel",
@@ -62,8 +62,6 @@
                                 "fieldtype": "input",
                                 "width": null,
                                 "defaultValue": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
                                 "regex": "",
                                 "unique": false,
@@ -81,15 +79,12 @@
                                 "relationType": false,
                                 "invisible": false,
                                 "visibleGridView": false,
-                                "visibleSearch": false,
-                                "defaultValueGenerator": ""
+                                "visibleSearch": false
                             },
                             {
                                 "fieldtype": "input",
                                 "width": null,
                                 "defaultValue": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
                                 "regex": "",
                                 "unique": false,
@@ -107,8 +102,7 @@
                                 "relationType": false,
                                 "invisible": false,
                                 "visibleGridView": false,
-                                "visibleSearch": false,
-                                "defaultValueGenerator": ""
+                                "visibleSearch": false
                             },
                             {
                                 "fieldtype": "localizedfields",
@@ -117,8 +111,6 @@
                                         "fieldtype": "input",
                                         "width": null,
                                         "defaultValue": null,
-                                        "queryColumnType": "varchar",
-                                        "columnType": "varchar",
                                         "columnLength": 190,
                                         "regex": "",
                                         "unique": false,
@@ -136,8 +128,7 @@
                                         "relationType": false,
                                         "invisible": false,
                                         "visibleGridView": false,
-                                        "visibleSearch": false,
-                                        "defaultValueGenerator": ""
+                                        "visibleSearch": false
                                     },
                                     {
                                         "fieldtype": "textarea",
@@ -146,8 +137,6 @@
                                         "maxLength": null,
                                         "showCharCount": false,
                                         "excludeFromSearchIndex": false,
-                                        "queryColumnType": "longtext",
-                                        "columnType": "longtext",
                                         "name": "description",
                                         "title": "Description",
                                         "tooltip": "",
@@ -190,7 +179,7 @@
                                 "invisible": false,
                                 "visibleGridView": true,
                                 "visibleSearch": true,
-                                "labelWidth": null,
+                                "labelWidth": 0,
                                 "labelAlign": "left"
                             },
                             {
@@ -213,11 +202,6 @@
                             },
                             {
                                 "fieldtype": "image",
-                                "width": "",
-                                "height": "",
-                                "uploadPath": "",
-                                "queryColumnType": "int(11)",
-                                "columnType": "int(11)",
                                 "name": "logo",
                                 "title": "logo",
                                 "tooltip": "",
@@ -231,7 +215,10 @@
                                 "relationType": false,
                                 "invisible": false,
                                 "visibleGridView": false,
-                                "visibleSearch": false
+                                "visibleSearch": false,
+                                "width": "",
+                                "height": "",
+                                "uploadPath": ""
                             }
                         ],
                         "locked": false,
@@ -293,6 +280,7 @@
     "group": "CoreShop Warehouse",
     "showAppLoggerTab": false,
     "linkGeneratorReference": "",
+    "previewGeneratorReference": null,
     "compositeIndices": [],
     "generateTypeDeclarations": false,
     "showFieldLookup": false,

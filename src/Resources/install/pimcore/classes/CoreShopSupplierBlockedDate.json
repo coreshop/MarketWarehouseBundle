@@ -146,7 +146,7 @@
                 ],
                 "locked": false,
                 "icon": "",
-                "labelWidth": "",
+                "labelWidth": 0,
                 "labelAlign": "left"
             }
         ],

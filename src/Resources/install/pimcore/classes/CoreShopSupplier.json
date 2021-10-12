@@ -1,14 +1,14 @@
 {
     "id": "cs_supplier",
     "description": "",
-    "modificationDate": 1611235562,
+    "modificationDate": 1622467703,
     "parentClass": "CoreShop\\Bundle\\MarketWarehouseBundle\\Model\\Supplier",
     "implementsInterfaces": "",
     "listingParentClass": "",
     "useTraits": "",
     "listingUseTraits": "",
     "allowInherit": false,
-    "allowVariants": null,
+    "allowVariants": false,
     "showVariants": false,
     "layoutDefinitions": {
         "fieldtype": "panel",
@@ -18,8 +18,8 @@
         "type": null,
         "region": null,
         "title": null,
-        "width": null,
-        "height": null,
+        "width": 0,
+        "height": 0,
         "collapsible": false,
         "collapsed": false,
         "bodyStyle": null,
@@ -46,8 +46,6 @@
                         "fieldtype": "input",
                         "width": null,
                         "defaultValue": null,
-                        "queryColumnType": "varchar",
-                        "columnType": "varchar",
                         "columnLength": 190,
                         "regex": "",
                         "unique": false,
@@ -65,21 +63,23 @@
                         "relationType": false,
                         "invisible": false,
                         "visibleGridView": false,
-                        "visibleSearch": false,
-                        "defaultValueGenerator": ""
+                        "visibleSearch": false
                     },
                     {
-                        "fieldtype": "coreShopRelations",
+                        "fieldtype": "manyToManyObjectRelation",
                         "width": "",
                         "height": "",
                         "maxItems": "",
-                        "queryColumnType": "text",
                         "relationType": true,
                         "visibleFields": [],
                         "allowToCreateNewObject": false,
                         "optimizedAdminLoading": false,
                         "visibleFieldDefinitions": [],
-                        "stack": "coreshop_market_warehouse.supplier_carrier",
+                        "classes": [
+                            {
+                                "classes": "CoreShopSupplierCarrier"
+                            }
+                        ],
                         "pathFormatterClass": "",
                         "name": "carriers",
                         "title": "Carriers",
@@ -97,7 +97,7 @@
                     }
                 ],
                 "locked": false,
-                "icon": "",
+                "icon": null,
                 "labelWidth": 100,
                 "labelAlign": "left"
             }
@@ -112,6 +112,7 @@
     "group": "CoreShop Warehouse",
     "showAppLoggerTab": false,
     "linkGeneratorReference": "",
+    "previewGeneratorReference": "",
     "compositeIndices": [],
     "generateTypeDeclarations": true,
     "showFieldLookup": false,

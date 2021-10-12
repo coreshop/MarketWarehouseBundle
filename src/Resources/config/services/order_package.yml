@@ -33,7 +33,7 @@ services:
             - '@CoreShop\Bundle\MarketWarehouseBundle\Package\CompositeOrderPackageProcessor'
             - '@coreshop.factory.adjustment'
         tags:
-          - { name: coreshop.cart_processor }
+          - { name: coreshop.cart_processor, priority: 540 }
 
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\OrderPackagePriceProcessor:
         tags:

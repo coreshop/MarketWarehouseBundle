@@ -116,7 +116,7 @@ class Packager implements PackagerInterface
                         return 0;
                     }
 
-                    return $indices[$supplier1] > $indices[$supplier2] ? 1 : -1;
+                    return $indices[$supplier1] < $indices[$supplier2] ? 1 : -1;
                 });
 
                 $stocks = array_filter($stocks, function (ProductWarehouseStockInterface $stock) use ($cart, $address) {
@@ -129,12 +129,12 @@ class Packager implements PackagerInterface
                 });
             }
 
-            $left = $item->getQuantity();
+            $units = $item->getUnits();
 
             foreach ($stocks as $stock) {
-                $availableStock = $stock->getStock();
-                $stockUsed = min($availableStock, $left);
-                $left -= $stockUsed;
+                $availableStock = (int)$stock->getStock();
+                $stockUsed = min($availableStock, count($units));
+                $unitsUsed = array_splice($units, 0, $stockUsed);
 
                 //Create new Package, since it cannot be shipped with another one
                 if ($stock->getPackageType()->getSingleDeliveryOnline()) {
@@ -142,7 +142,7 @@ class Packager implements PackagerInterface
                         $package = $this->createNewPackage($cart, $address, $stock->getWarehouse(), $existingPackages);
                         $packages[] = $package;
 
-                        $this->createPackageItem($item, $package, 1);
+                        $this->createPackageItem($item, $package, $unitsUsed[$i]);
                     }
 
                     continue;
@@ -160,14 +160,14 @@ class Packager implements PackagerInterface
                     $packages[] = $package;
                 }
 
-                $this->createPackageItem($item, $package, $stockUsed);
+                $this->createPackageItem($item, $package, $unitsUsed);
 
-                if ($left <= 0) {
+                if (count($units) <= 0) {
                     break;
                 }
             }
 
-            if ($left > 0) {
+            if (count($units) > 0) {
                 //We have some we cannot deliver, what todo?
                 if (array_key_exists('left', $warehousePackages)) {
                     $packageLeft = $warehousePackages['left'];
@@ -175,7 +175,7 @@ class Packager implements PackagerInterface
                     $packageLeft = $this->createNewPackage($cart, $address, null, $existingPackages);
                 }
 
-                $this->createPackageItem($item, $packageLeft, $left);
+                $this->createPackageItem($item, $packageLeft, $units);
 
                 $packages[] = $packageLeft;
             }
@@ -187,7 +187,7 @@ class Packager implements PackagerInterface
     protected function createPackageItem(
         OrderItemInterface $item,
         OrderPackageInterface $package,
-        float $quantity
+        array $units
     ) {
         $packageItem = null;
 
@@ -209,7 +209,8 @@ class Packager implements PackagerInterface
             $package->addItem($packageItem);
         }
 
-        $packageItem->setQuantity($quantity);
+        $packageItem->setQuantity(count($units));
+        $packageItem->setUnits($units);
     }
 
     protected function createNewPackage(

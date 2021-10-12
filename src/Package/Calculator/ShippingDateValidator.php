@@ -25,6 +25,10 @@ class ShippingDateValidator implements ShippingDateValidatorInterface
         $warehouse = $package->getWarehouse();
         $earliestShippingDate = $package->getShippingDate();
 
+        if ($day->isPast()) {
+            return false;
+        }
+
         if ($day->isBefore($earliestShippingDate)) {
             return false;
         }

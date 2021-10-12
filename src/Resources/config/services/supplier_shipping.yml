@@ -99,3 +99,8 @@ services:
             - '@coreshop.currency_converter'
         tags:
             - { name: coreshop_market_warehouse.supplier_shipping.action, type: price, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\PriceActionConfigurationType }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Package\Shipping\PackageCarrierValidator:
+        decorates: 'coreshop.shipping.carrier.validator'
+        arguments:
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Package\Shipping\PackageCarrierValidator.inner'
