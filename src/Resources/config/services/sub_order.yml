@@ -1,0 +1,9 @@
+services:
+    #CoreShop\Bundle\MarketWarehouseBundle\SubOrder\CompositeSubOrderProcessor: ~
+
+    CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreatorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreator'
+    CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreator:
+        arguments:
+            - '@coreshop_market_warehouse.factory.sub_order'
+            - '@coreshop_market_warehouse.factory.sub_order_item'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
