@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Component\Order\Model\OrderItemUnitInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class OrderPackageItem extends AbstractPimcoreModel implements OrderPackageItemInterface
@@ -31,46 +30,6 @@ abstract class OrderPackageItem extends AbstractPimcoreModel implements OrderPac
         } while ($parent != null);
 
         throw new \InvalidArgumentException('OrderPackage could not be found!');
-    }
-
-    public function hasUnit(OrderItemUnitInterface $itemUnit): bool
-    {
-        $items = $this->getUnits() ?? [];
-
-        foreach ($items as $iValue) {
-            $arrayItem = $iValue;
-
-            if ($arrayItem->getId() === $itemUnit->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function addUnit(OrderItemUnitInterface $itemUnit): void
-    {
-        $items = $this->getUnits() ?? [];
-        $items[] = $itemUnit;
-
-        $this->setUnits($items);
-    }
-
-    public function removeUnit(OrderItemUnitInterface $itemUnit): void
-    {
-        $items = $this->getUnits() ?? [];
-
-        foreach ($items as $i => $iValue) {
-            $arrayItem = $iValue;
-
-            if ($arrayItem->getId() === $itemUnit->getId()) {
-                unset($items[$i]);
-
-                break;
-            }
-        }
-
-        $this->setUnits(array_values($items));
     }
 
     public function getTotal(bool $withTax = true)

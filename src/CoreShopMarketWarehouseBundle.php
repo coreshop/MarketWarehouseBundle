@@ -31,13 +31,18 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    use PackageVersionTrait;
+    use PackageVersionTrait { getVersion as getVersionTrait; }
 
-    public function getSupportedDrivers()
+    public function getSupportedDrivers(): array
     {
         return [
             CoreShopResourceBundle::DRIVER_DOCTRINE_ORM,
         ];
+    }
+
+    public function getVersion(): string
+    {
+        return $this->getVersionTrait();
     }
 
     public function build(ContainerBuilder $container): void
@@ -54,7 +59,7 @@ class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements Pi
         $container->addCompilerPass(new RegisterOrderPackageProcessorPass());
     }
 
-    protected function getModelNamespace()
+    protected function getModelNamespace(): ?string
     {
         return 'CoreShop\Bundle\MarketWarehouseBundle\Model';
     }

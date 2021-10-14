@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
 use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\OrderItemUnitInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 
@@ -29,22 +28,6 @@ interface OrderPackageItemInterface extends PimcoreModelInterface, ShippableItem
     public function getOrderItem(): ?OrderItemInterface;
 
     public function setOrderItem(?OrderItemInterface $cartItem);
-
-    /**
-     * @return OrderItemUnitInterface[]
-     */
-    public function getUnits(): ?array;
-
-    /**
-     * @var OrderItemUnitInterface[] $units
-     */
-    public function setUnits(?array $units);
-
-    public function hasUnit(OrderItemUnitInterface $itemUnit): bool;
-
-    public function addUnit(OrderItemUnitInterface $itemUnit): void;
-
-    public function removeUnit(OrderItemUnitInterface $itemUnit): void;
 
     /**
      * @return float|null

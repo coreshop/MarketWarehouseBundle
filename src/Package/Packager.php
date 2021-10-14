@@ -129,12 +129,12 @@ class Packager implements PackagerInterface
                 });
             }
 
-            $units = $item->getUnits();
+            $left = (int)$item->getQuantity();
 
             foreach ($stocks as $stock) {
-                $availableStock = (int)$stock->getStock();
-                $stockUsed = min($availableStock, count($units));
-                $unitsUsed = array_splice($units, 0, $stockUsed);
+                $availableStock = $stock->getStock();
+                $stockUsed = min($availableStock, $left);
+                $left -= $stockUsed;
 
                 //Create new Package, since it cannot be shipped with another one
                 if ($stock->getPackageType()->getSingleDeliveryOnline()) {
@@ -142,7 +142,7 @@ class Packager implements PackagerInterface
                         $package = $this->createNewPackage($cart, $address, $stock->getWarehouse(), $existingPackages);
                         $packages[] = $package;
 
-                        $this->createPackageItem($item, $package, $unitsUsed[$i]);
+                        $this->createPackageItem($item, $package, 1);
                     }
 
                     continue;
@@ -160,14 +160,14 @@ class Packager implements PackagerInterface
                     $packages[] = $package;
                 }
 
-                $this->createPackageItem($item, $package, $unitsUsed);
+                $this->createPackageItem($item, $package, (int)$stockUsed);
 
-                if (count($units) <= 0) {
+                if ($left <= 0) {
                     break;
                 }
             }
 
-            if (count($units) > 0) {
+            if ($left > 0) {
                 //We have some we cannot deliver, what todo?
                 if (array_key_exists('left', $warehousePackages)) {
                     $packageLeft = $warehousePackages['left'];
@@ -175,7 +175,7 @@ class Packager implements PackagerInterface
                     $packageLeft = $this->createNewPackage($cart, $address, null, $existingPackages);
                 }
 
-                $this->createPackageItem($item, $packageLeft, $units);
+                $this->createPackageItem($item, $packageLeft, (int)$left);
 
                 $packages[] = $packageLeft;
             }
@@ -187,7 +187,7 @@ class Packager implements PackagerInterface
     protected function createPackageItem(
         OrderItemInterface $item,
         OrderPackageInterface $package,
-        array $units
+        int $quantity
     ) {
         $packageItem = null;
 
@@ -209,8 +209,7 @@ class Packager implements PackagerInterface
             $package->addItem($packageItem);
         }
 
-        $packageItem->setQuantity(count($units));
-        $packageItem->setUnits($units);
+        $packageItem->setQuantity($quantity);
     }
 
     protected function createNewPackage(

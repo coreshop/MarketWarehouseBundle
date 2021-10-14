@@ -1,5 +1,5 @@
 {
-    "id": "cs_order_pacakge_item",
+    "id": "cs_order_package_item",
     "description": "",
     "modificationDate": 1626783822,
     "parentClass": "CoreShop\\Bundle\\MarketWarehouseBundle\\Model\\OrderPackageItem",

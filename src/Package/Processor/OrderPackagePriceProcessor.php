@@ -25,16 +25,11 @@ class OrderPackagePriceProcessor implements OrderPackageProcessorInterface
         $totalPriceGross = 0;
 
         foreach ($package->getItems() as $item) {
-            $itemPriceTotalNet = 0;
-            $itemPriceTotalGross = 0;
+            $itemPriceGross = $item->getOrderItem()->getItemPrice(true);
+            $itemPriceNet = $item->getOrderItem()->getItemPrice(false);
 
-            foreach ($item->getUnits() as $unit) {
-                $itemPriceTotalNet += $unit->getTotal(false);
-                $itemPriceTotalGross += $unit->getTotal(true);
-            }
-
-            $item->setTotal($itemPriceTotalGross, true);
-            $item->setTotal($itemPriceTotalNet, false);
+            $item->setTotal((int)($itemPriceGross * $item->getQuantity()), true);
+            $item->setTotal((int)($itemPriceNet * $item->getQuantity()), false);
 
             $totalPriceGross += $item->getSubtotalGross();
             $totalPriceNet += $item->getSubtotalNet();

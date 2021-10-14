@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
 use CoreShop\Component\Resource\Model\TranslationInterface;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\Shipping\Model\CarrierTranslationInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Doctrine\Common\Collections\Collection;
@@ -52,37 +53,47 @@ abstract class SupplierCarrier extends AbstractPimcoreModel implements SupplierC
         throw new \Exception('Not implemented');
     }
 
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         throw new \Exception('Not implemented');
     }
 
-    public function getTranslation($locale = null)
+    public function getTranslation($locale = null): CarrierTranslationInterface
     {
         throw new \Exception('Not implemented');
     }
 
-    public function hasTranslation(TranslationInterface $translation)
+    public function hasTranslation(TranslationInterface $translation): bool
     {
         throw new \Exception('Not implemented');
     }
 
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): void
     {
         throw new \Exception('Not implemented');
     }
 
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): void
     {
         throw new \Exception('Not implemented');
     }
 
-    public function setCurrentLocale($locale)
+    public function setCurrentLocale($locale): void
     {
         throw new \Exception('Not implemented');
     }
 
-    public function setFallbackLocale($locale)
+    public function setFallbackLocale($locale): void
+    {
+        throw new \Exception('Not implemented');
+    }
+
+    public function getHideFromCheckout()
+    {
+        return false;
+    }
+
+    public function setHideFromCheckout($hideFromCheckout)
     {
         throw new \Exception('Not implemented');
     }
