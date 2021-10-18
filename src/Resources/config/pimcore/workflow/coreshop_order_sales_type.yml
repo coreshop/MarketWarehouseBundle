@@ -1,0 +1,9 @@
+core_shop_workflow:
+    state_machine:
+        coreshop_order_sales_type:
+            callbacks:
+                after:
+                    create_suborder:
+                        on: ['order']
+                        do: ['@CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreatorInterface', 'createSubOrder']
+                        args: ['object']

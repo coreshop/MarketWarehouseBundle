@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface SubOrderItemInterface extends PimcoreModelInterface
@@ -35,6 +36,10 @@ interface SubOrderItemInterface extends PimcoreModelInterface
 
     public function setPackageItems(array $packages);
 
+    public function getProduct(): ?PurchasableInterface;
+
+    public function setProduct(?PurchasableInterface $product);
+
     /**
      * @return float|null
      */
@@ -51,4 +56,12 @@ interface SubOrderItemInterface extends PimcoreModelInterface
     public function getSubtotalGross(): int;
 
     public function setSubtotalGross(int $subtotalGross);
+
+    public function hasPackageItems(): bool;
+
+    public function addPackageItem(OrderPackageItemInterface $item): void;
+
+    public function removePackageItem(OrderPackageItemInterface $item): void;
+
+    public function hasPackageItem(OrderPackageItemInterface $item): bool;
 }

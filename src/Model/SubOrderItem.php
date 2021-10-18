@@ -51,4 +51,50 @@ abstract class SubOrderItem extends AbstractPimcoreModel implements SubOrderItem
     {
         $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
     }
+
+    public function hasPackageItems(): bool
+    {
+        return is_array($this->getItems()) && count($this->getItems()) > 0;
+    }
+
+    public function addPackageItem(OrderPackageItemInterface $item): void
+    {
+        $items = $this->getPackageItems();
+        $items[] = $item;
+
+        $this->setPackageItems($items);
+    }
+
+    public function removePackageItem(OrderPackageItemInterface $item): void
+    {
+        $items = $this->getPackageItems();
+
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $item->getId()) {
+                unset($items[$i]);
+
+                break;
+            }
+        }
+
+        $this->setPackageItems(array_values($items));
+    }
+
+    public function hasPackageItem(OrderPackageItemInterface $item): bool
+    {
+        $items = $this->getPackageItems();
+
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
+            $arrayItem = $items[$i];
+
+            if ($arrayItem->getId() === $item->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

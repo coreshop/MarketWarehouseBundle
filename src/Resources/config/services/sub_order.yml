@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     #CoreShop\Bundle\MarketWarehouseBundle\SubOrder\CompositeSubOrderProcessor: ~
 
     CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreatorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreator'
@@ -7,3 +10,4 @@ services:
             - '@coreshop_market_warehouse.factory.sub_order'
             - '@coreshop_market_warehouse.factory.sub_order_item'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
+            - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'

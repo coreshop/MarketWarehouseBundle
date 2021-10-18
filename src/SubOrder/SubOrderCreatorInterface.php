@@ -14,16 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\SubOrder;
 
-use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 
 interface SubOrderCreatorInterface
 {
-    /**
-     * @param OrderPackageInterface[] $packages
-     * @param OrderInterface          $cart
-     * @return SubOrderInterface
-     */
-    public function createSubOrder(array $packages, OrderInterface $cart): SubOrderInterface;
+    public function createSubOrder(OrderInterface $order): ?SubOrderInterface;
 }

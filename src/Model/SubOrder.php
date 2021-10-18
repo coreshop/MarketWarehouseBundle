@@ -74,6 +74,51 @@ abstract class SubOrder extends AbstractPimcoreModel implements SubOrderInterfac
         return false;
     }
 
+    public function hasPackages(): bool
+    {
+        return is_array($this->getPackages()) && count($this->getPackages()) > 0;
+    }
+
+    public function addPackage(OrderPackageInterface $package): void
+    {
+        $packages = $this->getPackages();
+        $packages[] = $package;
+
+        $this->setPackages($packages);
+    }
+
+    public function removePackage(OrderPackageInterface $package): void
+    {
+        $packages = $this->getPackages();
+
+        for ($i = 0, $c = count($packages); $i < $c; $i++) {
+            $arrayItem = $packages[$i];
+
+            if ($arrayItem->getId() === $package->getId()) {
+                unset($packages[$i]);
+
+                break;
+            }
+        }
+
+        $this->setPackages(array_values($packages));
+    }
+
+    public function hasPackage(OrderPackageInterface $package): bool
+    {
+        $packages = $this->getPackages();
+
+        for ($i = 0, $c = count($packages); $i < $c; $i++) {
+            $arrayItem = $packages[$i];
+
+            if ($arrayItem->getId() === $package->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getShipping(bool $withTax = false)
     {
         return $withTax ? $this->getShippingGross() : $this->getShippingNet();

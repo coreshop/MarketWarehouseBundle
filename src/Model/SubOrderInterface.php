@@ -26,6 +26,14 @@ interface SubOrderInterface extends PimcoreModelInterface, StoreAwareInterface
 
     public function setPackages(array $packages);
 
+    public function hasPackages(): bool;
+
+    public function addPackage(OrderPackageInterface $package): void;
+
+    public function removePackage(OrderPackageInterface $package): void;
+
+    public function hasPackage(OrderPackageInterface $package): bool;
+
     /**
      * @return SubOrderItemInterface[]
      */

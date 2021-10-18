@@ -20,55 +20,74 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItemInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 
 class SubOrderCreator implements SubOrderCreatorInterface
 {
-    protected FactoryInterface $subOrderFactory;
-    protected FactoryInterface $subOrderItemFactory;
-    protected CartContextResolverInterface $cartContextResolver;
-
     public function __construct(
-        FactoryInterface $subOrderFactory,
-        FactoryInterface $subOrderItemFactory,
-        CartContextResolverInterface $cartContextResolver
+        protected FactoryInterface $subOrderFactory,
+        protected FactoryInterface $subOrderItemFactory,
+        protected CartContextResolverInterface $cartContextResolver,
+        protected FolderCreationServiceInterface $folderCreationService,
     ) {
-        $this->subOrderFactory = $subOrderFactory;
-        $this->subOrderItemFactory = $subOrderItemFactory;
-        $this->cartContextResolver = $cartContextResolver;
     }
 
-    public function createSubOrder(array $packages, OrderInterface $order): SubOrderInterface
+    public function createSubOrder(OrderInterface $order): ?SubOrderInterface
     {
-        // TODO: implement
+        $subOrder = null;
+        $totalPriceNet = 0;
+        $totalPriceGross = 0;
+        $packages = $order->getPackages();
 
-        /**
-         * @var SubOrderInterface $subOrder
-         */
-        $subOrder = $this->subOrderFactory->createNew();
-        $subOrder->setPublished(true);
-        $subOrder->setOrder($order);
+        foreach ($packages as $index => $package) {
+            /**
+             * @var SubOrderInterface $subOrder
+             */
+            $subOrder = $this->subOrderFactory->createNew();
+            $subOrder->setPublished(true);
+            $subOrder->setParent(
+                $this->folderCreationService->createFolderForResource(
+                    $subOrder,
+                    ['prefix' => $order->getFullPath()]
+                )
+            );
 
-        return $subOrder;
+            $subOrder->setKey((string)$index);
+            $subOrder->setOrder($order);
+            $subOrder->addPackage($package);
+            $subOrder->save();
 
-        /*foreach ($packages as $package) {
+            /** @var OrderPackageItemInterface $item */
+            foreach ($package->getItems() as $k => $item) {
+                $this->createOrUpdateSubOrderItem($item, $subOrder, (string)$k);
 
+                $totalPriceGross += $item->getSubtotalGross();
+                $totalPriceNet += $item->getSubtotalNet();
+            }
+
+            $subOrder->setSubtotal($totalPriceGross, true);
+            $subOrder->setSubtotal($totalPriceNet, false);
+            $subOrder->setShipping($package->getShippingGross(), true);
+            $subOrder->setShipping($package->getShippingNet(), false);
+            $subOrder->save();
         }
 
-        return $subOrder;*/
+        return $subOrder;
     }
 
-    protected function createSubOrderItem(
+    protected function createOrUpdateSubOrderItem(
         OrderPackageItemInterface $item,
         SubOrderInterface $subOrder,
-        int $quantity
+        string $key,
     ) {
-        // TODO: implement
+        $quantity = (int)$item->getQuantity();
+        $subTotalNet = $item->getSubtotalNet();
+        $subTotalGross = $item->getSubtotalGross();
 
         $subOrderItem = null;
-
-        foreach ($subOrder->getItems() as $existingPackageItem) {
-            if ($existingPackageItem->getOrderItem() && $existingPackageItem->getOrderItem()->getId() === $item->getId()) {
-                $subOrderItem = $existingPackageItem;
+        foreach ($subOrder->getItems() as $existingItem) {
+            if ($existingItem->getOrderItem() && $item->getOrderItem() && $existingItem->getOrderItem()->getId() === $item->getOrderItem()->getId()) {
+                $subOrderItem = $existingItem;
             }
         }
 
@@ -78,11 +97,27 @@ class SubOrderCreator implements SubOrderCreatorInterface
              */
             $subOrderItem = $this->subOrderItemFactory->createNew();
             $subOrderItem->setPublished(true);
-            //$subOrderItem->setOrderItem($item);
-
+            $subOrderItem->setParent(
+                $this->folderCreationService->createFolderForResource(
+                    $subOrderItem,
+                    ['prefix' => $subOrder->getFullPath()]
+                )
+            );
+            $subOrderItem->setKey($key);
+            $subOrderItem->setPublished(true);
+            $subOrderItem->setProduct($item->getProduct());
+            $subOrderItem->setOrderItem($item->getOrderItem());
             $subOrder->addItem($subOrderItem);
+        } else {
+            $quantity += (int)$subOrderItem->getQuantity();
+            $subTotalNet += $subOrderItem->getSubtotalNet();
+            $subTotalGross += $subOrderItem->getSubtotalGross();
         }
 
+        $subOrderItem->addPackageItem($item);
         $subOrderItem->setQuantity($quantity);
+        $subOrderItem->setSubtotalNet($subTotalNet);
+        $subOrderItem->setSubtotalGross($subTotalGross);
+        $subOrderItem->save();
     }
 }

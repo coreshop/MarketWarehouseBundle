@@ -1,0 +1,2 @@
+imports:
+    - { resource: workflow/coreshop_order_sales_type.yml }
