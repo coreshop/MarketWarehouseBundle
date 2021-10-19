@@ -81,14 +81,31 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                 {
                     xtype: 'gridcolumn',
                     flex: 1,
-                    dataIndex: 'packages',
-                    text: t('coreshop_market_warehouse_suborders_packages'),
-                    renderer: function (value) {
-                        if (!Array.isArray(value)) {
-                            return 0;
+                    dataIndex: 'warehouses',
+                    text: t('coreshop_market_warehouse_suborders_suppliers'),
+                    renderer: function (warehouses) {
+                        if (!Array.isArray(warehouses)) {
+                            return '';
                         }
 
-                        return value.length;
+                        return warehouses.map((element) => {
+                            return element.supplier.name + ' (' + element.identifier + ')';
+                        }).join(', ');
+                    }
+                },
+                {
+                    xtype: 'gridcolumn',
+                    flex: 1,
+                    dataIndex: 'carriers',
+                    text: t('coreshop_market_warehouse_suborders_carriers'),
+                    renderer: function (carriers) {
+                        if (!Array.isArray(carriers)) {
+                            return '';
+                        }
+
+                        return carriers.map((element) => {
+                           return element.title;
+                        }).join(', ');
                     }
                 },
                 {
@@ -102,7 +119,6 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     xtype: 'widgetcolumn',
                     flex: 1,
                     onWidgetAttach: function (col, widget, record) {
-                        // TODO:
                         var cursor = record.data.transitions && record.data.transitions.length > 0 ? 'pointer' : 'default';
 
                         widget.setText(record.data.stateInfo.label);
@@ -119,17 +135,18 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                         border: 0,
                         defaultBindProperty: null,
                         handler: function (widgetColumn) {
-                            /*var record = widgetColumn.getWidgetRecord();
-                            var url = Routing.generate('coreshop_admin_order_payment_update_state'),
+                            var record = widgetColumn.getWidgetRecord();
+                            var url = Routing.generate('coreshop_market_warehouse_admin_sub_order_update_state'),
                                 transitions = record.get('transitions'),
                                 id = record.get('id');
+
                             if (transitions.length !== 0) {
                                 coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                     if (result.success) {
                                         me.panel.reload();
                                     }
                                 });
-                            }*/
+                            }
                         }
                     }
                 },

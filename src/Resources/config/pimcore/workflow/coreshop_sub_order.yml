@@ -12,26 +12,25 @@ core_shop_workflow:
             places:
                 - initialized
                 - new
-                - confirmed
                 - cancelled
                 - complete
             transitions:
                 create:
-                    from: [initialized]
+                    from: initialized
                     to: new
-                confirm:
-                    from: new
-                    to: confirmed
                 cancel:
-                    from: [new, confirmed]
+                    from: new
                     to:   cancelled
                 complete:
-                    from: confirmed
+                    from: new
                     to:   complete
             place_colors:
                 initialized: '#d6e1dd'
                 new: '#61c2cb'
-                confirmed: '#919d7f'
                 cancelled: '#f2583e'
+                complete: '#5b981a'
+            transition_colors:
+                create: '#feb624'
+                cancel: '#f2583e'
                 complete: '#5b981a'
             # TODO: callbacks

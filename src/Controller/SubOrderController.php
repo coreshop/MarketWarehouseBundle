@@ -15,10 +15,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Controller;
 
+use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderStates;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use JMS\Serializer\ArrayTransformerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class SubOrderController extends PimcoreController
@@ -35,6 +39,9 @@ class SubOrderController extends PimcoreController
         if ($orderId) {
             $data = $this->repository->findBy(['order__id' => $orderId]);
 
+            /**
+             * @var SubOrderInterface $subOrder
+             */
             foreach ($data as $subOrder) {
                 $subOrderSerialized = $serializer->toArray($subOrder);
                 $subOrderSerialized['stateInfo'] = $workflowStateManager->getStateInfo('coreshop_sub_order',
@@ -43,11 +50,43 @@ class SubOrderController extends PimcoreController
                     'coreshop_sub_order', [
                         'cancel',
                     ], false);
+                $subOrderSerialized['carriers'] = array_map(
+                    static function (OrderPackageInterface $package) use ($serializer) {
+                        return $serializer->toArray($package->getCarrier());
+                    }, $subOrder->getPackages()
+                );
+                $subOrderSerialized['warehouses'] = array_map(
+                    static function (OrderPackageInterface $package) use ($serializer) {
+                        return $serializer->toArray($package->getWarehouse());
+                    }, $subOrder->getPackages()
+                );
                 $result[] = $subOrderSerialized;
             }
         }
 
         return $this->viewHandler->handle(['success' => true, 'data' => $result]);
+    }
+
+    public function updateStateAction(
+        Request $request,
+        StateMachineManagerInterface $stateMachineManager
+    ): JsonResponse {
+        $subOrder = $this->repository->find($request->get('id'));
+        $transition = $request->get('transition');
+
+        if (!$subOrder instanceof SubOrderInterface) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'invalid suborder']);
+        }
+
+        //apply state machine
+        $workflow = $stateMachineManager->get($subOrder, 'coreshop_sub_order');
+        if (!$workflow->can($subOrder, $transition)) {
+            return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+        }
+
+        $workflow->apply($subOrder, $transition);
+
+        return $this->viewHandler->handle(['success' => true]);
     }
 
     protected function getPermission(): string

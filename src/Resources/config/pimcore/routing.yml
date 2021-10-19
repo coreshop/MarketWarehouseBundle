@@ -3,3 +3,9 @@ coreshop_market_warehouse_admin_sub_order_orders:
     defaults: { _controller: 'coreshop_market_warehouse.pimcore_controller.sub_order:getSubOrdersForOrder'}
     options:
         expose: true
+
+coreshop_market_warehouse_admin_sub_order_update_state:
+    path: /%coreshop.admin.route.base%/sub-order/update-state
+    defaults: { _controller: 'coreshop_market_warehouse.pimcore_controller.sub_order:updateStateAction'}
+    options:
+        expose: true
