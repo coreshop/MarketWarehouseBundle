@@ -24,3 +24,4 @@ core_shop_market_warehouse:
             supplier_shipping_rule_actions_discount_amount: '/bundles/coreshopmarketwarehouse/pimcore/js/supplier_shipping_rule/actions/discountAmount.js'
             supplier_shipping_rule_actions_discount_percent: '/bundles/coreshopmarketwarehouse/pimcore/js/supplier_shipping_rule/actions/discountPercent.js'
             supplier_shipping_rule_actions_price: '/bundles/coreshopmarketwarehouse/pimcore/js/supplier_shipping_rule/actions/price.js'
+            warehouse_suborders_detail_block: '/bundles/coreshopmarketwarehouse/pimcore/js/order/detail/blocks/coreShopMarketWarehouseSuborders.js'

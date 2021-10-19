@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection;
 
+use CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController;
 use CoreShop\Bundle\MarketWarehouseBundle\Doctrine\ORM\WarehouseDeliveryTimeRuleRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Doctrine\ORM\SupplierShippingRuleRepository;
 use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\WarehouseDeliveryTimeRuleType;
@@ -183,6 +184,7 @@ final class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopSubOrder')->cannotBeEmpty()->end()
+                                        ->scalarNode('pimcore_controller')->defaultValue(SubOrderController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(SubOrderInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(SubOrderRepository::class)->end()

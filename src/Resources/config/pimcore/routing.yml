@@ -1,0 +1,5 @@
+coreshop_market_warehouse_admin_sub_order_orders:
+    path: /%coreshop.admin.route.base%/order/sub-orders
+    defaults: { _controller: 'coreshop_market_warehouse.pimcore_controller.sub_order:getSubOrdersForOrder'}
+    options:
+        expose: true

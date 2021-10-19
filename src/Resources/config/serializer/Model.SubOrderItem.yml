@@ -1,0 +1,41 @@
+CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItem:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        subtotalNet:
+            serialized_name: subtotalNet
+            exp: object.getSubtotal(false)
+            type: integer
+            groups: [ List, Detailed ]
+        subtotaGross:
+            serialized_name: subtotaGross
+            exp: object.getSubtotal(true)
+            type: integer
+            groups: [ List, Detailed ]
+        #convertedSubtotalNet:
+        #    serialized_name: convertedSubtotalNet
+        #    exp: object.getConvertedSubtotal(false)
+        #    type: integer
+        #    groups: [ List, Detailed ]
+        #convertedSubtotaGross:
+        #    serialized_name: convertedSubtotaGross
+        #    exp: object.getConvertedSubtotal(true)
+        #    type: integer
+        #    groups: [ List, Detailed ]
+        quantity:
+            serialized_name: quantity
+            exp: object.getQuantity()
+            type: integer
+            groups: [List, Detailed]
+        product:
+            serialized_name: product
+            exp: object.getProduct()
+            groups: [ Detailed ]
+        orderItem:
+            serialized_name: orderItem
+            exp: object.getOrderItem()
+            groups: [ Detailed ]
+        packageItems:
+            serialized_name: packageItems
+            exp: object.getPackageItems()
+            groups: [Detailed]
