@@ -1,0 +1,37 @@
+framework:
+    workflows:
+        coreshop_sub_order:
+            type: 'state_machine'
+            marking_store:
+                service: coreshop.state_machine.marking_store.sub_order_pimcore_marking_store
+            supports: CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrder
+
+core_shop_workflow:
+    state_machine:
+        coreshop_sub_order:
+            places:
+                - initialized
+                - new
+                - confirmed
+                - cancelled
+                - complete
+            transitions:
+                create:
+                    from: [initialized]
+                    to: new
+                confirm:
+                    from: new
+                    to: confirmed
+                cancel:
+                    from: [new, confirmed]
+                    to:   cancelled
+                complete:
+                    from: confirmed
+                    to:   complete
+            place_colors:
+                initialized: '#d6e1dd'
+                new: '#61c2cb'
+                confirmed: '#919d7f'
+                cancelled: '#f2583e'
+                complete: '#5b981a'
+            # TODO: callbacks

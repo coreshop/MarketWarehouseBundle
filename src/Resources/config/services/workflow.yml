@@ -1,0 +1,15 @@
+parameters:
+    _defaults:
+        public: true
+
+services:
+    coreshop.state_machine.marking_store.single_state.sub_order_state:
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
+        arguments:
+            - true
+            - state
+
+    coreshop.state_machine.marking_store.sub_order_pimcore_marking_store:
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+            - '@coreshop.state_machine.marking_store.single_state.sub_order_state'

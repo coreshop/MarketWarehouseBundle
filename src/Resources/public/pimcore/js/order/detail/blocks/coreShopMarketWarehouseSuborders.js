@@ -42,6 +42,10 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
     updateSale: function () {
         var _ = this;
 
+        if(!_.suborders.items.length) {
+            _.suborders.add([_.generateItemGrid()]);
+        }
+
         Ext.Ajax.request({
             url: Routing.generate('coreshop_market_warehouse_admin_sub_order_orders'),
             params: {id: _.sale.id},
@@ -56,7 +60,6 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     }
                     data = responseData.data;
                     _.subordersStore.loadRawData(data);
-                    _.suborders.add([ _.generateItemGrid() ]);
                 } catch (e) {
                     console.log(e);
                 }
@@ -81,7 +84,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     dataIndex: 'packages',
                     text: t('coreshop_market_warehouse_suborders_packages'),
                     renderer: function (value) {
-                        if(!Array.isArray(value)) {
+                        if (!Array.isArray(value)) {
                             return 0;
                         }
 
@@ -102,12 +105,12 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                         // TODO:
                         var cursor = record.data.transitions && record.data.transitions.length > 0 ? 'pointer' : 'default';
 
-                        widget.setText(record.data.state ? record.data.state : 'TODO: State');
+                        widget.setText(record.data.stateInfo.label);
                         widget.setIconCls(record.data.transitions && record.data.transitions.length !== 0 ? 'pimcore_icon_open' : '');
 
                         widget.setStyle('border-radius', '2px');
                         widget.setStyle('cursor', cursor);
-                        //widget.setStyle('background-color', record.data.stateInfo.color);
+                        widget.setStyle('background-color', record.data.stateInfo.color);
                     },
                     widget: {
                         xtype: 'button',

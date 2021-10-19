@@ -15,22 +15,39 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Controller;
 
+use CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderStates;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
+use JMS\Serializer\ArrayTransformerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SubOrderController extends PimcoreController
 {
-    public function getSubOrdersForOrder(Request $request)
-    {
+    public function getSubOrdersForOrder(
+        Request $request,
+        ArrayTransformerInterface $serializer,
+        WorkflowStateInfoManagerInterface $workflowStateManager
+    ) {
         $this->isGrantedOr403();
 
-        $data = [];
+        $result = [];
         $orderId = (int)$request->get('id');
         if ($orderId) {
             $data = $this->repository->findBy(['order__id' => $orderId]);
+
+            foreach ($data as $subOrder) {
+                $subOrderSerialized = $serializer->toArray($subOrder);
+                $subOrderSerialized['stateInfo'] = $workflowStateManager->getStateInfo('coreshop_sub_order',
+                    $subOrder->getState() ?? SubOrderStates::STATE_NEW, false);
+                $subOrderSerialized['transitions'] = $workflowStateManager->parseTransitions($subOrder,
+                    'coreshop_sub_order', [
+                        'cancel',
+                    ], false);
+                $result[] = $subOrderSerialized;
+            }
         }
 
-        return $this->viewHandler->handle(['success' => true, 'data' => $data]);
+        return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
     protected function getPermission(): string
