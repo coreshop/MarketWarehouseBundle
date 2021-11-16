@@ -82,7 +82,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     xtype: 'gridcolumn',
                     flex: 1,
                     dataIndex: 'warehouses',
-                    text: t('coreshop_market_warehouse_suborders_suppliers'),
+                    text: t('coreshop_market_warehouse_suborders_supplier'),
                     renderer: function (warehouses) {
                         if (!Array.isArray(warehouses)) {
                             return '';
@@ -97,7 +97,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     xtype: 'gridcolumn',
                     flex: 1,
                     dataIndex: 'carriers',
-                    text: t('coreshop_market_warehouse_suborders_carriers'),
+                    text: t('coreshop_market_warehouse_suborders_carrier'),
                     renderer: function (carriers) {
                         if (!Array.isArray(carriers)) {
                             return '';

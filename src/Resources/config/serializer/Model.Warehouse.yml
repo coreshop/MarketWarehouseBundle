@@ -1,0 +1,12 @@
+CoreShop\Bundle\MarketWarehouseBundle\Model\Warehouse:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        identifier:
+            serialized_name: identifier
+            exp: object.getIdentifier()
+            groups: [ List, Detailed ]
+        supplier:
+            serialized_name: supplier
+            exp: object.getSupplier()
+            groups: [ List, Detailed ]

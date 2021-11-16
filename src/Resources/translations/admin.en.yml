@@ -1,1 +1,6 @@
 coreshop_market_warehouse_warehouse_delivery_time_rules: 'Delivery Time Rules'
+coreshop_market_warehouse_suborders: 'Suborders'
+coreshop_market_warehouse_suborders_supplier: 'Suppliers'
+coreshop_market_warehouse_suborders_carrier: 'Carrier'
+coreshop_market_warehouse_suborders_subtotal: 'Subtotal'
+coreshop_market_warehouse_workflow_state_coreshop_sub_order_complete:
