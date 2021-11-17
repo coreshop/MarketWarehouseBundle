@@ -10,3 +10,7 @@ CoreShop\Bundle\MarketWarehouseBundle\Model\SupplierCarrier:
             serialized_name: title
             exp: object.getTitle()
             groups: [List, Detailed]
+        trackingUrl:
+            serialized_name: trackingUrl
+            exp: object.getTrackingUrl()
+            groups: [ Detailed ]

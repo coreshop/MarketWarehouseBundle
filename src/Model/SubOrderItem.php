@@ -44,7 +44,7 @@ abstract class SubOrderItem extends AbstractPimcoreModel implements SubOrderItem
 
     public function getSubtotal($withTax = true)
     {
-        return $withTax ? $this->getSubtotalNet() : $this->getSubtotalGross();
+        return $withTax ?  $this->getSubtotalGross() : $this->getSubtotalNet();
     }
 
     public function setSubtotal(int $subtotal, bool $withTax = false)

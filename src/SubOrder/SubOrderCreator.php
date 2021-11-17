@@ -35,11 +35,12 @@ class SubOrderCreator implements SubOrderCreatorInterface
     public function createSubOrder(OrderInterface $order): ?SubOrderInterface
     {
         $subOrder = null;
-        $totalPriceNet = 0;
-        $totalPriceGross = 0;
         $packages = $order->getPackages();
 
         foreach ($packages as $index => $package) {
+            $totalPriceNet = 0;
+            $totalPriceGross = 0;
+
             /**
              * @var SubOrderInterface $subOrder
              */

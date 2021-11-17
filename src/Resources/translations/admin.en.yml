@@ -1,6 +1,34 @@
 coreshop_market_warehouse_warehouse_delivery_time_rules: 'Delivery Time Rules'
-coreshop_market_warehouse_suborders: 'Suborders'
-coreshop_market_warehouse_suborders_supplier: 'Suppliers'
-coreshop_market_warehouse_suborders_carrier: 'Carrier'
-coreshop_market_warehouse_suborders_subtotal: 'Subtotal'
-coreshop_market_warehouse_workflow_state_coreshop_sub_order_complete:
+
+coreshop_market_warehouse_warehouse: 'Warehouse'
+
+coreshop_market_warehouse_order_packages: 'Packages'
+coreshop_market_warehouse_order_package: 'Package'
+coreshop_market_warehouse_order_package_subtotal: 'Subtotal (incl.)'
+
+coreshop_market_warehouse_sub_orders: 'Suborders'
+coreshop_market_warehouse_sub_order: 'Suborder'
+coreshop_market_warehouse_sub_order_warehouse: 'Warehouse'
+coreshop_market_warehouse_sub_order_suppliers: 'Suppliers'
+coreshop_market_warehouse_sub_order_supplier: 'Supplier'
+coreshop_market_warehouse_sub_order_carriers: 'Carriers'
+coreshop_market_warehouse_sub_order_carrier: 'Carrier'
+coreshop_market_warehouse_sub_order_carrier_tracking_url: 'Tracking URL'
+coreshop_market_warehouse_sub_order_subtotal: 'Subtotal (incl.)'
+coreshop_market_warehouse_sub_order_shipping: 'Shipping (incl.)'
+
+coreshop_market_warehouse_sub_order_items: 'Suborder items'
+coreshop_market_warehouse_sub_order_item: 'Suborder item'
+coreshop_market_warehouse_sub_order_item_quantity: 'Quantity'
+coreshop_market_warehouse_sub_order_item_subtotal: 'Subtotal (incl.)'
+
+coreshop_market_warehouse_change_state: 'Change State'
+coreshop_market_warehouse_change_state_description: 'Click on a Button below to change the current State'
+coreshop_market_warehouse_open_order_sub_order: 'Open Suborder'
+
+coreshop_workflow_state_coreshop_sub_order_initialized: 'Initialized'
+coreshop_workflow_state_coreshop_sub_order_new: 'New'
+coreshop_workflow_state_coreshop_sub_order_confirmed: 'Confirmed'
+coreshop_workflow_state_coreshop_sub_order_cancelled: 'Cancelled'
+coreshop_workflow_state_coreshop_sub_order_complete: 'Complete'
+coreshop_workflow_transition_coreshop_sub_order_cancel: 'Cancel'

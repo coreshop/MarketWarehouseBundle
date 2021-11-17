@@ -2,13 +2,18 @@ CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItem:
     exclusion_policy: ALL
     xml_root_name: order
     virtual_properties:
+        _itemName:
+            serialized_name: _itemName
+            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null' # TODO: add interface check when upgrading to JMS Serializer > 3.0
+            type: string
+            groups: [ Detailed ]
         subtotalNet:
             serialized_name: subtotalNet
             exp: object.getSubtotal(false)
             type: integer
             groups: [ List, Detailed ]
-        subtotaGross:
-            serialized_name: subtotaGross
+        subtotalGross:
+            serialized_name: subtotalGross
             exp: object.getSubtotal(true)
             type: integer
             groups: [ List, Detailed ]
@@ -17,8 +22,8 @@ CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItem:
         #    exp: object.getConvertedSubtotal(false)
         #    type: integer
         #    groups: [ List, Detailed ]
-        #convertedSubtotaGross:
-        #    serialized_name: convertedSubtotaGross
+        #convertedSubtotalGross:
+        #    serialized_name: convertedSubtotalGross
         #    exp: object.getConvertedSubtotal(true)
         #    type: integer
         #    groups: [ List, Detailed ]

@@ -10,15 +10,15 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders');
-coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.create(coreshop.order.order.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders');
+coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.create(coreshop.order.order.detail.abstractBlock, {
     initBlock: function () {
-        this.subordersStore = new Ext.data.JsonStore({
+        this.subOrdersStore = new Ext.data.JsonStore({
             data: []
         });
 
-        this.suborders = Ext.create('Ext.panel.Panel', {
-            title: t('coreshop_market_warehouse_suborders'),
+        this.subOrders = Ext.create('Ext.panel.Panel', {
+            title: t('coreshop_market_warehouse_sub_orders'),
             border: true,
             scrollable: 'y',
             maxHeight: 360,
@@ -36,14 +36,14 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
     },
 
     getPanel: function () {
-        return this.suborders;
+        return this.subOrders;
     },
 
     updateSale: function () {
         var _ = this;
 
-        if(!_.suborders.items.length) {
-            _.suborders.add([_.generateItemGrid()]);
+        if(!_.subOrders.items.length) {
+            _.subOrders.add([_.generateItemGrid()]);
         }
 
         Ext.Ajax.request({
@@ -59,7 +59,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                         return;
                     }
                     data = responseData.data;
-                    _.subordersStore.loadRawData(data);
+                    _.subOrdersStore.loadRawData(data);
                 } catch (e) {
                     console.log(e);
                 }
@@ -76,13 +76,13 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
             xtype: 'grid',
             margin: '5 0 15 0',
             cls: 'coreshop-detail-grid',
-            store: _.subordersStore,
+            store: _.subOrdersStore,
             columns: [
                 {
                     xtype: 'gridcolumn',
                     flex: 1,
                     dataIndex: 'warehouses',
-                    text: t('coreshop_market_warehouse_suborders_supplier'),
+                    text: t('coreshop_market_warehouse_sub_order_supplier'),
                     renderer: function (warehouses) {
                         if (!Array.isArray(warehouses)) {
                             return '';
@@ -97,7 +97,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     xtype: 'gridcolumn',
                     flex: 1,
                     dataIndex: 'carriers',
-                    text: t('coreshop_market_warehouse_suborders_carrier'),
+                    text: t('coreshop_market_warehouse_sub_order_carrier'),
                     renderer: function (carriers) {
                         if (!Array.isArray(carriers)) {
                             return '';
@@ -112,7 +112,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     xtype: 'gridcolumn',
                     flex: 1,
                     dataIndex: 'subtotalGross',
-                    text: t('coreshop_market_warehouse_suborders_subtotal'),
+                    text: t('coreshop_market_warehouse_sub_order_subtotal'),
                     renderer: coreshop.util.format.currency.bind(this, _.sale.baseCurrency.isoCode)
                 },
                 {
@@ -158,9 +158,16 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_suborders = Class.c
                     items: [{
                         iconCls: 'pimcore_icon_open',
                         tooltip: t('open'),
+                        //handler: function (grid, rowIndex) {
+                        //    let record = grid.getStore().getAt(rowIndex);
+                        //    pimcore.helpers.openObject(record.get('o_id'));
+                        //}
                         handler: function (grid, rowIndex) {
-                            let record = grid.getStore().getAt(rowIndex);
-                            pimcore.helpers.openObject(record.get('o_id'));
+                            coreshop.order.order.editSubOrder.showWindow(grid.getStore().getAt(rowIndex), function (result) {
+                                if (result.success) {
+                                    me.panel.reload();
+                                }
+                            });
                         }
                     }]
                 }
