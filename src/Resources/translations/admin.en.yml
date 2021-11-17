@@ -31,4 +31,6 @@ coreshop_workflow_state_coreshop_sub_order_new: 'New'
 coreshop_workflow_state_coreshop_sub_order_confirmed: 'Confirmed'
 coreshop_workflow_state_coreshop_sub_order_cancelled: 'Cancelled'
 coreshop_workflow_state_coreshop_sub_order_complete: 'Complete'
+
 coreshop_workflow_transition_coreshop_sub_order_cancel: 'Cancel'
+coreshop_workflow_transition_coreshop_sub_order_complete: 'Complete'

@@ -52,17 +52,17 @@ coreshop.order.order.editSubOrder = {
                 items: [
                     {
                         xtype: 'textfield',
-                        fieldLabel: t('coreshop_market_warehouse_sub_order_shipping'),
-                        name: 'shippingGross',
-                        disabled: true,
-                        value: shippingGross
-                    },
-                    {
-                        xtype: 'textfield',
                         fieldLabel: t('coreshop_market_warehouse_sub_order_subtotal'),
                         name: 'subtotalGross',
                         disabled: true,
                         value: subtotalGross
+                    },
+                    {
+                        xtype: 'textfield',
+                        fieldLabel: t('coreshop_market_warehouse_sub_order_shipping'),
+                        name: 'shippingGross',
+                        disabled: true,
+                        value: shippingGross
                     },
                     {
                         xtype: 'gridpanel',
@@ -86,7 +86,23 @@ coreshop.order.order.editSubOrder = {
                                 text: t('coreshop_market_warehouse_sub_order_warehouse'),
                                 dataIndex: 'identifier',
                                 flex: 1
-                            }
+                            },
+                            {
+                                menuDisabled: true,
+                                sortable: false,
+                                xtype: 'actioncolumn',
+                                width: 32,
+                                items: [{
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip: t('open'),
+                                    handler: function (grid, rowIndex) {
+                                        let record = grid.getStore().getAt(rowIndex);
+                                        pimcore.helpers.openObject(record.get('o_id'));
+                                        window.close();
+                                        window.destroy();
+                                    }
+                                }]
+                            },
                         ]
                     },
                     {
@@ -104,11 +120,27 @@ coreshop.order.order.editSubOrder = {
                                 dataIndex: 'title',
                                 flex: 1
                             },
-                            {
+                            /*{
                                 text: t('coreshop_market_warehouse_sub_order_carrier_tracking_url'),
                                 dataIndex: 'trackingUrl',
                                 flex: 1
-                            }
+                            }*/
+                            {
+                                menuDisabled: true,
+                                sortable: false,
+                                xtype: 'actioncolumn',
+                                width: 32,
+                                items: [{
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip: t('open'),
+                                    handler: function (grid, rowIndex) {
+                                        let record = grid.getStore().getAt(rowIndex);
+                                        pimcore.helpers.openObject(record.get('o_id'));
+                                        window.close();
+                                        window.destroy();
+                                    }
+                                }]
+                            },
                         ]
                     },
                     {
@@ -136,7 +168,10 @@ coreshop.order.order.editSubOrder = {
                             fields: ['_itemName', 'quantity', 'subtotalGross']
                         }),
                         columns: [
-                            {text: t('coreshop_market_warehouse_sub_order_item'), dataIndex: '_itemName', flex: 2},
+                            {
+                                text: t('coreshop_market_warehouse_sub_order_item'),
+                                dataIndex: '_itemName', flex: 2
+                            },
                             {
                                 text: t('coreshop_market_warehouse_sub_order_item_quantity'),
                                 dataIndex: 'quantity',
@@ -147,7 +182,23 @@ coreshop.order.order.editSubOrder = {
                                 dataIndex: 'subtotalGross',
                                 flex: 1,
                                 renderer: coreshop.util.format.currency.bind(this, subOrder.get('order').baseCurrency.isoCode)
-                            }
+                            },
+                            {
+                                menuDisabled: true,
+                                sortable: false,
+                                xtype: 'actioncolumn',
+                                width: 32,
+                                items: [{
+                                    iconCls: 'pimcore_icon_open',
+                                    tooltip: t('open'),
+                                    handler: function (grid, rowIndex) {
+                                        let record = grid.getStore().getAt(rowIndex);
+                                        pimcore.helpers.openObject(record.get('o_id'));
+                                        window.close();
+                                        window.destroy();
+                                    }
+                                }]
+                            },
                         ]
                     }/*,
                     {

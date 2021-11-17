@@ -11,3 +11,4 @@ services:
             - '@coreshop_market_warehouse.factory.sub_order_item'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
             - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'

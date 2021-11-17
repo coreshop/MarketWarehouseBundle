@@ -158,10 +158,6 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                     items: [{
                         iconCls: 'pimcore_icon_open',
                         tooltip: t('open'),
-                        //handler: function (grid, rowIndex) {
-                        //    let record = grid.getStore().getAt(rowIndex);
-                        //    pimcore.helpers.openObject(record.get('o_id'));
-                        //}
                         handler: function (grid, rowIndex) {
                             coreshop.order.order.editSubOrder.showWindow(grid.getStore().getAt(rowIndex), function (result) {
                                 if (result.success) {

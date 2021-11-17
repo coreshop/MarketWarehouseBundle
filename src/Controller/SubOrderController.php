@@ -18,6 +18,7 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Controller;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderStates;
+use CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderTransitions;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
@@ -44,11 +45,12 @@ class SubOrderController extends PimcoreController
              */
             foreach ($data as $subOrder) {
                 $subOrderSerialized = $serializer->toArray($subOrder);
-                $subOrderSerialized['stateInfo'] = $workflowStateManager->getStateInfo('coreshop_sub_order',
+                $subOrderSerialized['stateInfo'] = $workflowStateManager->getStateInfo(SubOrderTransitions::IDENTIFIER,
                     $subOrder->getState() ?? SubOrderStates::STATE_NEW, false);
                 $subOrderSerialized['transitions'] = $workflowStateManager->parseTransitions($subOrder,
-                    'coreshop_sub_order', [
+                    SubOrderTransitions::IDENTIFIER, [
                         'cancel',
+                        'complete',
                     ], false);
                 $subOrderSerialized['carriers'] = array_map(
                     static function (OrderPackageInterface $package) use ($serializer) {
@@ -79,7 +81,7 @@ class SubOrderController extends PimcoreController
         }
 
         //apply state machine
-        $workflow = $stateMachineManager->get($subOrder, 'coreshop_sub_order');
+        $workflow = $stateMachineManager->get($subOrder, SubOrderTransitions::IDENTIFIER);
         if (!$workflow->can($subOrder, $transition)) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
         }

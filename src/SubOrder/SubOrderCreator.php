@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\SubOrder;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItemInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItemInterface;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -29,6 +30,7 @@ class SubOrderCreator implements SubOrderCreatorInterface
         protected FactoryInterface $subOrderItemFactory,
         protected CartContextResolverInterface $cartContextResolver,
         protected FolderCreationServiceInterface $folderCreationService,
+        protected StateMachineManagerInterface $stateMachineManager
     ) {
     }
 
@@ -71,6 +73,9 @@ class SubOrderCreator implements SubOrderCreatorInterface
             $subOrder->setShipping($package->getShippingGross(), true);
             $subOrder->setShipping($package->getShippingNet(), false);
             $subOrder->save();
+
+            $workflow = $this->stateMachineManager->get($subOrder, SubOrderTransitions::IDENTIFIER);
+            $workflow->apply($subOrder, SubOrderTransitions::TRANSITION_CREATE);
         }
 
         return $subOrder;

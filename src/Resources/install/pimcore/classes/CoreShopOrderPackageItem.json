@@ -1,7 +1,7 @@
 {
     "id": "cs_order_package_item",
     "description": "",
-    "modificationDate": 1626783822,
+    "modificationDate": 1637062645,
     "parentClass": "CoreShop\\Bundle\\MarketWarehouseBundle\\Model\\OrderPackageItem",
     "implementsInterfaces": "",
     "listingParentClass": "",
@@ -120,7 +120,8 @@
                         "relationType": false,
                         "invisible": false,
                         "visibleGridView": false,
-                        "visibleSearch": false
+                        "visibleSearch": false,
+                        "defaultValueGenerator": ""
                     },
                     {
                         "fieldtype": "numeric",
@@ -146,7 +147,8 @@
                         "relationType": false,
                         "invisible": false,
                         "visibleGridView": false,
-                        "visibleSearch": false
+                        "visibleSearch": false,
+                        "defaultValueGenerator": ""
                     },
                     {
                         "fieldtype": "numeric",
@@ -172,7 +174,8 @@
                         "relationType": false,
                         "invisible": false,
                         "visibleGridView": false,
-                        "visibleSearch": false
+                        "visibleSearch": false,
+                        "defaultValueGenerator": ""
                     },
                     {
                         "fieldtype": "numeric",
@@ -198,7 +201,8 @@
                         "relationType": false,
                         "invisible": false,
                         "visibleGridView": false,
-                        "visibleSearch": false
+                        "visibleSearch": false,
+                        "defaultValueGenerator": ""
                     },
                     {
                         "fieldtype": "numeric",
@@ -224,7 +228,8 @@
                         "relationType": false,
                         "invisible": false,
                         "visibleGridView": false,
-                        "visibleSearch": false
+                        "visibleSearch": false,
+                        "defaultValueGenerator": ""
                     },
                     {
                         "fieldtype": "coreShopMoney",
@@ -266,35 +271,6 @@
                         "permissions": null,
                         "datatype": "data",
                         "relationType": false,
-                        "invisible": false,
-                        "visibleGridView": false,
-                        "visibleSearch": false
-                    },
-                    {
-                        "fieldtype": "coreShopRelations",
-                        "stack": "coreshop.order_item_unit",
-                        "relationType": true,
-                        "objectsAllowed": true,
-                        "assetsAllowed": false,
-                        "documentsAllowed": false,
-                        "width": null,
-                        "height": "",
-                        "maxItems": "",
-                        "assetUploadPath": null,
-                        "assetTypes": [],
-                        "documentTypes": [],
-                        "classes": [],
-                        "pathFormatterClass": "",
-                        "name": "units",
-                        "title": "units",
-                        "tooltip": "",
-                        "mandatory": false,
-                        "noteditable": false,
-                        "index": false,
-                        "locked": false,
-                        "style": "",
-                        "permissions": null,
-                        "datatype": "data",
                         "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false
