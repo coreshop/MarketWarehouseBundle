@@ -16,8 +16,9 @@ namespace CoreShop\Behat\MarketWarehouseBundle\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository\OrderPackageRepository;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\OrderPackageRepositoryInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use Webmozart\Assert\Assert;
 
@@ -31,8 +32,7 @@ final class OrderPackageContext implements Context
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext,
         OrderPackageRepositoryInterface $orderPackageRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->cartContext = $cartContext;
         $this->orderPackageRepository = $orderPackageRepository;
@@ -55,6 +55,7 @@ final class OrderPackageContext implements Context
             )
         );
     }
+
     /**
      * @Then /^there should be (\d+) packages for my cart$/
      */
@@ -69,6 +70,31 @@ final class OrderPackageContext implements Context
             sprintf(
                 'There should be only one package for the cart, but found %d',
                 count($packages)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the package (\d+) from (my order) has (\d+) package items$/
+     */
+    public function thePackageFromMyOrderHasXPackageItems(int $packageIndex, OrderInterface $order, int $count = 2)
+    {
+        $packages = $this->orderPackageRepository->findForOrder($order);
+
+        Assert::minCount($packages, $packageIndex);
+
+        $packageIndex--;
+
+        /**
+         * @var OrderPackageInterface[] $packages
+         */
+        Assert::eq(
+            count($packages[$packageIndex]->getItems()),
+            $count,
+            sprintf(
+                'Package is expected to has %d package items but has %d package items',
+                $count,
+                count($packages[$packageIndex]->getItems())
             )
         );
     }

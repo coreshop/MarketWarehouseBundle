@@ -14,7 +14,12 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\SubOrderRepositoryInterface;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\Core\Model\OrderInterface;
 
 class SubOrderRepository extends PimcoreRepository implements SubOrderRepositoryInterface
 {
+    public function findForOrder(OrderInterface $order): array
+    {
+        return $this->findBy(['order__id' => $order->getId()]);
+    }
 }

@@ -3,3 +3,4 @@ imports:
     - domain/cart.yml
     - domain/supplier.yml
     - domain/packaging.yml
+    - domain/suborder.yml

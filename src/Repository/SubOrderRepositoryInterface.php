@@ -12,6 +12,9 @@
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Repository;
 
+use CoreShop\Component\Core\Model\OrderInterface;
+
 interface SubOrderRepositoryInterface
 {
+    public function findForOrder(OrderInterface $order): array;
 }

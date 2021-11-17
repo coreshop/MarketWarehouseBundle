@@ -1,0 +1,61 @@
+default:
+    suites:
+        domain_mw_suborder:
+            contexts:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+                - coreshop_market_warehouse.behat.context.hook.bundle_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+                - coreshop.behat.context.transform.tax_rate
+                - coreshop.behat.context.transform.tax_rule_group
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.country
+                - coreshop.behat.context.transform.currency
+                - coreshop.behat.context.transform.product
+                - coreshop.behat.context.transform.order
+                - coreshop.behat.context.transform.cart_price_rule
+                - coreshop.behat.context.transform.cart
+                - coreshop.behat.context.transform.customer
+                - coreshop.behat.context.transform.address
+                - coreshop.behat.context.transform.payment
+                - coreshop.behat.context.transform.shipping
+                - coreshop_market_warehouse.behat.context.transform.supplier
+                - coreshop_market_warehouse.behat.context.transform.supplier_warehouse
+                - coreshop_market_warehouse.behat.context.transform.supplier_package_type
+
+                - coreshop.behat.context.setup.tax_rate
+                - coreshop.behat.context.setup.tax_rule_group
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.country
+                - coreshop.behat.context.setup.currency
+                - coreshop.behat.context.setup.cart
+                - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.order
+                - coreshop.behat.context.setup.locale
+                - coreshop.behat.context.setup.customer
+                - coreshop.behat.context.setup.address
+                - coreshop.behat.context.setup.payment
+                - coreshop.behat.context.setup.order_shipment
+                - coreshop.behat.context.setup.order_invoice
+                - coreshop.behat.context.setup.shipping
+                - coreshop.behat.context.setup.cart_price_rule
+                - coreshop_market_warehouse.behat.context.setup.supplier
+                - coreshop_market_warehouse.behat.context.setup.supplier_warehouse
+                - coreshop_market_warehouse.behat.context.setup.product_warehouse_stock
+                - coreshop_market_warehouse.behat.context.setup.product_package_type
+
+                - coreshop.behat.context.domain.order
+                - coreshop_market_warehouse.behat.context.domain.order_package
+                - coreshop_market_warehouse.behat.context.domain.sub_order
+
+                - coreshop_market_warehouse.behat.context.transform.supplier
+                - coreshop_market_warehouse.behat.context.transform.supplier_warehouse
+
+                - coreshop_market_warehouse.behat.context.setup.supplier
+                - coreshop_market_warehouse.behat.context.setup.supplier_warehouse
+            filters:
+                tags: "@mw_domain && @suborder"
