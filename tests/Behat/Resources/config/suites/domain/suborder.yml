@@ -26,6 +26,7 @@ default:
                 - coreshop_market_warehouse.behat.context.transform.supplier
                 - coreshop_market_warehouse.behat.context.transform.supplier_warehouse
                 - coreshop_market_warehouse.behat.context.transform.supplier_package_type
+                - coreshop_market_warehouse.behat.context.transform.supplier_carrier
 
                 - coreshop.behat.context.setup.tax_rate
                 - coreshop.behat.context.setup.tax_rule_group
@@ -45,6 +46,7 @@ default:
                 - coreshop.behat.context.setup.cart_price_rule
                 - coreshop_market_warehouse.behat.context.setup.supplier
                 - coreshop_market_warehouse.behat.context.setup.supplier_warehouse
+                - coreshop_market_warehouse.behat.context.setup.supplier_shipping
                 - coreshop_market_warehouse.behat.context.setup.product_warehouse_stock
                 - coreshop_market_warehouse.behat.context.setup.product_package_type
 

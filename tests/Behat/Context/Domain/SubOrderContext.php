@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 CORS GmbH (https://cors.gmbh)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -65,15 +65,15 @@ final class SubOrderContext implements Context
     }
 
     /**
-     * @Then /^the subtotal for suborder (\d+) from (my order) is (\d+) including tax$/
+     * @Then /^the subtotal for suborder (\d+) from (my order) is "([^"]+)" including tax$/
      */
-    public function theSubotalForSuborderFromMyOrderIs(int $subOrderIndex, OrderInterface $order, int $total)
+    public function theSubotalForSuborderFromMyOrderIsIncludingTax(int $subOrderIndex, OrderInterface $order, int $total)
     {
         $this->checkSubtotalForSubOrder($subOrderIndex, $order, $total, true);
     }
 
     /**
-     * @Then /^the subtotal for suborder (\d+) from (my order) is (\d+) excluding tax$/
+     * @Then /^the subtotal for suborder (\d+) from (my order) is "([^"]+)" excluding tax$/
      */
     public function theSubotalForSuborderFromMyOrderIsExcludingTax(
         int $subOrderIndex,
@@ -81,6 +81,28 @@ final class SubOrderContext implements Context
         int $total
     ) {
         $this->checkSubtotalForSubOrder($subOrderIndex, $order, $total, false);
+    }
+
+    /**
+     * @Then /^the shipping for suborder (\d+) from (my order) is "([^"]+)" including tax$/
+     */
+    public function theShippingForSuborderFromMyOrderIsIncludingTax(
+        int $subOrderIndex,
+        OrderInterface $order,
+        int $total
+    ) {
+        $this->checkShippingForSubOrder($subOrderIndex, $order, $total, true);
+    }
+
+    /**
+     * @Then /^the shipping for suborder (\d+) from (my order) is "([^"]+)" excluding tax$/
+     */
+    public function theShippingForSuborderFromMyOrderIsExcludingTax(
+        int $subOrderIndex,
+        OrderInterface $order,
+        int $total
+    ) {
+        $this->checkShippingForSubOrder($subOrderIndex, $order, $total, false);
     }
 
     /**
@@ -130,6 +152,32 @@ final class SubOrderContext implements Context
                 'Subtotal is expected to be %s but is %s',
                 $total,
                 $subOrders[$subOrderIndex]->getSubtotal($withTax)
+            )
+        );
+    }
+
+    protected function checkShippingForSubOrder(
+        int $subOrderIndex,
+        OrderInterface $order,
+        int $total,
+        bool $withTax = true
+    ) {
+        $subOrders = $this->subOrderRepository->findForOrder($order);
+
+        Assert::minCount($subOrders, $subOrderIndex);
+
+        $subOrderIndex--;
+
+        /**
+         * @var SubOrderInterface[] $subOrders
+         */
+        Assert::eq(
+            $subOrders[$subOrderIndex]->getShipping($withTax),
+            $total,
+            sprintf(
+                'Shipping is expected to be %s but is %s',
+                $total,
+                $subOrders[$subOrderIndex]->getShipping($withTax)
             )
         );
     }

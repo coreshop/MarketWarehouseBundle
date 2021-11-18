@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2021 CORS GmbH (https://cors.gmbh)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -85,7 +85,7 @@ class SubOrderCreator implements SubOrderCreatorInterface
         OrderPackageItemInterface $item,
         SubOrderInterface $subOrder,
         string $key,
-    ) {
+    ): void {
         $quantity = (int)$item->getQuantity();
         $subTotalNet = $item->getSubtotalNet();
         $subTotalGross = $item->getSubtotalGross();

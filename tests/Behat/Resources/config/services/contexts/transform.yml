@@ -10,6 +10,14 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop_market_warehouse.behat.context.transform.supplier_carrier:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Transform\SupplierCarrierContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop_market_warehouse.repository.supplier_carrier'
+        tags:
+            - { name: fob.context_service }
+
     coreshop_market_warehouse.behat.context.transform.supplier_warehouse:
         class: CoreShop\Behat\MarketWarehouseBundle\Context\Transform\SupplierWarehouseContext
         arguments:

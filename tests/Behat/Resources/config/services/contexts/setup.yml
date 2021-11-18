@@ -18,6 +18,19 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop_market_warehouse.behat.context.setup.supplier_shipping:
+        class: CoreShop\Behat\MarketWarehouseBundle\Context\Setup\SupplierShippingContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.form_registry.shipping_rule.conditions'
+            - '@coreshop.form_registry.shipping_rule.actions'
+            - '@coreshop_market_warehouse.factory.supplier_carrier'
+            - '@coreshop_market_warehouse.factory.supplier_shipping_rule'
+        tags:
+            - { name: fob.context_service }
+
     coreshop_market_warehouse.behat.context.setup.product_warehouse_stock:
         class: CoreShop\Behat\MarketWarehouseBundle\Context\Setup\ProductWarehouseStockContext
         arguments:

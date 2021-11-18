@@ -21,6 +21,8 @@ Feature: Adding products from one supplier
     And the supplier has a warehouse "Nord"
     And the supplier has a warehouse "Süd"
     And the supplier has a package-type with identifier "Parcel"
+    And the site has a supplier-carrier "Standard" and ships for 10 in currency "EUR" for supplier "Wolf DE"
+    And the supplier-carrier "Standard" has tax rule group "AT"
     And the product "T-Shirt" has stock of 10 in supplier-warehouse "Wolf DE"->"Nord" with package-type "Parcel"
     And the product "Cup" has stock of 10 in supplier-warehouse "Wolf DE"->"Süd" with package-type "Parcel"
 
@@ -30,6 +32,12 @@ Feature: Adding products from one supplier
     And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
     And I create an order from my cart
     Then there should be one suborder for my order
+    And the subtotal for suborder 1 from my order is "2000" excluding tax
+    And the subtotal for suborder 1 from my order is "2400" including tax
+    And the order subtotal should be "2000" excluding tax
+    And the order subtotal should be "2400" including tax
+    And the package 1 from my order has 1 package items
+    And the suborder 1 from my order has 1 suborder items
 
   Scenario: Create a new order and add two product
     Given I add the product "T-Shirt" to my cart
@@ -38,11 +46,17 @@ Feature: Adding products from one supplier
     And the cart invoices to customer "some-customer@something.com" address with postcode "4600"
     And I create an order from my cart
     Then there should be two suborders for my order
-    And the subtotal for suborder 1 from my order is 2000 excluding tax
-    And the subtotal for suborder 2 from my order is 4000 excluding tax
-    And the subtotal for suborder 1 from my order is 2400 including tax
-    And the subtotal for suborder 2 from my order is 4800 including tax
+    And the subtotal for suborder 1 from my order is "2000" excluding tax
+    And the subtotal for suborder 1 from my order is "2400" including tax
+    And the shipping for suborder 1 from my order is "1000" excluding tax
+    And the shipping for suborder 1 from my order is "1200" including tax
+    And the subtotal for suborder 2 from my order is "4000" excluding tax
+    And the subtotal for suborder 2 from my order is "4800" including tax
+    And the shipping for suborder 2 from my order is "1000" excluding tax
+    And the shipping for suborder 2 from my order is "1200" including tax
     And the order subtotal should be "6000" excluding tax
     And the order subtotal should be "7200" including tax
     And the package 1 from my order has 1 package items
     And the suborder 1 from my order has 1 suborder items
+    And the package 2 from my order has 1 package items
+    And the suborder 2 from my order has 1 suborder items
