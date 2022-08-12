@@ -49,3 +49,4 @@ app/config/pimcore/
 coreshoptest
 database.yaml
 public/bundles
+vendor
