@@ -167,7 +167,7 @@ pimcore.object.tags.coreShopMarketWarehouseWarehouseDeliveryTimeRule = Class.cre
                 document.removeEventListener(pimcore.events.postSaveObject, this.postSaveObjectNew.bind(this));
             }
         }.bind(this));
-        
+
         return this.component;
     },
 

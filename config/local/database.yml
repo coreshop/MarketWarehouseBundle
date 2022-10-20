@@ -2,10 +2,10 @@ doctrine:
     dbal:
         connections:
             default:
-                host: coreshop-market-warehouse-bundle-mariadb
+                host: coreshop-mw-database
                 port: 3306
                 user: root
                 password: ROOT
                 dbname: pimcore
-                server_version: '10.5'
+                server_version: '8'
 

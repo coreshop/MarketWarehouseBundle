@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle;
 
-use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\RegisterOrderPackageProcessorPass;
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierShippingRuleActionPass;
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\SupplierShippingRuleConditionPass;
@@ -22,17 +21,12 @@ use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\Warehouse
 use CoreShop\Bundle\MarketWarehouseBundle\DependencyInjection\Compiler\WarehouseDeliveryTimeRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Pimcore\Extension\Bundle\PimcoreBundleInterface;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
-use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements PimcoreBundleInterface
+class CoreShopMarketWarehouseBundle extends AbstractResourceBundle
 {
-    use PackageVersionTrait { getVersion as getVersionTrait; }
-
     public function getSupportedDrivers(): array
     {
         return [
@@ -64,43 +58,13 @@ class CoreShopMarketWarehouseBundle extends AbstractResourceBundle implements Pi
         return 'CoreShop\Bundle\MarketWarehouseBundle\Model';
     }
 
-    protected function getComposerPackageName(): string
-    {
-        return 'coreshop/market-warehouse-bundle';
-    }
-
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'Market Warehouse Bundle';
     }
 
-    public function getInstaller()
+    public function getInstaller(): ?InstallerInterface
     {
         return $this->container->get(Installer::class);
-    }
-
-    public function getAdminIframePath()
-    {
-        return null;
-    }
-
-    public function getJsPaths()
-    {
-        return [];
-    }
-
-    public function getCssPaths()
-    {
-        return [];
-    }
-
-    public function getEditmodeJsPaths()
-    {
-        return [];
-    }
-
-    public function getEditmodeCssPaths()
-    {
-        return [];
     }
 }

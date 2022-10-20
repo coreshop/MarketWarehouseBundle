@@ -50,3 +50,4 @@ coreshoptest
 database.yaml
 public/bundles
 vendor
+.docker
