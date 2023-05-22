@@ -14,10 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use CoreShop\Component\Store\Model\StoreAwareInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 
-interface SubOrderInterface extends PimcoreModelInterface, StoreAwareInterface
+interface SubOrderInterface extends OrderInterface
 {
     /**
      * @return OrderPackageInterface[]
@@ -34,22 +33,13 @@ interface SubOrderInterface extends PimcoreModelInterface, StoreAwareInterface
 
     public function hasPackage(OrderPackageInterface $package): bool;
 
-    /**
-     * @return SubOrderItemInterface[]
-     */
-    public function getItems(): ?array;
+    public function getOrder(): ?\CoreShop\Component\Order\Model\OrderInterface;
 
-    public function setItems(array $items);
+    public function setOrder(?\CoreShop\Component\Order\Model\OrderInterface $order);
 
-    public function hasItems(): bool;
+    public function getIsSuborder(): ?bool;
 
-    public function addItem(SubOrderItemInterface $item): void;
-
-    public function removeItem(SubOrderItemInterface $item): void;
-
-    public function hasItem(SubOrderItemInterface $item): bool;
-
-    public function getShipping(bool $withTax = false);
+    public function setIsSuborder(?bool $isSuborder);
 
     public function setShipping(int $shipping, bool $withTax = false);
 
@@ -60,14 +50,4 @@ interface SubOrderInterface extends PimcoreModelInterface, StoreAwareInterface
     public function getShippingGross(): int;
 
     public function setShippingGross(int $shippingGross);
-
-    public function setSubtotal(int $subtotal, bool $withTax = true);
-
-    public function getSubtotalNet(): int;
-
-    public function setSubtotalNet(int $subtotalNet);
-
-    public function getSubtotalGross(): int;
-
-    public function setSubtotalGross(int $subtotalGross);
 }

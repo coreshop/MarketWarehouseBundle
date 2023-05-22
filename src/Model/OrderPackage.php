@@ -74,7 +74,7 @@ abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackage
         return false;
     }
 
-    public function getShipping(bool $withTax = false)
+    public function getShipping(bool $withTax = false): int
     {
         return $withTax ? $this->getShippingGross() : $this->getShippingNet();
     }
@@ -82,6 +82,10 @@ abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackage
     public function setShipping(int $shipping, bool $withTax = false)
     {
         $withTax ? $this->setShippingGross($shipping) : $this->setShippingNet($shipping);
+    }
+    public function getTotal(bool $withTax = false): int
+    {
+        return 0; //TODO
     }
 
     public function getSubtotal(bool $withTax = true): int

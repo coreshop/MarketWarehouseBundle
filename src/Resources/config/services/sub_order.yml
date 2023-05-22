@@ -7,8 +7,20 @@ services:
     CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreatorInterface: '@CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreator'
     CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreator:
         arguments:
-            - '@coreshop_market_warehouse.factory.sub_order'
-            - '@coreshop_market_warehouse.factory.sub_order_item'
+            - '@coreshop.factory.order'
+            - '@coreshop.factory.order_item'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
             - '@CoreShop\Component\Resource\Service\FolderCreationServiceInterface'
             - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+
+    CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController:
+        class: CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController
+        public: true
+        tags:
+            - { name: controller.service_arguments }
+        arguments:
+            - '@jms_serializer.serializer'
+            - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+            - '@coreshop.repository.order'

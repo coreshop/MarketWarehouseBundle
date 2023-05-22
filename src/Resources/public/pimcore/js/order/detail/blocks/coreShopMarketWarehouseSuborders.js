@@ -143,7 +143,8 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                             if (transitions.length !== 0) {
                                 coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                     if (result.success) {
-                                        me.panel.reload();
+                                        console.log(_);
+                                        _.panel.reload();
                                     }
                                 });
                             }
@@ -161,7 +162,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                         handler: function (grid, rowIndex) {
                             coreshop.order.order.editSubOrder.showWindow(grid.getStore().getAt(rowIndex), function (result) {
                                 if (result.success) {
-                                    me.panel.reload();
+                                    _.panel.reload();
                                 }
                             });
                         }

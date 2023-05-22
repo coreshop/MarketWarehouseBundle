@@ -15,12 +15,12 @@ coreshop.order.order.editSubOrder = {
     showWindow: function (subOrder, callback) {
         var subtotalGross = '';
         if(subOrder.get('subtotalGross')) {
-            subtotalGross = coreshop.util.format.currency(subOrder.get('order').baseCurrency.isoCode, subOrder.get('subtotalGross'));
+            subtotalGross = coreshop.util.format.currency(subOrder.get('baseCurrency').isoCode, subOrder.get('subtotalGross'));
         }
 
         var shippingGross = '';
         if(subOrder.get('shippingGross')) {
-            shippingGross = coreshop.util.format.currency(subOrder.get('order').baseCurrency.isoCode, subOrder.get('shippingGross'));
+            shippingGross = coreshop.util.format.currency(subOrder.get('baseCurrency').isoCode, subOrder.get('shippingGross'));
         }
 
         var window = new Ext.window.Window({
@@ -181,7 +181,7 @@ coreshop.order.order.editSubOrder = {
                                 text: t('coreshop_market_warehouse_sub_order_item_subtotal'),
                                 dataIndex: 'subtotalGross',
                                 flex: 1,
-                                renderer: coreshop.util.format.currency.bind(this, subOrder.get('order').baseCurrency.isoCode)
+                                renderer: coreshop.util.format.currency.bind(this, subOrder.get('baseCurrency').isoCode)
                             },
                             {
                                 menuDisabled: true,

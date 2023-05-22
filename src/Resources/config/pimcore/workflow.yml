@@ -1,3 +1,2 @@
 imports:
     - { resource: workflow/coreshop_order_sales_type.yml }
-    - { resource: workflow/coreshop_sub_order.yml }

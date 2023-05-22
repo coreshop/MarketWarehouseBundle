@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\Core\Model\OrderItem;
 
-abstract class SubOrderItem extends AbstractPimcoreModel implements SubOrderItemInterface
+abstract class SubOrderItem extends OrderItem implements SubOrderItemInterface
 {
     public function getSubOrder()
     {
@@ -30,26 +30,6 @@ abstract class SubOrderItem extends AbstractPimcoreModel implements SubOrderItem
         } while ($parent != null);
 
         throw new \InvalidArgumentException('SubOrder could not be found!');
-    }
-
-    public function getTotal(bool $withTax = true)
-    {
-        return $this->getSubtotal($withTax);
-    }
-
-    public function setTotal(int $total, bool $withTax = true)
-    {
-        $this->setSubtotal($total, $withTax);
-    }
-
-    public function getSubtotal($withTax = true)
-    {
-        return $withTax ?  $this->getSubtotalGross() : $this->getSubtotalNet();
-    }
-
-    public function setSubtotal(int $subtotal, bool $withTax = false)
-    {
-        $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
     }
 
     public function hasPackageItems(): bool

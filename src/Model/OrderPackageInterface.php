@@ -64,10 +64,6 @@ interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterfac
 
     public function hasItem(OrderPackageItemInterface $item): bool;
 
-    public function getShipping(bool $withTax = false);
-
-    public function setShipping(int $shipping, bool $withTax = false);
-
     public function getShippingNet(): int;
 
     public function setShippingNet(int $shippingNet);

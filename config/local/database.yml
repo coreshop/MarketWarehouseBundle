@@ -2,7 +2,7 @@ doctrine:
     dbal:
         connections:
             default:
-                host: coreshop-mw-database
+                host: mw
                 port: 3306
                 user: root
                 password: ROOT

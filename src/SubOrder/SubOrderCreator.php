@@ -20,6 +20,8 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItemInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 
@@ -27,10 +29,11 @@ class SubOrderCreator implements SubOrderCreatorInterface
 {
     public function __construct(
         protected FactoryInterface $subOrderFactory,
-        protected FactoryInterface $subOrderItemFactory,
+        protected FactoryInterface $orderItemFactory,
         protected CartContextResolverInterface $cartContextResolver,
         protected FolderCreationServiceInterface $folderCreationService,
-        protected StateMachineManagerInterface $stateMachineManager
+        protected StateMachineManagerInterface $stateMachineManager,
+        protected ObjectServiceInterface $objectService,
     ) {
     }
 
@@ -48,16 +51,23 @@ class SubOrderCreator implements SubOrderCreatorInterface
              */
             $subOrder = $this->subOrderFactory->createNew();
             $subOrder->setPublished(true);
-            $subOrder->setParent(
-                $this->folderCreationService->createFolderForResource(
-                    $subOrder,
-                    ['prefix' => $order->getFullPath()]
-                )
-            );
+            $subOrder->setParent($this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), 'sub_orders')));
 
             $subOrder->setKey((string)$index);
             $subOrder->setOrder($order);
+            $subOrder->setIsSuborder(true);
             $subOrder->addPackage($package);
+            $subOrder->setStore($order->getStore());
+            $subOrder->setOrderDate($order->getOrderDate());
+            // TODO: maybe same states as order?
+            //$subOrder->setSaleState($order->getSaleState());
+            //$subOrder->setOrderState($order->getOrderState());
+            //$subOrder->setShippingState($order->getShippingState());
+            //$subOrder->setInvoiceState($order->getInvoiceState());
+            $subOrder->setBaseCurrency($order->getBaseCurrency());
+            $subOrder->setCustomer($order->getCustomer());
+            $subOrder->setShippingAddress($order->getShippingAddress());
+            $subOrder->setPaymentProvider($order->getPaymentProvider());
             $subOrder->save();
 
             /** @var OrderPackageItemInterface $item */
@@ -74,8 +84,9 @@ class SubOrderCreator implements SubOrderCreatorInterface
             $subOrder->setShipping($package->getShippingNet(), false);
             $subOrder->save();
 
-            $workflow = $this->stateMachineManager->get($subOrder, SubOrderTransitions::IDENTIFIER);
-            $workflow->apply($subOrder, SubOrderTransitions::TRANSITION_CREATE);
+            // TODO: maybe same states as order?
+            $workflow = $this->stateMachineManager->get($subOrder, OrderTransitions::IDENTIFIER);
+            $workflow->apply($subOrder, OrderTransitions::TRANSITION_CREATE);
         }
 
         return $subOrder;
@@ -101,14 +112,9 @@ class SubOrderCreator implements SubOrderCreatorInterface
             /**
              * @var SubOrderItemInterface $subOrderItem
              */
-            $subOrderItem = $this->subOrderItemFactory->createNew();
+            $subOrderItem = $this->orderItemFactory->createNew();
             $subOrderItem->setPublished(true);
-            $subOrderItem->setParent(
-                $this->folderCreationService->createFolderForResource(
-                    $subOrderItem,
-                    ['prefix' => $subOrder->getFullPath()]
-                )
-            );
+            $subOrderItem->setParent($this->objectService->createFolderByPath(sprintf('%s/%s', $subOrder->getFullPath(), 'items')));
             $subOrderItem->setKey($key);
             $subOrderItem->setPublished(true);
             $subOrderItem->setProduct($item->getProduct());
