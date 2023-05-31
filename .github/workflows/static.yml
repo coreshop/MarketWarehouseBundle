@@ -23,8 +23,8 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
       matrix:
-        php: [7.4]
-        pimcore: [10.0.x-dev]
+        php: [8.0, 8.1]
+        pimcore: [~10.5.0]
 
     steps:
     - uses: actions/checkout@v2
