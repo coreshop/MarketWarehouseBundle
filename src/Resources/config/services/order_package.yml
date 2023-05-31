@@ -35,6 +35,12 @@ services:
         tags:
           - { name: coreshop.cart_processor, priority: 540 }
 
+    CoreShop\Bundle\MarketWarehouseBundle\Order\Processor\SubOrderShippingProcessor:
+        arguments:
+            - '@coreshop.factory.adjustment'
+        tags:
+          - { name: coreshop.cart_processor, priority: 551 }
+
     CoreShop\Bundle\MarketWarehouseBundle\Package\Processor\OrderPackagePriceProcessor:
         tags:
             - { name: coreshop_market_warehouse.order.package_processor, priority: 100 }

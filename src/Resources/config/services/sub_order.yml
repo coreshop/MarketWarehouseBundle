@@ -14,7 +14,7 @@ services:
             - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '@coreshop.order.number_generator.default'
-            - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
 
     CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController:
         class: CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController

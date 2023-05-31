@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Package;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItemInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\ProductWarehouseStockInterface;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\WarehouseInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\ProductWarehouseStockRepositoryInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\SupplierSaleRuleRepositoryInterface;
@@ -59,6 +60,10 @@ class Packager implements PackagerInterface
 
     public function createOrderPackages(OrderInterface $cart, array $existingPackages): array
     {
+        if ($cart instanceof SubOrderInterface && $cart->getIsSuborder()) {
+            return [];
+        }
+
         $store = $cart->getStore();
 
         $rule = $this->supplierSaleRuleRepository->findForStore($store);

@@ -20,6 +20,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItemInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderTransitions;
@@ -38,7 +39,7 @@ class SubOrderCreator implements SubOrderCreatorInterface
         protected StateMachineManagerInterface $stateMachineManager,
         protected ObjectServiceInterface $objectService,
         protected NumberGeneratorInterface $numberGenerator,
-        protected CartProcessorInterface $cartProcessor,
+        protected CartManagerInterface $cartManager,
     ) {
     }
 
@@ -85,13 +86,7 @@ class SubOrderCreator implements SubOrderCreatorInterface
             $subOrder->setShipping($package->getShippingGross(), true);
             $subOrder->setShipping($package->getShippingNet(), false);
 
-            $this->cartProcessor->process($subOrder);
-
-            $subOrder->save();
-
-//            // TODO: maybe same states as order?
-//            $workflow = $this->stateMachineManager->get($subOrder, OrderTransitions::IDENTIFIER);
-//            $workflow->apply($subOrder, OrderTransitions::TRANSITION_CONFIRM);
+            $this->cartManager->persistCart($subOrder);
         }
 
         return $subOrder;
