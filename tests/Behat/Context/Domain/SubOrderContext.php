@@ -183,6 +183,6 @@ final class SubOrderContext implements Context
     }
 
     protected function getSubOrders(OrderInterface $order): array {
-        return $this->orderRepository->findBy('order__id', $order->getId());
+        return $this->orderRepository->findBy(['order__id' => $order->getId()]);
     }
 }
