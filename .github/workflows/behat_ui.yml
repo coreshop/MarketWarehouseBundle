@@ -102,7 +102,10 @@ jobs:
       - name: Install CoreShop
         run: |
           bin/console coreshop:install
-          bin/console bin/console coreshop:patch:classes -f
+
+      - name: Install Market Warehouse Class Patches
+        run: |
+          bin/console coreshop:patch:classes -f
 
       - name: Install Browser Drivers
         run: vendor/bin/bdi detect drivers
