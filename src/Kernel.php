@@ -10,10 +10,10 @@ class Kernel extends PimcoreKernel
     {
         parent::registerBundlesToCollection($collection);
 
-        $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
-        $collection->addBundle(new \CoreShop\Bundle\MarketWarehouseBundle\CoreShopMarketWarehouseBundle());
+        $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle(), 100);
+        $collection->addBundle(new \CoreShop\Bundle\MarketWarehouseBundle\CoreShopMarketWarehouseBundle(), 200);
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
         $collection->addBundle(new \CoreShop\Bundle\TestBundle\CoreShopTestBundle(), 0);
-        $collection->addBundle(new \CoreShop\Bundle\ClassDefinitionPatchBundle\CoreShopClassDefinitionPatchBundle(), 0);
+        $collection->addBundle(new \CoreShop\Bundle\ClassDefinitionPatchBundle\CoreShopClassDefinitionPatchBundle(), 300);
     }
 }
