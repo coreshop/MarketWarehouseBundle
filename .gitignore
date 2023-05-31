@@ -49,3 +49,4 @@ coreshoptest
 database.yaml
 public/bundles
 vendor
+.env.local

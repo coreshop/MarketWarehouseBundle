@@ -4,14 +4,15 @@ on:
     branches: [ 'main' ]
   pull_request:
     branches: [ 'main' ]
+  release:
+    types: [ created ]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     env:
       APP_ENV: "test"
-      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
-      PIMCORE_KERNEL_CLASS: 'Kernel'
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
 
     strategy:
       matrix:
@@ -32,56 +33,56 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
-        extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
+          extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-    - name: Cache composer dependencies
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-        restore-keys: ${{ runner.os }}-composer-
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-    - if: matrix.dependencies == 'highest'
-      name: Install dependencies highest
-      run: |
-        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        composer update --no-progress --prefer-dist --optimize-autoloader
+      - if: matrix.dependencies == 'highest'
+        name: Install dependencies highest
+        run: |
+          composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+          composer update --no-progress --prefer-dist --optimize-autoloader
 
-    - if: matrix.dependencies == 'lowest'
-      name: Install dependencies lowest
-      run: |
-        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
+      - if: matrix.dependencies == 'lowest'
+        name: Install dependencies lowest
+        run: |
+          composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+          composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
-    - name: Validate YAML
-      run: bin/console lint:yaml src
+      - name: Validate YAML
+        run: bin/console lint:yaml src
 
-    - name: Validate TWIG
-      run: bin/console lint:twig src
+      - name: Validate TWIG
+        run: bin/console lint:twig src
 
-    - name: Validate Doctrine Settings
-      run: bin/console doctrine:schema:validate --skip-sync
+      - name: Validate Doctrine Settings
+        run: bin/console doctrine:schema:validate --skip-sync
 
-    - name: STAN
-      run: |
-        cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
-        bin/console cache:clear --env=dev
-        vendor/bin/phpstan analyse -c phpstan.neon src -l 3
+      - name: STAN
+        run: |
+          cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
+          bin/console cache:clear --env=dev
+          vendor/bin/phpstan analyse -c phpstan.neon src -l 3
 
-    - name: PSALM
-      run: |
-        vendor/bin/psalm
+      - name: PSALM
+        run: |
+          vendor/bin/psalm
