@@ -1,0 +1,5 @@
+services:
+    CoreShop\Bundle\MarketWarehouseBundle\StateMachine\CascadeSuborderTransition:
+        public: true
+        arguments:
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'

@@ -1,0 +1,87 @@
+core_shop_class_definition_patch:
+  patches:
+    '%coreshop.model.order_item.pimcore_class_name%':
+      interface: '\CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItemInterface'
+      use_traits: '\CoreShop\Bundle\MarketWarehouseBundle\Model\PackageItemTrait'
+      fields:
+        orderItem:
+          after: 'unitDefinition'
+          definition:
+            name: orderItem
+            title: Order Item
+            tooltip: ""
+            mandatory: false
+            noteditable: true
+            index: false
+            locked: false
+            style: ""
+            permissions: null
+            datatype: data
+            fieldtype: coreShopRelation
+            relationType: true
+            invisible: false
+            visibleGridView: false
+            visibleSearch: false
+            classes:
+              - classes: CoreShopOrderItem
+            pathFormatterClass: ""
+            width: null
+            assetUploadPath: null
+            objectsAllowed: true
+            assetsAllowed: false
+            assetTypes: [ ]
+            documentsAllowed: false
+            documentTypes: [ ]
+            stack: coreshop.order_item
+            returnConcrete: false
+        packageItems:
+          after: 'unitDefinition'
+          definition:
+            name: packageItems
+            title: Package Items
+            tooltip: ""
+            mandatory: false
+            noteditable: true
+            index: false
+            locked: false
+            style: ""
+            permissions: null
+            datatype: data
+            fieldtype: coreShopRelations
+            relationType: true
+            invisible: false
+            visibleGridView: false
+            visibleSearch: false
+            classes: [ ]
+            pathFormatterClass: ""
+            width: null
+            height: ""
+            maxItems: null
+            assetUploadPath: null
+            objectsAllowed: true
+            assetsAllowed: false
+            assetTypes: [ ]
+            documentsAllowed: false
+            documentTypes: [ ]
+            enableTextSelection: false
+            stack: coreshop_market_warehouse.order_package_item
+        isSuborderItem:
+          after: 'unitDefinition'
+          definition:
+            name: isSuborderItem
+            title: Is Suborder Item
+            tooltip: ""
+            mandatory: false
+            noteditable: true
+            index: false
+            locked: false
+            style: ""
+            permissions: null
+            datatype: data
+            fieldtype: checkbox
+            relationType: false
+            invisible: false
+            visibleGridView: false
+            visibleSearch: false
+            defaultValue: 0
+            defaultValueGenerator: ""

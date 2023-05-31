@@ -21,6 +21,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Repository\SupplierShippingRuleReposit
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\ORM\EntityRepository;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
@@ -419,7 +420,7 @@ class SupplierShippingRule extends Data implements
     }
 
     /**
-     * @return SupplierShippingRuleRepositoryInterface
+     * @return SupplierShippingRuleRepositoryInterface&EntityRepository
      */
     private function getRepository()
     {

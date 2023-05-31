@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
 use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 
@@ -53,4 +55,8 @@ interface OrderPackageItemInterface extends PimcoreModelInterface, ShippableItem
     public function getSubtotalGross(): int;
 
     public function setSubtotalGross(int $subtotalGross);
+
+    public function getProduct(): ?PurchasableInterface;
+
+    public function setProduct(?PurchasableInterface $product);
 }

@@ -4,7 +4,6 @@ default:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
-                - coreshop_market_warehouse.behat.context.hook.bundle_setup
 
                 - coreshop.behat.context.hook.doctrine_orm
                 - coreshop.behat.context.hook.pimcore_dao
@@ -25,4 +24,4 @@ default:
 
                 - coreshop.behat.context.domain.product
             filters:
-                tags: "@mw_domain && @product"
+                tags: "@mw_domain&&@product"

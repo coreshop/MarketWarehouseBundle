@@ -1,82 +1,85 @@
 name: Static Tests (Lint, Stan)
 on:
   push:
-    branches: [ main ]
+    branches: [ 'main' ]
   pull_request:
-    branches: [ main ]
+    branches: [ 'main' ]
+  release:
+    types: [ created ]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     env:
-      PIMCORE_ENVIRONMENT: "test"
-      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+      APP_ENV: "test"
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
+
+    strategy:
+      matrix:
+        php: [ 8.0, 8.1 ]
+        pimcore: [ ~10.5.0 ]
+        dependencies: [ highest ]
+
     services:
-      mysql:
-        image: mysql:5.7
+      database:
+        image: "mariadb:10.5"
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: coreshop_test
         ports:
-          - 3306
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
-    strategy:
-      matrix:
-        php: [7.4]
-        pimcore: [10.0.x-dev]
+
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, Deps ${{ matrix.dependencies }}"
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        extensions: intl
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
+          extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-        restore-keys: ${{ runner.os }}-composer-
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-    - name: Verify MySQL connection from host
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y mysql-client
-        mysql -uroot -h127.0.0.1 -proot -e "SHOW DATABASES"
+      - if: matrix.dependencies == 'highest'
+        name: Install dependencies highest
+        run: |
+          composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+          composer update --no-progress --prefer-dist --optimize-autoloader
 
-    - name: Setup mysql
-      run: |
-        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_file_format=Barracuda;"
-        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
-        mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+      - if: matrix.dependencies == 'lowest'
+        name: Install dependencies lowest
+        run: |
+          composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+          composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate YAML
+        run: bin/console lint:yaml src
 
-    - name: Composer install
-      run: |
-        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: Validate TWIG
+        run: bin/console lint:twig src
 
-    - name: Validate YAML
-      run: bin/console lint:yaml src --no-debug
+      - name: Validate Doctrine Settings
+        run: bin/console doctrine:schema:validate --skip-sync
 
-    - name: Validate TWIG
-      run: bin/console lint:twig src --no-debug
+      - name: STAN
+        run: |
+          cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
+          bin/console cache:clear --env=dev
+          vendor/bin/phpstan analyse -c phpstan.neon src -l 3
 
-    - name: STAN
-      run: |
-        cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
-        bin/console cache:warmup --env=dev
-        vendor/bin/phpstan analyse -c phpstan.neon src -l 3

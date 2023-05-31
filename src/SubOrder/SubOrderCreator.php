@@ -19,7 +19,13 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItemInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
+use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Service\FolderCreationServiceInterface;
 
@@ -27,55 +33,63 @@ class SubOrderCreator implements SubOrderCreatorInterface
 {
     public function __construct(
         protected FactoryInterface $subOrderFactory,
-        protected FactoryInterface $subOrderItemFactory,
+        protected FactoryInterface $orderItemFactory,
         protected CartContextResolverInterface $cartContextResolver,
         protected FolderCreationServiceInterface $folderCreationService,
-        protected StateMachineManagerInterface $stateMachineManager
+        protected StateMachineManagerInterface $stateMachineManager,
+        protected ObjectServiceInterface $objectService,
+        protected NumberGeneratorInterface $numberGenerator,
+        protected CartManagerInterface $cartManager,
     ) {
     }
 
     public function createSubOrder(OrderInterface $order): ?SubOrderInterface
     {
         $subOrder = null;
+        /**
+         * @var SubOrderInterface $order
+         */
         $packages = $order->getPackages();
 
         foreach ($packages as $index => $package) {
-            $totalPriceNet = 0;
-            $totalPriceGross = 0;
+            $orderNumber = $this->numberGenerator->generate($order);
 
             /**
              * @var SubOrderInterface $subOrder
              */
             $subOrder = $this->subOrderFactory->createNew();
             $subOrder->setPublished(true);
-            $subOrder->setParent(
-                $this->folderCreationService->createFolderForResource(
-                    $subOrder,
-                    ['prefix' => $order->getFullPath()]
-                )
-            );
-
+            $subOrder->setParent($this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), 'sub_orders')));
             $subOrder->setKey((string)$index);
             $subOrder->setOrder($order);
+            $subOrder->setOrderNumber($orderNumber);
+            $subOrder->setIsSuborder(true);
             $subOrder->addPackage($package);
+            $subOrder->setStore($order->getStore());
+            $subOrder->setOrderDate($order->getOrderDate());
+            $subOrder->setSaleState($order->getSaleState());
+            $subOrder->setOrderState($order->getOrderState());
+            $subOrder->setPaymentState($order->getPaymentState());
+            $subOrder->setShippingState($order->getShippingState());
+            $subOrder->setInvoiceState($order->getInvoiceState());
+            $subOrder->setBaseCurrency($order->getBaseCurrency());
+            $subOrder->setCurrency($order->getCurrency());
+            $subOrder->setCustomer($order->getCustomer());
+            $subOrder->setShippingAddress($order->getShippingAddress());
+            $subOrder->setInvoiceAddress($order->getInvoiceAddress());
+            $subOrder->setPaymentProvider($order->getPaymentProvider());
+            $subOrder->setLocaleCode($order->getLocaleCode());
             $subOrder->save();
 
             /** @var OrderPackageItemInterface $item */
             foreach ($package->getItems() as $k => $item) {
                 $this->createOrUpdateSubOrderItem($item, $subOrder, (string)$k);
-
-                $totalPriceGross += $item->getSubtotalGross();
-                $totalPriceNet += $item->getSubtotalNet();
             }
 
-            $subOrder->setSubtotal($totalPriceGross, true);
-            $subOrder->setSubtotal($totalPriceNet, false);
             $subOrder->setShipping($package->getShippingGross(), true);
             $subOrder->setShipping($package->getShippingNet(), false);
-            $subOrder->save();
 
-            $workflow = $this->stateMachineManager->get($subOrder, SubOrderTransitions::IDENTIFIER);
-            $workflow->apply($subOrder, SubOrderTransitions::TRANSITION_CREATE);
+            $this->cartManager->persistCart($subOrder);
         }
 
         return $subOrder;
@@ -101,14 +115,9 @@ class SubOrderCreator implements SubOrderCreatorInterface
             /**
              * @var SubOrderItemInterface $subOrderItem
              */
-            $subOrderItem = $this->subOrderItemFactory->createNew();
+            $subOrderItem = $this->orderItemFactory->createNew();
             $subOrderItem->setPublished(true);
-            $subOrderItem->setParent(
-                $this->folderCreationService->createFolderForResource(
-                    $subOrderItem,
-                    ['prefix' => $subOrder->getFullPath()]
-                )
-            );
+            $subOrderItem->setParent($this->objectService->createFolderByPath(sprintf('%s/%s', $subOrder->getFullPath(), 'items')));
             $subOrderItem->setKey($key);
             $subOrderItem->setPublished(true);
             $subOrderItem->setProduct($item->getProduct());

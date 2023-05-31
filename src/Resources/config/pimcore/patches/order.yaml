@@ -1,0 +1,104 @@
+core_shop_class_definition_patch:
+  patches:
+    '%coreshop.model.order.pimcore_class_name%':
+      interface: '\CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface'
+      use_traits: '\CoreShop\Bundle\MarketWarehouseBundle\Model\PackagesTrait'
+      fields:
+        order:
+          after: 'additionalData'
+          definition:
+            name: order
+            title: Order
+            tooltip: ""
+            mandatory: false
+            noteditable: true
+            index: false
+            locked: false
+            style: ""
+            permissions: null
+            datatype: data
+            fieldtype: coreShopRelation
+            relationType: true
+            invisible: false
+            visibleGridView: false
+            visibleSearch: false
+            classes:
+              - classes: CoreShopOrder
+            pathFormatterClass: ""
+            width: null
+            assetUploadPath: ""
+            objectsAllowed: true
+            assetsAllowed: false
+            assetTypes: [ ]
+            documentsAllowed: false
+            documentTypes: [ ]
+            stack: coreshop.order
+            returnConcrete: false
+        isSuborder:
+          after: 'additionalData'
+          definition:
+            name: isSuborder
+            title: Is Suborder
+            tooltip: ""
+            mandatory: false
+            noteditable: true
+            index: false
+            locked: false
+            style: ""
+            permissions: null
+            datatype: data
+            fieldtype: checkbox
+            relationType: false
+            invisible: false
+            visibleGridView: false
+            visibleSearch: false
+            defaultValue: 0
+            defaultValueGenerator: ""
+        shippingNet:
+          after: 'additionalData'
+          definition:
+            name: shippingNet
+            title: Shipping net
+            tooltip: ""
+            mandatory: false
+            noteditable: true
+            index: false
+            locked: false
+            style: ""
+            permissions: null
+            datatype: data
+            fieldtype: coreShopMoney
+            relationType: false
+            invisible: false
+            visibleGridView: false
+            visibleSearch: false
+            width: null
+            defaultValue: null
+            phpdocType: int
+            minValue: null
+            maxValue: null
+            nullable: false
+        shippingGross:
+            after: 'additionalData'
+            definition:
+              name: shippingGross
+              title: Shipping gross
+              tooltip: ""
+              mandatory: false
+              noteditable: true
+              index: false
+              locked: false
+              style: ""
+              permissions: null
+              datatype: data
+              fieldtype: coreShopMoney
+              relationType: false
+              invisible: false
+              visibleGridView: false
+              visibleSearch: false
+              width: null
+              defaultValue: null
+              phpdocType: int
+              minValue: null
+              maxValue: null
+              nullable: false

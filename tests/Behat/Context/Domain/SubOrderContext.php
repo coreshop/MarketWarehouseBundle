@@ -17,15 +17,15 @@ namespace CoreShop\Behat\MarketWarehouseBundle\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\Repository\SubOrderRepositoryInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class SubOrderContext implements Context
 {
     public function __construct(
         private SharedStorageInterface $sharedStorage,
-        private SubOrderRepositoryInterface $subOrderRepository
+        private OrderRepositoryInterface $orderRepository
     ) {
 
     }
@@ -35,7 +35,7 @@ final class SubOrderContext implements Context
      */
     public function thereShouldBeOnePackageForMyCart(OrderInterface $order)
     {
-        $subOrders = $this->subOrderRepository->findForOrder($order);
+        $subOrders = $this->getSubOrders($order);
 
         Assert::eq(
             count($subOrders),
@@ -52,7 +52,7 @@ final class SubOrderContext implements Context
      */
     public function thereShouldBeTwoPackageForMyCart(OrderInterface $order)
     {
-        $subOrders = $this->subOrderRepository->findForOrder($order);
+        $subOrders = $this->getSubOrders($order);
 
         Assert::eq(
             count($subOrders),
@@ -110,7 +110,7 @@ final class SubOrderContext implements Context
      */
     public function theSubOrderFromMyOrderHasXSubOrderItems(int $subOrderIndex, OrderInterface $order, int $count = 2)
     {
-        $subOrders = $this->subOrderRepository->findForOrder($order);
+        $subOrders = $this->getSubOrders($order);
 
         Assert::minCount($subOrders, $subOrderIndex);
 
@@ -136,7 +136,7 @@ final class SubOrderContext implements Context
         int $total,
         bool $withTax = true
     ) {
-        $subOrders = $this->subOrderRepository->findForOrder($order);
+        $subOrders = $this->getSubOrders($order);
 
         Assert::minCount($subOrders, $subOrderIndex);
 
@@ -162,7 +162,7 @@ final class SubOrderContext implements Context
         int $total,
         bool $withTax = true
     ) {
-        $subOrders = $this->subOrderRepository->findForOrder($order);
+        $subOrders = $this->getSubOrders($order);
 
         Assert::minCount($subOrders, $subOrderIndex);
 
@@ -180,5 +180,10 @@ final class SubOrderContext implements Context
                 $subOrders[$subOrderIndex]->getShipping($withTax)
             )
         );
+    }
+
+    protected function getSubOrders(OrderInterface $order): array
+    {
+        return $this->orderRepository->findBy(['order__id' => $order->getId()]);
     }
 }

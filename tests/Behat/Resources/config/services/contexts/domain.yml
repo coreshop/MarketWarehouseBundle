@@ -15,6 +15,6 @@ services:
         class: CoreShop\Behat\MarketWarehouseBundle\Context\Domain\SubOrderContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop_market_warehouse.repository.sub_order'
+            - '@coreshop.repository.order'
         tags:
             - { name: fob.context_service }

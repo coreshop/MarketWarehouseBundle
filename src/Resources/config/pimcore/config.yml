@@ -1,6 +1,8 @@
 imports:
     - { resource: admin.yml }
     - { resource: workflow.yml }
+    - { resource: patches/order.yaml }
+    - { resource: patches/order_item.yaml }
 
 pimcore:
     objects:

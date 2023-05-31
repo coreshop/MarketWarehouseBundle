@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Order\Processor;
 
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Package\PackagerInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Repository\OrderPackageRepositoryInterface;
@@ -22,6 +23,7 @@ use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use Pimcore\Model\DataObject\Service;
+use Webmozart\Assert\Assert;
 
 class OrderPackageProcessor implements CartProcessorInterface
 {
@@ -48,6 +50,11 @@ class OrderPackageProcessor implements CartProcessorInterface
         if (!$cart->getId()) {
             return;
         }
+
+        /**
+         * @var SubOrderInterface $cart
+         */
+        Assert::isInstanceOf($cart, SubOrderInterface::class);
 
         $existingPackages = $cart->getPackages();
         $packages = $this->packager->createOrderPackages($cart, $existingPackages);

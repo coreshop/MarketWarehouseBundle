@@ -116,6 +116,13 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                     renderer: coreshop.util.format.currency.bind(this, _.sale.baseCurrency.isoCode)
                 },
                 {
+                    xtype: 'gridcolumn',
+                    flex: 1,
+                    dataIndex: 'totalGross',
+                    text: t('coreshop_market_warehouse_sub_order_total'),
+                    renderer: coreshop.util.format.currency.bind(this, _.sale.baseCurrency.isoCode)
+                },
+                {
                     xtype: 'widgetcolumn',
                     flex: 1,
                     onWidgetAttach: function (col, widget, record) {
@@ -143,7 +150,8 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                             if (transitions.length !== 0) {
                                 coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                     if (result.success) {
-                                        me.panel.reload();
+                                        console.log(_);
+                                        _.panel.reload();
                                     }
                                 });
                             }
@@ -159,11 +167,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                         iconCls: 'pimcore_icon_open',
                         tooltip: t('open'),
                         handler: function (grid, rowIndex) {
-                            coreshop.order.order.editSubOrder.showWindow(grid.getStore().getAt(rowIndex), function (result) {
-                                if (result.success) {
-                                    me.panel.reload();
-                                }
-                            });
+                            coreshop.order.helper.openOrder(grid.getStore().getAt(rowIndex).get('id'));
                         }
                     }]
                 }

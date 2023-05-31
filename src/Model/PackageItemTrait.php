@@ -14,47 +14,22 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-
-abstract class SubOrderItem extends AbstractPimcoreModel implements SubOrderItemInterface
+trait PackageItemTrait
 {
-    public function getSubOrder()
+    protected $packageItems;
+
+    public function getPackageItems(): ?array
     {
-        $parent = $this->getParent();
-
-        do {
-            if (is_subclass_of($parent, SubOrderInterface::class)) {
-                return $parent;
-            }
-            $parent = $parent->getParent();
-        } while ($parent != null);
-
-        throw new \InvalidArgumentException('SubOrder could not be found!');
+        return $this->packageItems;
     }
-
-    public function getTotal(bool $withTax = true)
+    public function setPackageItems(array $packageItems)
     {
-        return $this->getSubtotal($withTax);
-    }
-
-    public function setTotal(int $total, bool $withTax = true)
-    {
-        $this->setSubtotal($total, $withTax);
-    }
-
-    public function getSubtotal($withTax = true)
-    {
-        return $withTax ?  $this->getSubtotalGross() : $this->getSubtotalNet();
-    }
-
-    public function setSubtotal(int $subtotal, bool $withTax = false)
-    {
-        $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
+        $this->packageItems = $packageItems;
     }
 
     public function hasPackageItems(): bool
     {
-        return is_array($this->getItems()) && count($this->getItems()) > 0;
+        return is_array($this->getPackageItems()) && count($this->getPackageItems()) > 0;
     }
 
     public function addPackageItem(OrderPackageItemInterface $item): void
@@ -96,5 +71,4 @@ abstract class SubOrderItem extends AbstractPimcoreModel implements SubOrderItem
 
         return false;
     }
-
 }

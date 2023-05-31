@@ -17,49 +17,65 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Controller;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
-use CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderStates;
-use CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderTransitions;
-use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
+use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Order\OrderTransitions;
 use JMS\Serializer\ArrayTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class SubOrderController extends PimcoreController
+class SubOrderController
 {
+    public function __construct(
+        protected ArrayTransformerInterface $serializer,
+        protected WorkflowStateInfoManagerInterface $workflowStateManager,
+        protected ViewHandlerInterface $viewHandler,
+        protected OrderRepository $orderRepository,
+    )
+    {
+    }
+
     public function getSubOrdersForOrder(
         Request $request,
-        ArrayTransformerInterface $serializer,
-        WorkflowStateInfoManagerInterface $workflowStateManager
     ) {
-        $this->isGrantedOr403();
+        // TODO: needed
+        //$this->isGrantedOr403();
 
         $result = [];
         $orderId = (int)$request->get('id');
         if ($orderId) {
-            $data = $this->repository->findBy(['order__id' => $orderId]);
+            $data = $this->orderRepository->findBy(['order__id' => $orderId, 'isSuborder' => true]);
 
             /**
              * @var SubOrderInterface $subOrder
              */
             foreach ($data as $subOrder) {
-                $subOrderSerialized = $serializer->toArray($subOrder);
-                $subOrderSerialized['stateInfo'] = $workflowStateManager->getStateInfo(SubOrderTransitions::IDENTIFIER,
-                    $subOrder->getState() ?? SubOrderStates::STATE_NEW, false);
-                $subOrderSerialized['transitions'] = $workflowStateManager->parseTransitions($subOrder,
-                    SubOrderTransitions::IDENTIFIER, [
+                $subOrderSerialized = $this->serializer->toArray($subOrder);
+
+                $subOrderSerialized['stateInfo'] = $this->workflowStateManager->getStateInfo(
+                    OrderTransitions::IDENTIFIER,
+                    $subOrder->getOrderState() ?? OrderStates::STATE_NEW, false
+                );
+
+                $subOrderSerialized['transitions'] = $this->workflowStateManager->parseTransitions(
+                    $subOrder,
+                    OrderTransitions::IDENTIFIER, [
                         'cancel',
+                        'confirm',
                         'complete',
-                    ], false);
+                    ], false
+                );
                 $subOrderSerialized['carriers'] = array_map(
-                    static function (OrderPackageInterface $package) use ($serializer) {
-                        return $serializer->toArray($package->getCarrier());
+                    function (OrderPackageInterface $package) {
+                        return $this->serializer->toArray($package->getCarrier());
                     }, $subOrder->getPackages()
                 );
                 $subOrderSerialized['warehouses'] = array_map(
-                    static function (OrderPackageInterface $package) use ($serializer) {
-                        return $serializer->toArray($package->getWarehouse());
+                    function (OrderPackageInterface $package) {
+                        return $this->serializer->toArray($package->getWarehouse());
                     }, $subOrder->getPackages()
                 );
                 $result[] = $subOrderSerialized;
@@ -69,11 +85,15 @@ class SubOrderController extends PimcoreController
         return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
-    public function updateStateAction(
+    /**
+     * TODO: maybe use OrderController::updateOrderStateAction - wrong get param
+     */
+    public function updateOrderStateAction(
         Request $request,
         StateMachineManagerInterface $stateMachineManager
-    ): JsonResponse {
-        $subOrder = $this->repository->find($request->get('id'));
+    ): JsonResponse
+    {
+        $subOrder = $this->orderRepository->findBy(['id' => $request->get('id')]);
         $transition = $request->get('transition');
 
         if (!$subOrder instanceof SubOrderInterface) {
@@ -81,7 +101,7 @@ class SubOrderController extends PimcoreController
         }
 
         //apply state machine
-        $workflow = $stateMachineManager->get($subOrder, SubOrderTransitions::IDENTIFIER);
+        $workflow = $stateMachineManager->get($subOrder, OrderTransitions::IDENTIFIER);
         if (!$workflow->can($subOrder, $transition)) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
         }
@@ -91,6 +111,7 @@ class SubOrderController extends PimcoreController
         return $this->viewHandler->handle(['success' => true]);
     }
 
+    // TODO: needed?
     protected function getPermission(): string
     {
         return 'coreshop_permission_order_detail';

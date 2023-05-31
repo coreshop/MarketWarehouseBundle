@@ -10,4 +10,4 @@ imports:
     - { resource: services/checkout.yml }
     - { resource: services/form.yml }
     - { resource: services/constraint.yml }
-    - { resource: services/workflow.yml }
+    - { resource: services/state_machine.yml }
