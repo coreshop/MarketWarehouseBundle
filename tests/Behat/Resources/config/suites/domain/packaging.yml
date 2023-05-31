@@ -38,4 +38,4 @@ default:
                 - coreshop.behat.context.domain.cart
                 - coreshop_market_warehouse.behat.context.domain.order_package
             filters:
-                tags: "@mw_domain && @packaging"
+                tags: "@mw_domain&&@packaging"

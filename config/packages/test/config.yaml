@@ -3,6 +3,10 @@ imports:
     - { resource: ../../../vendor/coreshop/core-shop/src/CoreShop/Behat/Resources/config/services.yml }
     - { resource: ../../../tests/Behat/Resources/config/services.yml }
 
+pimcore:
+    targeting:
+        enabled: false
+
 doctrine:
     dbal:
         connections:
@@ -23,3 +27,17 @@ framework:
         handler_id:  ~
         storage_id: session.storage.mock_file
         name: MOCKSESSID
+        gc_probability: null
+    messenger:
+        transports:
+            coreshop_index: 'sync://'
+        routing:
+            'CoreShop\Bundle\IndexBundle\Messenger\IndexMessage': coreshop_index
+
+monolog:
+    handlers:
+        main:
+            level: error
+        console:
+            channels: ['!event', '!doctrine', '!console', '!cache']
+

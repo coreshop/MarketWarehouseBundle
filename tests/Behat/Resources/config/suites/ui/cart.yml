@@ -42,4 +42,4 @@ default:
                 - coreshop.behat.context.ui.store
                 - coreshop.behat.context.ui.currency
             filters:
-                tags: "@ui_mw && @cart"
+                tags: "@ui_mw&&@cart"

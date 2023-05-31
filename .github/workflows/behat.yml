@@ -81,6 +81,11 @@ jobs:
           composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
           composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
+      - name: Patch
+        run: |
+          cp .github/patch/ClassUpdate.php vendor/coreshop/core-shop/src/CoreShop/Component/Pimcore/DataObject/ClassUpdate.php 
+          cp .github/patch/AbstractDefinitionUpdate.php vendor/coreshop/core-shop/src/CoreShop/Component/Pimcore/DataObject/AbstractDefinitionUpdate.php  
+
       - name: Cache clear
         run: bin/console cache:clear
 
@@ -93,6 +98,7 @@ jobs:
       - name: Install CoreShop
         run: |
           bin/console coreshop:install
+          bin/console coreshop:patch:classes -f
 
       - name: Run Behat
         run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

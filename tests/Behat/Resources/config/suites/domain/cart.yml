@@ -16,4 +16,4 @@ default:
                 - coreshop_market_warehouse.behat.context.setup.supplier
                 - coreshop_market_warehouse.behat.context.setup.supplier_warehouse
             filters:
-                tags: "@mw_domain && @cart"
+                tags: "@mw_domain&&@cart"

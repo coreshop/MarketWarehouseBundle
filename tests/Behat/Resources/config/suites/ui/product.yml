@@ -30,4 +30,4 @@ default:
 
                 - coreshop.behat.context.ui.product
             filters:
-                tags: "@ui_mw && @product"
+                tags: "@ui_mw&&@product"

@@ -25,4 +25,4 @@ default:
 
                 - coreshop.behat.context.domain.product
             filters:
-                tags: "@mw_domain && @supplier"
+                tags: "@mw_domain&&@supplier"
