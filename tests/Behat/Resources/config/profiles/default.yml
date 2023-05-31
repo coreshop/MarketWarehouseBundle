@@ -15,4 +15,4 @@ default:
 
     gherkin:
         filters:
-            tags: '@mw_domain && ~@wip'
+            tags: '@mw_domain&&~@wip'

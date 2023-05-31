@@ -32,4 +32,4 @@ ui:
 
     gherkin:
         filters:
-            tags: '@ui && ~@wip'
+            tags: '@ui_mw&&~@wip'
