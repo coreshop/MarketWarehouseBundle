@@ -7,3 +7,17 @@ core_shop_workflow:
                         on: ['order']
                         do: ['@CoreShop\Bundle\MarketWarehouseBundle\SubOrder\SubOrderCreatorInterface', 'createSubOrder']
                         args: ['object']
+        coreshop_order:
+            callbacks:
+                after:
+                    suborder_cascade:
+                        on: ['confirm']
+                        do: ['@CoreShop\Bundle\MarketWarehouseBundle\StateMachine\CascadeSuborderTransition', 'apply']
+                        args: ['object', 'event']
+        coreshop_order_payment:
+            callbacks:
+                after:
+                    suborder_cascade:
+                        on: ['request_payment', 'authorize', 'cancel', 'pay']
+                        do: ['@CoreShop\Bundle\MarketWarehouseBundle\StateMachine\CascadeSuborderTransition', 'apply']
+                        args: ['object', 'event']

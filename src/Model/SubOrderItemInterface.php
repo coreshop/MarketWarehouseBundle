@@ -18,10 +18,8 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
-interface SubOrderItemInterface extends PimcoreModelInterface
+interface SubOrderItemInterface extends OrderItemInterface
 {
-    public function getSubOrder();
-
     /**
      * @return OrderItemInterface
      */
@@ -35,27 +33,6 @@ interface SubOrderItemInterface extends PimcoreModelInterface
     public function getPackageItems(): ?array;
 
     public function setPackageItems(array $packages);
-
-    public function getProduct(): ?PurchasableInterface;
-
-    public function setProduct(?PurchasableInterface $product);
-
-    /**
-     * @return float|null
-     */
-    public function getQuantity(): ?float;
-
-    public function setQuantity(?float $quantity);
-
-    public function setSubtotal(int $subtotal, bool $withTax = true);
-
-    public function getSubtotalNet(): int;
-
-    public function setSubtotalNet(int $subtotalNet);
-
-    public function getSubtotalGross(): int;
-
-    public function setSubtotalGross(int $subtotalGross);
 
     public function hasPackageItems(): bool;
 

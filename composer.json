@@ -18,9 +18,11 @@
         }
     ],
     "require": {
-        "coreshop/core-shop": "^3.0",
+        "coreshop/core-shop": "^3.0.5",
         "laminas/laminas-stdlib": "^3.3",
-        "pimcore/pimcore": "^10.5.0"
+        "pimcore/pimcore": "~10.5.0",
+        "coreshop/class-definition-patch-bundle": "3.1.x-dev",
+        "php-http/message-factory": "^1.1"
     },
     "require-dev": {
         "behat/behat": "^3.3",
