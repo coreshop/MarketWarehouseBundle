@@ -11,15 +11,13 @@ jobs:
     env:
       PIMCORE_ENVIRONMENT: "test"
       PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
 
     strategy:
       matrix:
         php: [ 8.0, 8.1 ]
         pimcore: [ ~10.5.0 ]
-        dependencies: [ highest, lowest ]
-        exclude:
-          - php: 8.1
-            dependencies: lowest
+        dependencies: [ highest ]
 
     services:
       database:
