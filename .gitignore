@@ -44,8 +44,7 @@ parameters.yml
 var
 .env.local
 composer.lock
-app/config/local/
-app/config/pimcore/
+config/local/
 coreshoptest
 database.yaml
 public/bundles
