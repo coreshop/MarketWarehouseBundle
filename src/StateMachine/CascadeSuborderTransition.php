@@ -34,6 +34,10 @@ class CascadeSuborderTransition
             $workflowName = $event->getWorkflowName();
         }
 
+        if (method_exists($object::class, 'getByOrder')) {
+            return;
+        }
+
         $subOrders = $object::getByOrder($object);
 
         foreach ($subOrders as $subOrder) {

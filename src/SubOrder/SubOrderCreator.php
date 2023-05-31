@@ -46,6 +46,9 @@ class SubOrderCreator implements SubOrderCreatorInterface
     public function createSubOrder(OrderInterface $order): ?SubOrderInterface
     {
         $subOrder = null;
+        /**
+         * @var SubOrderInterface $order
+         */
         $packages = $order->getPackages();
 
         foreach ($packages as $index => $package) {

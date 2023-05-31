@@ -21,6 +21,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Repository\WarehouseDeliveryTimeRuleRe
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\ORM\EntityRepository;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
@@ -421,7 +422,7 @@ class WarehouseDeliveryTimeRule extends Data implements
     }
 
     /**
-     * @return WarehouseDeliveryTimeRuleRepositoryInterface
+     * @return WarehouseDeliveryTimeRuleRepositoryInterface&EntityRepository
      */
     private function getRepository()
     {

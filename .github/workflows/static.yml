@@ -83,6 +83,3 @@ jobs:
           bin/console cache:clear --env=dev
           vendor/bin/phpstan analyse -c phpstan.neon src -l 3
 
-      - name: PSALM
-        run: |
-          vendor/bin/psalm

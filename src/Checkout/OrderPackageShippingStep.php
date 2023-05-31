@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\MarketWarehouseBundle\Checkout;
 
 use CoreShop\Bundle\MarketWarehouseBundle\Form\Type\OrderPackagesType;
+use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
@@ -65,7 +66,10 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
 
     public function validate(OrderInterface $cart): bool
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
+        /**
+         * @var SubOrderInterface $cart
+         */
+        Assert::isInstanceOf($cart, SubOrderInterface::class);
 
         if ($cart->hasShippableItems() === false) {
             return true;
@@ -124,6 +128,11 @@ final class OrderPackageShippingStep implements CheckoutStepInterface, OptionalC
 
     private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
+        /**
+         * @var SubOrderInterface $cart
+         */
+        Assert::isInstanceOf($cart, SubOrderInterface::class);
+
         $hasNonSupplierPackage = false;
 
         foreach ($cart->getPackages() as $package) {

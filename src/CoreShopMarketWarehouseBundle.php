@@ -34,11 +34,6 @@ class CoreShopMarketWarehouseBundle extends AbstractResourceBundle
         ];
     }
 
-    public function getVersion(): string
-    {
-        return $this->getVersionTrait();
-    }
-
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
@@ -61,6 +56,11 @@ class CoreShopMarketWarehouseBundle extends AbstractResourceBundle
     public function getNiceName(): string
     {
         return 'Market Warehouse Bundle';
+    }
+
+    public function getPackageName(): string
+    {
+        return 'coreshop/market-warehouse-bundle';
     }
 
     public function getInstaller(): ?InstallerInterface
