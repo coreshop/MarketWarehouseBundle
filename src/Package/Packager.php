@@ -60,10 +60,6 @@ class Packager implements PackagerInterface
 
     public function createOrderPackages(OrderInterface $cart, array $existingPackages): array
     {
-        if ($cart instanceof SubOrderInterface && $cart->getIsSuborder()) {
-            return [];
-        }
-
         $store = $cart->getStore();
 
         $rule = $this->supplierSaleRuleRepository->findForStore($store);
