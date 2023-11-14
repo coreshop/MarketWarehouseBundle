@@ -1,0 +1,6 @@
+services:
+  CoreShop\Bundle\MarketWarehouseBundle\Order\CartManager:
+    decorates: 'CoreShop\Component\Order\Manager\CartManagerInterface'
+    arguments:
+      - '@CoreShop\Bundle\MarketWarehouseBundle\Order\CartManager.inner'
+      - '@CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface'

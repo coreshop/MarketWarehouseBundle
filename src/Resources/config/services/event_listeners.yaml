@@ -1,0 +1,8 @@
+services:
+  CoreShop\Bundle\MarketWarehouseBundle\EventListener\SalesPrepareListener:
+    arguments:
+      - '@coreshop.repository.order'
+      - '@jms_serializer'
+      - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
+    tags:
+      - { name: kernel.event_subscriber }

@@ -1,0 +1,25 @@
+CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItem:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        quantity:
+            exp: object.getQuantity()
+            groups: [ Detailed ]
+        width:
+            exp: object.getWidth()
+            groups: [ Detailed ]
+        height:
+            exp: object.getHeight()
+            groups: [ Detailed ]
+        depth:
+            exp: object.getDepth()
+            groups: [ Detailed ]
+        subtotalGross:
+            exp: object.getSubtotalGross()
+            groups: [ Detailed ]
+        subtotalNet:
+            exp: object.getSubtotalNet()
+            groups: [ Detailed ]
+        product:
+            exp: object.getProduct()
+            groups: [ Detailed ]

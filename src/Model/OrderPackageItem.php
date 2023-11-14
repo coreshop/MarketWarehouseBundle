@@ -14,10 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
+use CoreShop\Component\Resource\Model\ImmutableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class OrderPackageItem extends AbstractPimcoreModel implements OrderPackageItemInterface
 {
+    use ImmutableTrait;
+
     public function getOrderPackage()
     {
         $parent = $this->getParent();

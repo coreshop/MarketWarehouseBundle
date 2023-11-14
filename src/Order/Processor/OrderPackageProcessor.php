@@ -51,6 +51,10 @@ class OrderPackageProcessor implements CartProcessorInterface
             return;
         }
 
+        if ($cart->getImmutable()) {
+            return;
+        }
+
         if ($cart instanceof SubOrderInterface && $cart->getIsSuborder()) {
             //Suborder gets the package set from the SubOrderCreator, no need to calculate it
             return;

@@ -1,0 +1,5 @@
+services:
+  CoreShop\Bundle\MarketWarehouseBundle\Order\OrderEditPossible:
+    decorates: 'CoreShop\Component\Order\OrderEditPossibleInterface'
+    arguments:
+      - '@CoreShop\Bundle\MarketWarehouseBundle\Order\OrderEditPossible.inner'

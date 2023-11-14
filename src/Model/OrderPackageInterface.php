@@ -17,12 +17,13 @@ namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 use Carbon\Carbon;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Resource\Model\ImmutableInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
-interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterface, StoreAwareInterface
+interface OrderPackageInterface extends PimcoreModelInterface, ShippableInterface, StoreAwareInterface, ImmutableInterface
 {
     public function getOrder(): ?OrderInterface;
 

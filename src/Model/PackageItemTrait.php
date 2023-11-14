@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
+use CoreShop\Component\Resource\Model\ImmutableTrait;
+
 trait PackageItemTrait
 {
     protected $packageItems;

@@ -14,11 +14,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MarketWarehouseBundle\Model;
 
+use CoreShop\Component\Resource\Model\ImmutableInterface;
+use CoreShop\Component\Resource\Model\ImmutableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Store\Model\StoreInterface;
 
 abstract class OrderPackage extends AbstractPimcoreModel implements OrderPackageInterface
 {
+    use ImmutableTrait;
+
     public function getStore(): ?StoreInterface
     {
         return $this->getOrder() ? $this->getOrder()->getStore() : null;

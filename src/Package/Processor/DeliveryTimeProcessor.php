@@ -38,6 +38,10 @@ class DeliveryTimeProcessor implements OrderPackageProcessorInterface
 
     public function process(OrderPackageInterface $package): void
     {
+        if ($package->isImmutable()) {
+            return;
+        }
+
         $deliveryTime = $this->deliveryTimeCalculator->calculateDeliveryTime(
             $package,
             $this->cartContextResolver->resolveCartContext($package->getOrder())

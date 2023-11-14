@@ -49,6 +49,10 @@ class ShippingProcessor implements OrderPackageProcessorInterface
 
     public function process(OrderPackageInterface $package): void
     {
+        if ($package->isImmutable()) {
+            return;
+        }
+
         $cartContext = $this->cartContextResolver->resolveCartContext($package->getOrder());
 
         $package->setShippingGross(0);

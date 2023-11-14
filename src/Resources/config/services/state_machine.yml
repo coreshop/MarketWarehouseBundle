@@ -3,3 +3,18 @@ services:
         public: true
         arguments:
             - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
+
+    CoreShop\Bundle\MarketWarehouseBundle\StateMachine\MainOrderStateResolver:
+        public: true
+        arguments:
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
+            - '@coreshop.repository.order'
+
+    CoreShop\Bundle\MarketWarehouseBundle\StateMachine\CascadeSuborderCallback:
+        public: true
+        arguments:
+            - '@service_container'
+            - '@coreshop.repository.order'
+
+    CoreShop\Bundle\MarketWarehouseBundle\StateMachine\PackagesImmutabilityModifier:
+        public: true

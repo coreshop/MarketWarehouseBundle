@@ -1,0 +1,31 @@
+CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackage:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        warehouse:
+            exp: object.getWarehouse()
+            groups: [ Detailed ]
+        carrier:
+            exp: object.getCarrier()
+            groups: [ Detailed ]
+        address:
+            exp: object.getAddress()
+            groups: [ Detailed ]
+        items:
+            exp: object.getItems()
+            groups: [ Detailed ]
+        shippingGross:
+            exp: object.getShippingGross()
+            groups: [ Detailed ]
+        shippingNet:
+            exp: object.getShippingNet()
+            groups: [ Detailed ]
+        subtotalGross:
+            exp: object.getSubtotalGross()
+            groups: [ Detailed ]
+        subtotalNet:
+            exp: object.getSubtotalNet()
+            groups: [ Detailed ]
+        weight:
+            exp: object.getWeight()
+            groups: [ Detailed ]

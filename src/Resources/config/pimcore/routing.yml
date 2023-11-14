@@ -1,9 +1,3 @@
-coreshop_market_warehouse_admin_sub_order_orders:
-    path: /%coreshop.admin.route.base%/order/sub-orders
-    defaults: { _controller: CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController::getSubOrdersForOrder}
-    options:
-        expose: true
-
 coreshop_market_warehouse_admin_sub_order_update_state:
     path: /%coreshop.admin.route.base%/order/update-suborder-state
     defaults: { _controller: CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController::updateOrderStateAction}
