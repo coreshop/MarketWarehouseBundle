@@ -40,43 +40,30 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
     },
 
     updateSale: function () {
-        var _ = this;
+        var me = this;
 
-        if(!_.subOrders.items.length) {
-            _.subOrders.add([_.generateItemGrid()]);
+        if (me.sale.isSubOrder) {
+            me.subOrders.hide();
+            return;
+        } else {
+            me.subOrders.show();
         }
 
-        Ext.Ajax.request({
-            url: Routing.generate('coreshop_market_warehouse_admin_sub_order_orders'),
-            params: {id: _.sale.id},
-            ignoreErrors: true,
-            success: function (response) {
-                let data = null;
+        if (!me.subOrders.items.length) {
+            me.subOrders.add([me.generateItemGrid()]);
+        }
 
-                try {
-                    let responseData = Ext.decode(response.responseText);
-                    if (!responseData.hasOwnProperty('data')) {
-                        return;
-                    }
-                    data = responseData.data;
-                    _.subOrdersStore.loadRawData(data);
-                } catch (e) {
-                    console.log(e);
-                }
-            }.bind(this),
-            failure: function () {
-            }.bind(this),
-        });
+        me.subOrdersStore.loadRawData(this.sale.subOrders);
     },
 
     generateItemGrid: function () {
-        let _ = this
+        let me = this
 
         return {
             xtype: 'grid',
             margin: '5 0 15 0',
             cls: 'coreshop-detail-grid',
-            store: _.subOrdersStore,
+            store: me.subOrdersStore,
             columns: [
                 {
                     xtype: 'gridcolumn',
@@ -104,7 +91,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                         }
 
                         return carriers.map((element) => {
-                           return element.title;
+                            return element.title;
                         }).join(', ');
                     }
                 },
@@ -113,14 +100,14 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                     flex: 1,
                     dataIndex: 'subtotalGross',
                     text: t('coreshop_market_warehouse_sub_order_subtotal'),
-                    renderer: coreshop.util.format.currency.bind(this, _.sale.baseCurrency.isoCode)
+                    renderer: coreshop.util.format.currency.bind(this, me.sale.baseCurrency.isoCode)
                 },
                 {
                     xtype: 'gridcolumn',
                     flex: 1,
                     dataIndex: 'totalGross',
                     text: t('coreshop_market_warehouse_sub_order_total'),
-                    renderer: coreshop.util.format.currency.bind(this, _.sale.baseCurrency.isoCode)
+                    renderer: coreshop.util.format.currency.bind(this, me.sale.baseCurrency.isoCode)
                 },
                 {
                     xtype: 'widgetcolumn',
@@ -151,7 +138,7 @@ coreshop.order.order.detail.blocks.coreshop_market_warehouse_sub_orders = Class.
                                 coreshop.order.order.state.changeState.showWindow(url, id, transitions, function (result) {
                                     if (result.success) {
                                         console.log(_);
-                                        _.panel.reload();
+                                        me.panel.reload();
                                     }
                                 });
                             }

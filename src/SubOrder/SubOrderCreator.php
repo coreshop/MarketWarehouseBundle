@@ -18,6 +18,7 @@ use CoreShop\Bundle\MarketWarehouseBundle\Model\OrderPackageItemInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderInterface;
 use CoreShop\Bundle\MarketWarehouseBundle\Model\SubOrderItemInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
@@ -106,6 +107,10 @@ class SubOrderCreator implements SubOrderCreatorInterface
 
         $subOrderItem = null;
         foreach ($subOrder->getItems() as $existingItem) {
+            if (!$existingItem instanceof SubOrderItemInterface) {
+                continue;
+            }
+
             if ($existingItem->getOrderItem() && $item->getOrderItem() && $existingItem->getOrderItem()->getId() === $item->getOrderItem()->getId()) {
                 $subOrderItem = $existingItem;
             }
@@ -113,7 +118,7 @@ class SubOrderCreator implements SubOrderCreatorInterface
 
         if (null === $subOrderItem) {
             /**
-             * @var SubOrderItemInterface $subOrderItem
+             * @var SubOrderItemInterface&OrderItemInterface $subOrderItem
              */
             $subOrderItem = $this->orderItemFactory->createNew();
             $subOrderItem->setPublished(true);
@@ -125,14 +130,14 @@ class SubOrderCreator implements SubOrderCreatorInterface
             $subOrder->addItem($subOrderItem);
         } else {
             $quantity += (int)$subOrderItem->getQuantity();
-            $subTotalNet += $subOrderItem->getSubtotalNet();
-            $subTotalGross += $subOrderItem->getSubtotalGross();
+            $subTotalNet += $subOrderItem->getSubtotal(false);
+            $subTotalGross += $subOrderItem->getSubtotal(true);
         }
 
         $subOrderItem->addPackageItem($item);
         $subOrderItem->setQuantity($quantity);
-        $subOrderItem->setSubtotalNet($subTotalNet);
-        $subOrderItem->setSubtotalGross($subTotalGross);
+        $subOrderItem->setSubtotal($subTotalNet, false);
+        $subOrderItem->setSubtotal($subTotalGross, true);
         $subOrderItem->save();
     }
 }

@@ -7,6 +7,7 @@ coreshop_market_warehouse_order_package: 'Package'
 coreshop_market_warehouse_order_package_subtotal: 'Subtotal (incl.)'
 
 coreshop_market_warehouse_sub_orders: 'Suborders'
+coreshop_market_warehouse_packages: 'Packages'
 coreshop_market_warehouse_sub_order: 'Suborder'
 coreshop_market_warehouse_sub_order_warehouse: 'Warehouse'
 coreshop_market_warehouse_sub_order_suppliers: 'Suppliers'
@@ -15,6 +16,7 @@ coreshop_market_warehouse_sub_order_carriers: 'Carriers'
 coreshop_market_warehouse_sub_order_carrier: 'Carrier'
 coreshop_market_warehouse_sub_order_carrier_tracking_url: 'Tracking URL'
 coreshop_market_warehouse_sub_order_subtotal: 'Subtotal (incl.)'
+coreshop_market_warehouse_sub_order_total: 'Total (incl.)'
 coreshop_market_warehouse_sub_order_shipping: 'Shipping (incl.)'
 
 coreshop_market_warehouse_sub_order_items: 'Suborder items'
@@ -34,3 +36,6 @@ coreshop_workflow_state_coreshop_sub_order_complete: 'Complete'
 
 coreshop_workflow_transition_coreshop_sub_order_cancel: 'Cancel'
 coreshop_workflow_transition_coreshop_sub_order_complete: 'Complete'
+
+coreshop_condition_isNotSubOrder: 'Is not Suborder'
+coreshop_condition_isSubOrder: 'Is Suborder'

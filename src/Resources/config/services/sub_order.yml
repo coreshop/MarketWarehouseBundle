@@ -19,10 +19,8 @@ services:
     CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController:
         class: CoreShop\Bundle\MarketWarehouseBundle\Controller\SubOrderController
         public: true
-        tags:
-            - { name: controller.service_arguments }
         arguments:
-            - '@jms_serializer.serializer'
-            - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
             - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
             - '@coreshop.repository.order'
+        tags:
+            - { name: controller.service_arguments }

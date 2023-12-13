@@ -1,0 +1,8 @@
+services:
+  CoreShop\Bundle\MarketWarehouseBundle\Notification\Rule\Condition\IsNotSubOrderCondition:
+    tags:
+      - { name: coreshop.notification_rule.condition, type: isNotSubOrder, notification-type: order }
+
+  CoreShop\Bundle\MarketWarehouseBundle\Notification\Rule\Condition\IsSubOrderCondition:
+    tags:
+      - { name: coreshop.notification_rule.condition, type: isSubOrder, notification-type: order }

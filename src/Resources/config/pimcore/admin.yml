@@ -1,5 +1,7 @@
 core_shop_market_warehouse:
     pimcore_admin:
+        css:
+            resource: '/bundles/coreshopmarketwarehouse/pimcore/css/market_warehouse.css'
         js:
             resource: '/bundles/coreshopmarketwarehouse/pimcore/js/resource.js'
             warehouse_delivery_time_rule_action: '/bundles/coreshopmarketwarehouse/pimcore/js/warehouse_delivery_time_rule/action.js'
@@ -24,4 +26,5 @@ core_shop_market_warehouse:
             supplier_shipping_rule_actions_discount_amount: '/bundles/coreshopmarketwarehouse/pimcore/js/supplier_shipping_rule/actions/discountAmount.js'
             supplier_shipping_rule_actions_discount_percent: '/bundles/coreshopmarketwarehouse/pimcore/js/supplier_shipping_rule/actions/discountPercent.js'
             supplier_shipping_rule_actions_price: '/bundles/coreshopmarketwarehouse/pimcore/js/supplier_shipping_rule/actions/price.js'
-            warehouse_order_detail_block_suborders: '/bundles/coreshopmarketwarehouse/pimcore/js/order/detail/blocks/coreShopMarketWarehouseSuborders.js'
+            warehouse_order_detail_block_suborders: '/bundles/coreshopmarketwarehouse/pimcore/js/order/detail/blocks/suborders.js'
+            warehouse_order_detail_block_packages: '/bundles/coreshopmarketwarehouse/pimcore/js/order/detail/blocks/packages.js'

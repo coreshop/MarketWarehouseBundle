@@ -29,6 +29,10 @@ class SubOrderShippingProcessor implements CartProcessorInterface
 
     public function process(OrderInterface $cart): void
     {
+        if ($cart->getImmutable()) {
+            return;
+        }
+
         if (!$cart instanceof SubOrderInterface) {
             return;
         }

@@ -35,6 +35,16 @@ services:
         tags:
           - { name: coreshop.cart_processor, priority: 540 }
 
+    CoreShop\Bundle\MarketWarehouseBundle\Order\Processor\OrderPackageImmutableProcessor:
+        arguments:
+            - '@CoreShop\Bundle\MarketWarehouseBundle\Package\OrderPackageProcessorInterface'
+        tags:
+          - { name: coreshop.cart_processor, priority: 620 }
+
+    CoreShop\Bundle\MarketWarehouseBundle\Order\Processor\MainOrderItemQuantityProcessor:
+        tags:
+          - { name: coreshop.cart_processor, priority: 610 }
+
     CoreShop\Bundle\MarketWarehouseBundle\Order\Processor\SubOrderShippingProcessor:
         arguments:
             - '@coreshop.factory.adjustment'

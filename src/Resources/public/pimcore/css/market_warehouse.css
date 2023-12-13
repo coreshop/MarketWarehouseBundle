@@ -1,3 +1,11 @@
 .pimcore_icon_data_group_coreshop_market_warehouse {
     background: url(../img/logo.svg) center center no-repeat !important;
 }
+
+.coreshop_icon_package {
+    background: url(../img/package.svg) center center no-repeat !important;
+}
+
+.coreshop_icon_suborder, .coreshop_rule_icon_condition_isSubOrder, .coreshop_rule_icon_condition_isNotSubOrder {
+    background: url(../img/suborder.svg) center center no-repeat !important;
+}

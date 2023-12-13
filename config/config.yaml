@@ -8,6 +8,9 @@ framework:
     profiler:
         enabled: false
 
+core_shop_order:
+    allow_order_edit: true
+
 core_shop_core:
     checkout_manager_factory: packaging
     checkout:

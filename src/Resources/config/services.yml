@@ -11,3 +11,7 @@ imports:
     - { resource: services/form.yml }
     - { resource: services/constraint.yml }
     - { resource: services/state_machine.yml }
+    - { resource: services/order_edit_possible.yml }
+    - { resource: services/coreshop.yml }
+    - { resource: services/event_listeners.yaml }
+    - { resource: services/notifications.yml }

@@ -4,6 +4,10 @@ imports:
     - { resource: patches/order.yaml }
     - { resource: patches/order_item.yaml }
 
+doctrine_migrations:
+    migrations_paths:
+        'CoreShop\Bundle\MarketWarehouseBundle\Migrations': '@CoreShopMarketWarehouseBundle/Migrations'
+
 pimcore:
     objects:
         class_definitions:
