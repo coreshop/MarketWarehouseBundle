@@ -61,7 +61,7 @@ class SubOrderCreator implements SubOrderCreatorInterface
             $subOrder = $this->subOrderFactory->createNew();
             $subOrder->setPublished(true);
             $subOrder->setParent($this->objectService->createFolderByPath(sprintf('%s/%s', $order->getFullPath(), 'sub_orders')));
-            $subOrder->setKey((string)$index);
+            $subOrder->setKey(uniqid((string) ((int) $index + 1), true));
             $subOrder->setOrder($order);
             $subOrder->setOrderNumber($orderNumber);
             $subOrder->setIsSuborder(true);

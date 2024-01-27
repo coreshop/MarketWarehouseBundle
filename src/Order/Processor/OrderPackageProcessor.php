@@ -98,13 +98,13 @@ class OrderPackageProcessor implements CartProcessorInterface
             $package->setItems([]);
 
             $package->setParent(Service::createFolderByPath(sprintf('%s/packages', $cart->getFullPath())));
-            $package->setKey($index);
+            $package->setKey(uniqid((string) ((int) $index + 1), true));
             $package->setPublished(true);
             $package->save();
 
             foreach ($items as $packageIndex => $item) {
                 $item->setParent(Service::createFolderByPath(sprintf('%s/items', $package->getFullPath())));
-                $item->setKey($packageIndex);
+                $item->setKey(uniqid((string) ((int) $packageIndex + 1), true));
                 $item->setPublished(true);
                 $item->save();
             }
