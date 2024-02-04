@@ -50,7 +50,13 @@ class OrderPackageImmutableProcessor implements CartProcessorInterface
         foreach ($cart->getItems() as $item) {
             $packageItems = $item->getPackageItems();
             $quantity = $item->getQuantity();
-            $packageQuantity = array_sum(array_map(static fn($package) => $package->getQuantity(), $packages));
+            $packageQuantity = array_sum(
+                array_map(
+                    static fn($packageItem) => array_map(static fn($item) => $item->getQuantity(), $packageItem->getItems()),
+                    $packages
+                )
+            );
+            //$packageQuantity = array_sum(array_map(static fn($package) => $package->getQuantity(), $packages));
 
             //Quantity didn't change, no need to recalculate
             if ($packageQuantity === $quantity) {
